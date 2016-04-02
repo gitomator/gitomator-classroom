@@ -16,7 +16,7 @@ module ClassroomAutomator
       # @param conf_file [String] - Path to a YAML configuration file.
       #
       def self.from_file(conf_file)
-        return new(YAML::load(File.open(conf_file)))
+        return from_hash(YAML::load(ERB.new(File.read(conf_file)).result))
       end
 
       #
