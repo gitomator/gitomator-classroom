@@ -57,6 +57,12 @@ module ClassroomAutomator
         return self.send(key)
       end
 
+      def []=(key, value)
+        setter = "#{key}="
+        self.class.send(:attr_accessor, key) if !respond_to?(setter)
+        send setter, value
+      end
+
 
       def to_s
         return "#<#{self.class}>"
