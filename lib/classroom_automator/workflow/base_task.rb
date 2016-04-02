@@ -13,10 +13,22 @@ module ClassroomAutomator
       # => @param :logger [Logger]
       #
       def initialize(opts = {})
-        @hosting = opts[:hosting]
-        @git     = opts[:git]
-        @ci      = opts[:ci]
+        @opts = opts
         @logger  = opts[:logger] || Logger.new(STDOUT)
+      end
+
+      # Service attr_readers are lazy-loading ...
+
+      def hosting
+        @opts[:hosting]
+      end
+
+      def git
+        @opts[:git]
+      end
+
+      def ci
+        @opts[:ci]
       end
 
 
