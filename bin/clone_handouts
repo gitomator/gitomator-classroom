@@ -1,61 +1,29 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'classroom_automator/config/assignment'
-require 'gitomator/service/hosting/service'
-require 'gitomator/github/hosting_provider'
-require 'gitomator/service/git/service'
-require 'gitomator/service/git/provider/shell'
 
+require 'classroom_automator/workflow/context'
+require 'classroom_automator/config/assignment'
+
+require 'classroom_automator/workflow/task/clone_handouts'
 
 #===============================================================================
 
-if ARGV.length != 2
-  abort("Usage: #{File.basename($0)} ASSIGNMENT-CONFIG DEST-DIR")
+if ARGV.length != 3
+  abort("Usage: #{File.basename($0)} CONTEXT-YAML ASSIGNMENT-YAML LOCAL-DIR")
 end
 
 begin
 
-  config = ClassroomAutomator::Config::Assignment.from_file(ARGV[0])
+  context = ClassroomAutomator::Workflow::Context.from_file(ARGV[0])
+  assignment_config  = ClassroomAutomator::Config::Assignment.from_file(ARGV[1])
+  raise "LOCAL-DIR #{ARGV[2]} doesn't exist." unless Dir.exists? ARGV[2]
+  local_dir = ARGV[2]
 
-  raise "Destination directory #{ARGV[1]} doesn't exist." unless Dir.exists? ARGV[1]
-  dst_dir = ARGV[1]
-
-  github = Gitomator::Service::Hosting::Service.new (
-    Gitomator::GitHub::HostingProvider.with_access_token(
-      ENV['GITHUB_ACCESS_TOKEN'], {org: config.course}
-    )
-  )
-
-  git = Gitomator::Service::Git::Service.new (
-    Gitomator::Service::Git::Provider::Shell.new
-  )
+  ClassroomAutomator::Workflow::Task::CloneHandouts.new(
+    context, assignment_config, local_dir
+  ).run
 
 rescue => e
-  abort "#{e}"
+  abort "#{e}.\n\nStack trace:\n#{e.backtrace.join('\n\t')}"
 end
-
-
-config.handouts.each_with_index do |key_value_pair, index|
-
-  handout_id, _ = key_value_pair
-  puts "Cloning handout #{handout_id} (#{index + 1} out of #{config.handouts.length}) ..."
-
-  repo_name = "assignment-#{config.assignment}-handout-#{handout_id}"
-  repo = github.read_repo(repo_name)
-
-  if repo.nil?
-    puts "  INFO: Skipping #{handout_id} (handout repo doesn't exist)"
-    next
-  end
-
-  local_repo_root = File.join(dst_dir, repo_name)
-  if(Dir.exist? local_repo_root)
-    puts "INFO: Local repo already exists, '#{local_repo_root}'."
-  else
-    git.clone(repo.url, local_repo_root)
-  end
-
-end
-
-puts "Done."
