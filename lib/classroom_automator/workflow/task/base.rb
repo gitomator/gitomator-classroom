@@ -13,6 +13,25 @@ module ClassroomAutomator
           @context = context
         end
 
+
+        def logger
+          context.logger
+        end
+
+        def git
+          context.git
+        end
+
+        def hosting
+          context.hosting
+        end
+
+        def ci
+          context.ci
+        end
+
+
+
         def run
           raise "Unimplemented"
         end
