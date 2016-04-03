@@ -2,13 +2,64 @@
 
 require "bundler/setup"
 require "classroom_automator"
+require "trollop"
 
-# You can add fixtures and/or initialization code here to make experimenting
-# with your gem easier. You can also use a different console, if you like.
 
-# (If you use this, don't forget to add pry to your Gemfile!)
-# require "pry"
-# Pry.start
+module ClassroomAutomator
+  module Console
+
+    @@context
+
+    def self.context=(context)
+      @@context
+    end
+
+    def self.context
+      @@context
+    end
+
+    def self.logger
+      @@context.logger
+    end
+
+    def self.git
+      @@context.git
+    end
+
+    def self.hosting
+      @@context.hosting
+    end
+
+    def self.ci
+      @@context.ci
+    end
+
+  end
+end
+
+
+opts = Trollop::options do
+  version "Gitomator console 0.0.1 (c) 2016 Joey Freund"
+  banner <<-EOS
+IRB with convenient Gitomator functions pre-loaded.
+
+Usage:
+       console [options]
+where [options] are:
+EOS
+
+  opt :context, "Context configuration file (default: ENV['CLASSROOM_AUTOMATOR_CONTEXT'])",
+          :type => :string,
+          :default => ENV['CLASSROOM_AUTOMATOR_CONTEXT']
+end
+
+
+if opts[:context]
+  puts "ahhh"
+  include ClassroomAutomator::Console
+  require 'classroom_automator/workflow/context'
+  context = ClassroomAutomator::Workflow::Context.from_file(opts[:context])
+end
 
 require "irb"
 IRB.start
