@@ -1,6 +1,6 @@
+require 'classroom_automator/config/util'
+
 gem 'logger'; require 'logger'
-require 'yaml'
-require 'erb'
 
 require 'gitomator/service/git/service'
 require 'gitomator/service/git/provider/shell'
@@ -26,17 +26,17 @@ module ClassroomAutomator
       #
       # See `spec/data/task_conf` for an example configuration file
       #
-      # @param conf_file [String] - Path to a YAML configuration file.
+      # @param conf_file [String/File] - Path to a YAML configuration file.
       #
       def self.from_file(conf_file)
-        return new(YAML::load(ERB.new(File.read(conf_file)).result))
+        from_hash(ClassroomAutomator::Config::Util.conf_file_to_hash(conf_file))
       end
 
       #
       # @param conf [Hash] - Configuration data (e.g. parsed from a YAML file)
       #
       def self.from_hash(conf)
-        return new(conf)
+        new(conf)
       end
 
 

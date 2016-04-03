@@ -1,5 +1,4 @@
-require 'yaml'
-require 'erb'
+require 'classroom_automator/config/util'
 
 module ClassroomAutomator
   module Config
@@ -17,7 +16,7 @@ module ClassroomAutomator
       # @param conf_file [String] - Path to a YAML configuration file.
       #
       def self.from_file(conf_file)
-        return from_hash(YAML::load(ERB.new(File.read(conf_file)).result))
+        return from_hash(ClassroomAutomator::Config::Util.conf_file_to_hash(conf_file))
       end
 
       #
