@@ -1,0 +1,24 @@
+
+# hosting:
+#   provider: local
+#   dir: <%= File.expand_path('~/tmp/storage') %>
+
+hosting:
+  provider: github
+  access_token: <%= ENV['GITHUB_TEST_ACCESS_TOKEN'] %>
+  organization: <%= ENV['GITHUB_TEST_ORG'] %>
+
+
+logger:
+  output: <%= File.expand_path('~/tmp/log/out.log') %>
+  level: INFO
+
+ci:
+  provider: travis
+  access_token: <%= ENV['TRAVIS_TEST_ACCESS_TOKEN'] %>
+  github_organization: <%= ENV['GITHUB_TEST_ORG'] %>
+
+# ci:
+#   provider: travis_pro
+#   access_token: <%= ENV['TRAVIS_ACCESS_TOKEN'] %>
+#   github_organization: <%= ENV['GITHUB_ORG'] %>
