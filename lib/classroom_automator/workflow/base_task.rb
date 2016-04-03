@@ -3,7 +3,7 @@ module ClassroomAutomator
     class BaseTask
 
 
-      attr_reader :hosting, :git, :ci, :logger
+      attr_reader :logger
 
       #
       # @param opts [Hash]
