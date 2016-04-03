@@ -11,26 +11,26 @@ module ClassroomAutomator
     @@context
 
     def self.context=(context)
+      @@context=context
+    end
+
+    def classroom_automator_context
       @@context
     end
 
-    def self.context
-      @@context
-    end
-
-    def self.logger
+    def logger
       @@context.logger
     end
 
-    def self.git
+    def git
       @@context.git
     end
 
-    def self.hosting
+    def hosting
       @@context.hosting
     end
 
-    def self.ci
+    def ci
       @@context.ci
     end
 
@@ -49,16 +49,17 @@ where [options] are:
 EOS
 
   opt :context, "Context configuration file (default: ENV['CLASSROOM_AUTOMATOR_CONTEXT'])",
-          :type => :string,
-          :default => ENV['CLASSROOM_AUTOMATOR_CONTEXT']
+          :type => :string
 end
 
 
-if opts[:context]
-  puts "ahhh"
-  include ClassroomAutomator::Console
+if opts[:context] || ENV['CLASSROOM_AUTOMATOR_CONTEXT']
   require 'classroom_automator/workflow/context'
-  context = ClassroomAutomator::Workflow::Context.from_file(opts[:context])
+  ClassroomAutomator::Console.context =
+    ClassroomAutomator::Workflow::Context.from_file(
+      opts[:context] || ENV['CLASSROOM_AUTOMATOR_CONTEXT']
+  )
+  include ClassroomAutomator::Console
 end
 
 require "irb"
