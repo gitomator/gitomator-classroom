@@ -38,7 +38,7 @@ module ClassroomAutomator
       end
 
 
-      # A hash mapping handout-id (String) to student GitHub usernames (Array of Strings)
+      # A hash mapping repo-name (String) to student usernames (String array).
       attr_reader :handouts
 
 
@@ -51,7 +51,7 @@ module ClassroomAutomator
         end
 
         # Transform the handouts configuration info (we support multiple formats)
-        # into a hash that maps handout-id's to lists of students-usernames.
+        # into a hash that maps repo-names to lists of students-usernames.
         @handouts = parse_handouts_config(handouts)
       end
 
@@ -64,9 +64,9 @@ module ClassroomAutomator
         result = {}
 
         handouts_conf.each do |handout_conf|
-          handout_id, students = parse_handout_config(handout_conf)
-          raise "Invalid config - Repeated handout-id, '#{handout_id}'." if result.has_key? handout_id
-          result[handout_id] = students
+          repo, students = parse_handout_config(handout_conf)
+          raise "Invalid config - duplicate repo, #{repo}." if result.has_key? repo
+          result[repo] = students
         end
 
         return result
@@ -74,19 +74,16 @@ module ClassroomAutomator
 
 
       #
-      # Extract the handout-id and list of usernames from a single entry in
-      # the `handouts` section of the configuration.
+      # Extract the repo-name and usernames from a single entry in the
+      # `handouts` section of the configuration.
       #
-      # If handout_conf is a String, this method assumes that the string is a GitHub username,
-      # and uses the username as a handout-id as a default.
+      # @param handout_conf [String or Hash]
       #
-      # Otherwise, handout_conf is expected to be a hash with a single entry,
-      # mapping a handout-id to GitHub username(s).
+      # @return [String, String array] Return the pair <repo-name, usernames>.
       #
-      # @return [String,Array of strings] Return the pair <handout-id, github-usernames>.
       def parse_handout_config(handout_conf)
         if handout_conf.is_a? String
-          return handout_conf, [ handout_conf ]
+          return handout_conf, []
         elsif (handout_conf.is_a? Hash) and (handout_conf.length == 1)
           usernames = handout_conf.values.first
           usernames = [ usernames.to_s ] unless usernames.is_a? Array

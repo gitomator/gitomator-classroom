@@ -21,60 +21,59 @@ describe ClassroomAutomator::Config::Assignment do
 
   describe 'handouts configuration' do
 
-    it "should parse handouts configured with username only" do
-      handouts = ['username#1', 'username#2', 'username#3']
+    it "should parse handouts configured with repo-name only" do
+      handouts = ['repo#1', 'repo#2', 'repo#3']
       conf = ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
 
-      handouts.each do |username|
-        handout_id = username
-        students   = [username]
-        expect(conf.handouts[handout_id]).to eq(students)
+      handouts.each do |repo|
+        expect(conf.handouts[repo]).to eq([])
       end
     end
 
 
-    it "should parse handouts configured with handout-id and username" do
+    it "should parse handouts configured with repo-name and username" do
       handouts = [
-        {'handout#1' => 'username#1'},
-        {'handout#2' => 'username#2'},
-        {'handout#3' => 'username#3'}
+        {'repo#1' => 'username#1'},
+        {'repo#2' => 'username#2'},
+        {'repo#3' => 'username#3'}
       ]
       conf = ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
 
       handouts.each do |handout|
-        handout_id = handout.keys.first
-        students   = handout.values
-        expect(conf.handouts[handout_id]).to eq(students)
+        repo     = handout.keys.first
+        students = handout.values
+        expect(conf.handouts[repo]).to eq(students)
       end
     end
 
 
-    it "should parse handouts configured with handout-id and a list of usernames" do
+    it "should parse handouts configured with repo-name and a list of usernames" do
       handouts = [
-        {'handout#1' => ['username#1', 'username#2']},
-        {'handout#2' => ['username#3']},
-        {'handout#3' => ['username#4', 'username#5', 'username#6']}
+        {'repo#1' => ['username#1', 'username#2']},
+        {'repo#2' => ['username#3']},
+        {'repo#3' => ['username#4', 'username#5', 'username#6']}
       ]
       conf = ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
 
       handouts.each do |handout|
-        handout_id = handout.keys.first
-        students   = handout[handout_id]
-        expect(conf.handouts[handout_id]).to eq(students)
+        repo     = handout.keys.first
+        students = handout[repo]
+        expect(conf.handouts[repo]).to eq(students)
       end
     end
 
 
     it "should parse handouts of mixed formats" do
       handouts = [
-        'username#1',
-        { 'handout#2' => 'username#2' },
-        { 'handout#3' => ['username#3', 'username#4', 'username#5'] }
+        'repo#1',
+        { 'repo#2' => 'username#2' },
+        { 'repo#3' => ['username#3', 'username#4', 'username#5'] }
       ]
+
       conf = ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
-      expect(conf.handouts['username#1']).to eq(['username#1'])
-      expect(conf.handouts['handout#2']).to eq(['username#2'])
-      expect(conf.handouts['handout#3']).to eq(['username#3', 'username#4', 'username#5'])
+      expect(conf.handouts['repo#1']).to eq([])
+      expect(conf.handouts['repo#2']).to eq(['username#2'])
+      expect(conf.handouts['repo#3']).to eq(['username#3', 'username#4', 'username#5'])
     end
 
   end
