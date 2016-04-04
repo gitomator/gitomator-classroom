@@ -17,16 +17,19 @@ module ClassroomAutomator
           logger.debug "#{repo_name} (#{i + 1} out of #{handouts.length})"
 
           local_repo_root = File.join(local_dir, repo_name)
-          repo = hosting.read_repo(repo_name)
-
-          if repo.nil?
-            logger.warn "Skipping #{repo_name} (handout repo doesn't exist)"
-          elsif Dir.exist? local_repo_root
+          if Dir.exist? local_repo_root
             logger.info "Local repo already exists, '#{local_repo_root}'."
+            return
+          end
+
+          repo = hosting.read_repo(repo_name)
+          if repo.nil?
+            logger.warn "Repo #{repo_name} doesn't exist"
           else
             logger.info "Clonning #{repo.url} ..."
             git.clone(repo.url, local_repo_root)
           end
+
         end
 
 
