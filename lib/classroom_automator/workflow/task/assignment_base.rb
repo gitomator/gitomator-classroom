@@ -19,9 +19,30 @@ module ClassroomAutomator
         end
 
 
-        def run
-          raise "Unimplemented"
+        def handouts
+          assignment_config.handouts
         end
+
+
+        def run
+          handouts.keys.each_with_index do |repo_name, index|
+            begin
+              process_handout(repo_name, index)
+            rescue => e
+              on_process_handout_error(repo_name, index, e)
+            end
+          end
+        end
+
+
+        def process_handout(repo_name, index)
+          # Override this method in subclasses
+        end
+
+        def on_process_handout_error(repo_name, index, error)
+          # Override this method in subclasses
+        end
+
 
       end
     end
