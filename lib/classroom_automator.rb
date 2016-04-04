@@ -3,32 +3,32 @@ require "classroom_automator/version"
 module ClassroomAutomator
 
 
-  module ScriptUtil
+  module Script
 
     require 'trollop'
     require 'classroom_automator/workflow/context'
     require 'classroom_automator/config/assignment'
 
 
-    def self.parse_cmd_line_opts(usage_message)
-      opts = Trollop::options do
+    class OptParser < Trollop::Parser
+
+      def initialize(usage_message)
+        super
         version ClassroomAutomator::VERSION
-        banner  usage_message
+        usage   usage_message
         opt     :context,
-                  "Context configuration file (default: ENV['CLASSROOM_AUTOMATOR_CONTEXT'])",
-                  :type => :string
+                "Context configuration file (default: ENV['CLASSROOM_AUTOMATOR_CONTEXT'])",
+                :type => :string
       end
 
-      opts[:context] = opts[:context] || ENV['CLASSROOM_AUTOMATOR_CONTEXT']
-      return opts
-    end
-
-
-    def self.validate_argv(expected_length, usage_message)
-      if ARGV.length != expected_length
-        abort(usage_message)
+      def parse(cmdline)
+        opts = super
+        opts[:context] = opts[:context] || ENV['CLASSROOM_AUTOMATOR_CONTEXT']
+        return opts
       end
+
     end
+
 
 
     def self.run_task(task_obj)
@@ -43,8 +43,8 @@ module ClassroomAutomator
 
     def self.run_single_arg_assignment_script(task_class)
       usage_message = "Usage: #{File.basename($0)} ASSIGNMENT-CONF"
-      opts = parse_cmd_line_opts(usage_message)
-      validate_argv(1, usage_message)
+      opts = OptParser.new(usage_message).parse(ARGV)
+      abort usage_message if ARGV.length != 1
 
       run_task(task_class.new(
         ClassroomAutomator::Workflow::Context.from_file(opts[:context]),
@@ -55,8 +55,8 @@ module ClassroomAutomator
 
     def self.run_two_arg_assignment_script(task_class)
       usage_message = "Usage: #{File.basename($0)} ASSIGNMENT-CONF LOCAL-DIR"
-      opts = parse_cmd_line_opts(usage_message)
-      validate_argv(2, usage_message)
+      opts = OptParser.new(usage_message).parse(ARGV)
+      abort usage_message if ARGV.length != 2
 
       run_task(task_class.new(
         ClassroomAutomator::Workflow::Context.from_file(opts[:context]),

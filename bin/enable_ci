@@ -4,7 +4,5 @@ require 'bundler/setup'
 require 'classroom_automator'
 require 'classroom_automator/workflow/task/enable_disable_ci'
 
-
-ClassroomAutomator::ScriptUtil.run_single_arg_assignment_script(
-  ClassroomAutomator::Workflow::Task::EnableCI
-)
+include ClassroomAutomator
+Script::run_single_arg_assignment_script(Workflow::Task::EnableCI)

@@ -4,7 +4,5 @@ require 'bundler/setup'
 require 'classroom_automator'
 require 'classroom_automator/workflow/task/clone_handouts'
 
-
-ClassroomAutomator::ScriptUtil.run_two_arg_assignment_script(
-  ClassroomAutomator::Workflow::Task::CloneHandouts
-)
+include ClassroomAutomator
+Script::run_two_arg_assignment_script(Workflow::Task::CloneHandouts)

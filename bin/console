@@ -37,7 +37,7 @@ module ClassroomAutomator
 end
 
 
-opts = ClassroomAutomator::ScriptUtil::parse_cmd_line_opts("Usage: #{File.basename($0)}")
+opts = ClassroomAutomator::Script::OptParser.new("Usage: #{File.basename($0)}").parse(ARGV)
 
 if opts[:context]
   require 'classroom_automator/workflow/context'
