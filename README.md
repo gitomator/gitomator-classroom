@@ -38,7 +38,7 @@ Before you can start using the tools, you will need to run `bundle update` (in t
 Example:
 
 ```sh
- $ bin/clone_handouts CONTEXT ASSIGNMENT LOCAL_DIR
+ $ bin/clone_handouts ASSIGNMENT LOCAL_DIR
 ```
 
  * `CONTEXT` - Context configuration, in YAML format.       
@@ -47,6 +47,9 @@ Example:
    Specifies assignment name and handouts info ([see example](spec/data/assignment.yml))
  * `LOCAL_DIR` - A local directory where the handouts will be cloned.
 
+ > _Note:_ This command takes a `--context` option that specifies service
+ > providers, access tokens and other properties.       
+ > Type `bin/clone_handouts --help` for more info.
 
 ----
 
