@@ -147,7 +147,9 @@ module ClassroomAutomator
 
         output = STDOUT
         case c['output']
-        when 'STDOUT' || nil        # By default, write to STDOUT
+        when nil
+          output = STDOUT
+        when 'STDOUT'
           output = STDOUT
         when 'STDERR'
           output = STDERR
