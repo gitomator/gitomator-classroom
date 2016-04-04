@@ -37,7 +37,7 @@ module ClassroomAutomator
         include EnableDisableCI
 
         def process_handout(repo_name, i)
-          super
+          logger.info "Enabling CI for #{repo_name} (#{i + 1} out of #{handouts.length})"
           ci.enable_ci repo_name
         end
 
@@ -48,7 +48,7 @@ module ClassroomAutomator
         include EnableDisableCI
 
         def process_handout(repo_name, i)
-          super
+          logger.info "Disabling CI for #{repo_name} (#{i + 1} out of #{handouts.length})"
           ci.disable_ci repo_name
         end
 
