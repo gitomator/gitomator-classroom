@@ -44,7 +44,7 @@ Example:
  * `CONTEXT` - Context configuration, in YAML format.       
    Specifies service providers and other properties ([see example](spec/data/context.yml)).
  * `ASSIGNMENT` - Assignment configuration file, in YAML format.       
-   Specifies assignment name and handouts info ([see example](spec/data/assignment-conf-04.yml))
+   Specifies assignment name and handouts info ([see example](spec/data/assignment-conf-02.yml))
  * `LOCAL_DIR` - A local directory where the handouts will be cloned.
 
 
