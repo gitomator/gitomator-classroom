@@ -76,6 +76,18 @@ describe ClassroomAutomator::Config::Assignment do
       expect(conf.handouts['repo#3']).to eq(['username#3', 'username#4', 'username#5'])
     end
 
+
+    it "should fail on duplicate repo names" do
+      handouts = [
+        { 'repo#1' => 'username#2' },
+        { 'repo#1' => ['username#3', 'username#4', 'username#5'] }
+      ]
+
+      expect do
+        ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
+      end.to raise_error(ClassroomAutomator::Config::DuplicateRepoError)
+    end
+
   end
 
 end

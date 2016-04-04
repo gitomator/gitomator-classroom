@@ -2,6 +2,14 @@ require 'classroom_automator/config/util'
 
 module ClassroomAutomator
   module Config
+
+    class DuplicateRepoError < StandardError
+      def initialize(repo_name)
+        super("Invalid config - duplicate repo, #{repo_name}.")
+      end
+    end
+
+
     class Assignment
 
 
@@ -65,7 +73,7 @@ module ClassroomAutomator
 
         handouts_conf.each do |handout_conf|
           repo, students = parse_handout_config(handout_conf)
-          raise "Invalid config - duplicate repo, #{repo}." if result.has_key? repo
+          raise DuplicateRepoError.new(repo) if result.has_key? repo
           result[repo] = students
         end
 
