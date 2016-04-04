@@ -1,29 +1,26 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-
+require 'classroom_automator/util'
+require 'classroom_automator/workflow/task/clone_handouts'
 require 'classroom_automator/workflow/context'
 require 'classroom_automator/config/assignment'
 
-require 'classroom_automator/workflow/task/clone_handouts'
-
 #===============================================================================
 
-if ARGV.length != 3
-  abort("Usage: #{File.basename($0)} CONTEXT-YAML ASSIGNMENT-YAML LOCAL-DIR")
+usage_message = "Usage: #{File.basename($0)} ASSIGNMENT-CONF LOCAL-DIR"
+opts = ClassroomAutomator::Util::CommandLine.parse_opts(usage_message)
+if ARGV.length != 2
+  abort(usage_message)
 end
 
+
 begin
-
-  context = ClassroomAutomator::Workflow::Context.from_file(ARGV[0])
-  assignment_config  = ClassroomAutomator::Config::Assignment.from_file(ARGV[1])
-  raise "LOCAL-DIR #{ARGV[2]} doesn't exist." unless Dir.exists? ARGV[2]
-  local_dir = ARGV[2]
-
   ClassroomAutomator::Workflow::Task::CloneHandouts.new(
-    context, assignment_config, local_dir
+    ClassroomAutomator::Workflow::Context.from_file(opts[:context]),
+    ClassroomAutomator::Config::Assignment.from_file(ARGV[0]),
+    ARGV[1]
   ).run
-
 rescue => e
-  abort "#{e}.\n\nStack trace:\n#{e.backtrace.join('\n\t')}"
+  abort "ERROR: #{e}.\n\n#{e.backtrace.join("\n\t")}"
 end

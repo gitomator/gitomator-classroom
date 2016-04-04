@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
+require 'classroom_automator/util'
 require "classroom_automator"
-require "trollop"
 
 
 module ClassroomAutomator
@@ -38,26 +38,13 @@ module ClassroomAutomator
 end
 
 
-opts = Trollop::options do
-  version "Gitomator console 0.0.1 (c) 2016 Joey Freund"
-  banner <<-EOS
-IRB with convenient Gitomator functions pre-loaded.
+opts = ClassroomAutomator::Util::CommandLine.parse_opts("Usage: #{File.basename($0)}")
 
-Usage:
-       #{File.basename($0)} [options]
-where [options] are:
-EOS
-
-  opt :context, "Context configuration file (default: ENV['CLASSROOM_AUTOMATOR_CONTEXT'])",
-          :type => :string
-end
-
-
-if opts[:context] || ENV['CLASSROOM_AUTOMATOR_CONTEXT']
+if opts[:context]
   require 'classroom_automator/workflow/context'
   ClassroomAutomator::Console.context =
     ClassroomAutomator::Workflow::Context.from_file(
-      opts[:context] || ENV['CLASSROOM_AUTOMATOR_CONTEXT']
+      opts[:context]
   )
   include ClassroomAutomator::Console
 end

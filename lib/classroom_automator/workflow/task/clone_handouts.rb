@@ -6,6 +6,12 @@ module ClassroomAutomator
       class CloneHandouts < ClassroomAutomator::Workflow::Task::AssignmentBase
 
 
+        def initialize(context, assignment_config, local_dir)
+          raise "No such folder, #{local_dir}." unless Dir.exists? local_dir
+          super(context, assignment_config, local_dir)
+        end
+        
+
         def handouts
           assignment_config.handouts
         end
