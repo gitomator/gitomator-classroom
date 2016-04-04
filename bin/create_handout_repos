@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'classroom_automator'
+require 'classroom_automator/workflow/task/create_handout_repos'
+
+
+ClassroomAutomator::ScriptUtil.run_single_arg_assignment_script(
+  ClassroomAutomator::Workflow::Task::CreateHandoutRepos
+)
