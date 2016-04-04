@@ -36,11 +36,13 @@ module ClassroomAutomator
 
 
         def process_handout(repo_name, index)
-          # Override this method in subclasses
+          logger.debug "#{repo_name} (#{index + 1} out of #{handouts.length})"
+          # Override this method in subclasses ...
         end
 
         def on_process_handout_error(repo_name, index, error)
-          # Override this method in subclasses
+          backtrace = error.backtrace.join("\n\t")
+          logger.error "ERROR - #{error} (#{repo_name}).\n\n#{backtrace}"
         end
 
 
