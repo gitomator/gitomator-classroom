@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
-require 'classroom_automator/util'
 require "classroom_automator"
 
 
@@ -38,7 +37,7 @@ module ClassroomAutomator
 end
 
 
-opts = ClassroomAutomator::Util::CommandLine.parse_opts("Usage: #{File.basename($0)}")
+opts = ClassroomAutomator::ScriptUtil::parse_cmd_line_opts("Usage: #{File.basename($0)}")
 
 if opts[:context]
   require 'classroom_automator/workflow/context'

@@ -1,25 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'classroom_automator/util'
+require 'classroom_automator'
 require 'classroom_automator/workflow/task/enable_disable_ci'
-require 'classroom_automator/workflow/context'
-require 'classroom_automator/config/assignment'
-
-#===============================================================================
-
-usage_message = "Usage: #{File.basename($0)} ASSIGNMENT-CONF"
-opts = ClassroomAutomator::Util::CommandLine.parse_opts(usage_message)
-if ARGV.length != 1
-  abort(usage_message)
-end
 
 
-begin
-  ClassroomAutomator::Workflow::Task::DisableCI.new(
-    ClassroomAutomator::Workflow::Context.from_file(opts[:context]),
-    ClassroomAutomator::Config::Assignment.from_file(ARGV[0])
-  ).run
-rescue => e
-  abort "ERROR: #{e}.\n\n#{e.backtrace.join("\n\t")}"
-end
+ClassroomAutomator::ScriptUtil.run_single_arg_assignment_script(
+  ClassroomAutomator::Workflow::Task::DisableCI
+)
