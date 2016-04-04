@@ -6,17 +6,19 @@ module ClassroomAutomator
       class CloneHandouts < ClassroomAutomator::Workflow::Task::AssignmentBase
 
 
-        alias_method :assignment, :assignment_config
+        def handouts
+          assignment_config.handouts
+        end
 
 
         def run
-          logger.info("About to clone #{assignment.handouts.length} handout(s).")
+          logger.info("About to clone #{handouts.length} handout(s) ...")
 
           i = 0
-          assignment.handouts.each do |handout_id, students|
+          handouts.each do |repo_name, students|
             begin
               i += 1
-              process_handout(handout_id, i)
+              process_handout(repo_name, i)
             rescue => e
               backtrace = e.backtrace.join("\n\t")
               logger.error("Error in handout #{handout_id}.\n#{backtrace}")
@@ -28,15 +30,14 @@ module ClassroomAutomator
 
 
 
-        def process_handout(handout_id, index)
-          logger.info "Handout #{handout_id} (#{index} out of #{assignment.handouts.length})"
+        def process_handout(repo_name, index)
+          logger.info "Clonning #{repo_name} (#{index} out of #{handouts.length})"
 
-          repo_name = "assignment-#{assignment.assignment}-handout-#{handout_id}"
           local_repo_root = File.join(local_dir, repo_name)
           repo = hosting.read_repo(repo_name)
 
           if repo.nil?
-            logger.warn("Skipping #{handout_id} (handout repo doesn't exist)")
+            logger.warn("Skipping #{repo_name} (handout repo doesn't exist)")
           elsif Dir.exist? local_repo_root
             logger.info("Local repo already exists, '#{local_repo_root}'.")
           else
