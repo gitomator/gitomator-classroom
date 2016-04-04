@@ -83,9 +83,7 @@ end
 Search for repos whose name starts with `test-repo` and enable CI on them:
 
 ```
-2.2.2 :001 > hosting.search_repos('test-repo').each do |repo|
-  ci.enable_ci repo.name
-end
+2.2.2 :001 > hosting.search_repos('test-repo').each { |repo| ci.enable_ci repo.name }
 ```
 
 ## Development
