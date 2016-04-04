@@ -41,14 +41,12 @@ Example:
  $ bin/clone_handouts ASSIGNMENT LOCAL_DIR
 ```
 
- * `CONTEXT` - Context configuration, in YAML format.       
-   Specifies service providers and other properties ([see example](spec/data/context.yml)).
  * `ASSIGNMENT` - Assignment configuration file, in YAML format.       
    Specifies assignment name and handouts info ([see example](spec/data/assignment.yml))
  * `LOCAL_DIR` - A local directory where the handouts will be cloned.
 
  > _Note:_ This command takes a `--context` option that specifies service
- > providers, access tokens and other properties.       
+ > providers, access tokens and other properties ([see example](spec/data/context.yml)).              
  > Type `bin/clone_handouts --help` for more info.
 
 ----
