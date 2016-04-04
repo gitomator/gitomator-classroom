@@ -1,0 +1,13 @@
+name: fake_assignment
+deadline: 2016-04-03
+
+handout_source: repo_name
+
+handouts:
+ # Map repo name to students who have access to that repo
+ - new-test-repo-1457830224892: [joeyfreund-test, joeyfreund-test2]
+ - new-test-repo-1457829471097: joeyfreund-test
+ - test-repo-1456957372483: [joeyfreund-test, joeyfreund-test2]
+ - new-test-repo-1456957375211: joeyfreund-test2
+ - test-repo-1456957371666: [joeyfreund-test, joeyfreund-test2]
+ - test-repo-1457830221385: [joeyfreund-test, joeyfreund-test2]
