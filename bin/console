@@ -44,7 +44,7 @@ opts = Trollop::options do
 IRB with convenient Gitomator functions pre-loaded.
 
 Usage:
-       console [options]
+       #{File.basename($0)} [options]
 where [options] are:
 EOS
 
@@ -61,6 +61,7 @@ if opts[:context] || ENV['CLASSROOM_AUTOMATOR_CONTEXT']
   )
   include ClassroomAutomator::Console
 end
+
 
 require "irb"
 IRB.start
