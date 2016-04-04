@@ -14,7 +14,7 @@ module ClassroomAutomator
 
 
         def process_handout(repo_name, i)
-          logger.info "Clonning #{repo_name} (#{i + 1} out of #{handouts.length})"
+          logger.debug "#{repo_name} (#{i + 1} out of #{handouts.length})"
 
           local_repo_root = File.join(local_dir, repo_name)
           repo = hosting.read_repo(repo_name)
@@ -24,6 +24,7 @@ module ClassroomAutomator
           elsif Dir.exist? local_repo_root
             logger.info "Local repo already exists, '#{local_repo_root}'."
           else
+            logger.info "Clonning #{repo.url} ..."
             git.clone(repo.url, local_repo_root)
           end
         end
@@ -31,16 +32,16 @@ module ClassroomAutomator
 
 
         def run
-          logger.info("About to clone #{handouts.length} handout(s) ...")
+          logger.info "Clonning #{handouts.length} handout(s) into #{local_dir} ..."
           super()
-          logger.info("Done.")
+          logger.info "Done."
         end
 
 
 
         def on_process_handout_error(repo_name, index, error)
           backtrace = error.backtrace.join("\n\t")
-          logger.error("ERROR - #{error} (#{repo_name}).\n\n#{backtrace}")
+          logger.error "ERROR - #{error} (#{repo_name}).\n\n#{backtrace}"
         end
 
 
