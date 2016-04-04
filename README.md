@@ -1,4 +1,4 @@
-# ClassroomAutomator
+# Classroom Automator
 
 A set of automation tools for managing coding classes on platforms like GitHub.
 
