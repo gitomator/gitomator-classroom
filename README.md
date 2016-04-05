@@ -65,9 +65,7 @@ classroom_automator $ bin/console --context spec/data/context.yml
 Search for repos whose name starts with `test-repo` and clone them to a local directory:
 
 ```
-2.2.2 :002 > hosting.search_repos('test-repo').each do |repo|
-  git.clone(repo.url, "/tmp/#{repo.name}")
-end
+2.2.2 :002 > hosting.search_repos('test-repo').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
 ```
 
 Search for repos whose name starts with `test-repo` and enable CI on them:
