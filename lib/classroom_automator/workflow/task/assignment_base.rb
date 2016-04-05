@@ -8,7 +8,7 @@ module ClassroomAutomator
         attr_reader :assignment_config, :local_dir
 
         #
-        # @param context [ClassroomAutomator::Workflow::Context]
+        # @param context [ClassroomAutomator::Context]
         # @param assignment_config [ClassroomAutomator::Assignment]
         # @param local_dir [String]
         #

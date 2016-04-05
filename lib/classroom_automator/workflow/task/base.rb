@@ -7,7 +7,7 @@ module ClassroomAutomator
         attr_reader :context
 
         #
-        # @param context [ClassroomAutomator::Workflow::Context]
+        # @param context [ClassroomAutomator::Context]
         #
         def initialize(context)
           @context = context
