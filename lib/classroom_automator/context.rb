@@ -112,13 +112,13 @@ module ClassroomAutomator
 
 
     def _create_ci_service()
-      require 'gitomator/travis/ci_provider'
       c = conf['ci']
 
       if c.nil?
         raise "Cannot create CI service - Missing configuration."
 
       elsif c['provider'] == 'travis_pro'
+        require 'gitomator/travis/ci_provider'
         return Gitomator::Service::CI::Service.new(
           Gitomator::Travis::CIProvider.with_travis_pro_access_token(
             c['access_token'], c['github_organization']
@@ -126,6 +126,7 @@ module ClassroomAutomator
         )
 
       elsif c['provider'] == 'travis'
+        require 'gitomator/travis/ci_provider'
         return Gitomator::Service::CI::Service.new(
           Gitomator::Travis::CIProvider.with_travis_access_token(
             c['access_token'], c['github_organization']
