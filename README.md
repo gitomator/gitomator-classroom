@@ -2,22 +2,6 @@
 
 A set of automation tools for managing coding classes on platforms like GitHub.
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'classroom_automator'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install classroom_automator
-
 ## Dependencies
 
  * [Ruby](https://www.ruby-lang.org/en/downloads/) (developed and tested with Ruby 2.2.2)
