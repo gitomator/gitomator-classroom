@@ -25,33 +25,22 @@ Or install it yourself as:
  * [Bundler](http://bundler.io/)
 
 
-**Important! ** I am still developing everything locally, so you'll have to (clone the dependency projects, and) fix the paths in [Gemfile](Gemfile), before you can get going.
+## Setup
 
+To get started, clone this repo to your local machine, and run `bin/setup`
+(which will install all remaining dependencies).
+
+ > **Important:** Some of the dependencies are currently being downloaded from
+ > private Git repos on BitBucket. You will need to make sure you have access
+ > to these repos.
 
 
 ## Usage
 
-Before you can start using the tools, you will need to run `bundle update` (in the root of this project) to download all dependencies.
+TODO: Write this section ...
 
 
-
-Example:
-
-```sh
- $ bin/clone_handouts ASSIGNMENT LOCAL_DIR
-```
-
- * `ASSIGNMENT` - Assignment configuration file, in YAML format.       
-   Specifies assignment name and handouts info ([see example](spec/data/assignment.yml))
- * `LOCAL_DIR` - A local directory where the handouts will be cloned.
-
- > _Note:_ This command takes a `--context` option that specifies service
- > providers, access tokens and other properties ([see example](spec/data/context.yml)).              
- > Type `bin/clone_handouts --help` for more info.
-
-----
-
-### Using the console
+### Using `bin/console`
 
 `bin/console` can load the IRB (Ruby's interactive shell) with some convenient functions pre-loaded.
 
@@ -87,15 +76,9 @@ Search for repos whose name starts with `test-repo` and enable CI on them:
 2.2.2 :001 > hosting.search_repos('test-repo').each { |repo| ci.enable_ci repo.name }
 ```
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/classroom_automator.
+Bug reports and pull requests are welcome on GitHub at https://github.com/gitomator/classroom_automator.
 
 
 ## License
