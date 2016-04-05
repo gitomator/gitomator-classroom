@@ -18,8 +18,9 @@ module ClassroomAutomator
     class DefaultOptionParser < Trollop::Parser
 
       def initialize(usage_message)
-        super
-        version "Classroom-automatoer version #{ClassroomAutomator::VERSION}"
+        super()
+        banner "Classroom Automator #{ClassroomAutomator::VERSION}.\n\nOptions:"
+        version "#{ClassroomAutomator::VERSION}"
         usage   usage_message
 
         opt :context,
