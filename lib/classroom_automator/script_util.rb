@@ -1,7 +1,7 @@
 require 'trollop'
 require 'classroom_automator/version'
 require 'classroom_automator/workflow/context'
-require 'classroom_automator/config/assignment'
+require 'classroom_automator/assignment'
 
 
 module ClassroomAutomator
@@ -53,7 +53,7 @@ module ClassroomAutomator
 
       task_class.new(
         ClassroomAutomator::Workflow::Context.from_file(context_conf_file),
-        ClassroomAutomator::Config::Assignment.from_file(assignment_conf_file),
+        ClassroomAutomator::Assignment.from_file(assignment_conf_file),
         local_dir
       )
     end
@@ -63,7 +63,7 @@ module ClassroomAutomator
 
       task_class.new(
         ClassroomAutomator::Workflow::Context.from_file(context_conf_file),
-        ClassroomAutomator::Config::Assignment.from_file(assignment_conf_file)
+        ClassroomAutomator::Assignment.from_file(assignment_conf_file)
       )
     end
 

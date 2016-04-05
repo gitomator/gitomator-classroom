@@ -1,7 +1,7 @@
-require 'classroom_automator/config/assignment'
+require 'classroom_automator/assignment'
 require 'securerandom'
 
-describe ClassroomAutomator::Config::Assignment do
+describe ClassroomAutomator::Assignment do
 
   it "should create an attr_reader for each configuration attribute" do
     # Create a hash with arbitrary configuration data
@@ -11,7 +11,7 @@ describe ClassroomAutomator::Config::Assignment do
       'a' + SecureRandom.hex => Time.now
     }
 
-    conf = ClassroomAutomator::Config::Assignment.from_hash(conf_data)
+    conf = ClassroomAutomator::Assignment.from_hash(conf_data)
 
     conf_data.each do |attr_name, attr_value|
       expect(conf.send(attr_name)).to eq(attr_value)
@@ -23,7 +23,7 @@ describe ClassroomAutomator::Config::Assignment do
 
     it "should parse handouts configured with repo-name only" do
       handouts = ['repo#1', 'repo#2', 'repo#3']
-      conf = ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
+      conf = ClassroomAutomator::Assignment.from_hash({'handouts' => handouts })
 
       handouts.each do |repo|
         expect(conf.handouts[repo]).to eq([])
@@ -37,7 +37,7 @@ describe ClassroomAutomator::Config::Assignment do
         {'repo#2' => 'username#2'},
         {'repo#3' => 'username#3'}
       ]
-      conf = ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
+      conf = ClassroomAutomator::Assignment.from_hash({'handouts' => handouts })
 
       handouts.each do |handout|
         repo     = handout.keys.first
@@ -53,7 +53,7 @@ describe ClassroomAutomator::Config::Assignment do
         {'repo#2' => ['username#3']},
         {'repo#3' => ['username#4', 'username#5', 'username#6']}
       ]
-      conf = ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
+      conf = ClassroomAutomator::Assignment.from_hash({'handouts' => handouts })
 
       handouts.each do |handout|
         repo     = handout.keys.first
@@ -70,7 +70,7 @@ describe ClassroomAutomator::Config::Assignment do
         { 'repo#3' => ['username#3', 'username#4', 'username#5'] }
       ]
 
-      conf = ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
+      conf = ClassroomAutomator::Assignment.from_hash({'handouts' => handouts })
       expect(conf.handouts['repo#1']).to eq([])
       expect(conf.handouts['repo#2']).to eq(['username#2'])
       expect(conf.handouts['repo#3']).to eq(['username#3', 'username#4', 'username#5'])
@@ -84,8 +84,8 @@ describe ClassroomAutomator::Config::Assignment do
       ]
 
       expect do
-        ClassroomAutomator::Config::Assignment.from_hash({'handouts' => handouts })
-      end.to raise_error(ClassroomAutomator::Config::DuplicateRepoError)
+        ClassroomAutomator::Assignment.from_hash({'handouts' => handouts })
+      end.to raise_error(ClassroomAutomator::DuplicateRepoError)
     end
 
   end

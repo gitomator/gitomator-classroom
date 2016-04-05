@@ -9,7 +9,7 @@ module ClassroomAutomator
 
         #
         # @param context [ClassroomAutomator::Workflow::Context]
-        # @param assignment_config [ClassroomAutomator::Config::Assignment]
+        # @param assignment_config [ClassroomAutomator::Assignment]
         # @param local_dir [String]
         #
         def initialize(context, assignment_config, local_dir)
