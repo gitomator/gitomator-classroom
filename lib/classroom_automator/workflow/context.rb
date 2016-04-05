@@ -1,4 +1,4 @@
-require 'classroom_automator/config/util'
+require 'classroom_automator'
 gem 'logger'; require 'logger'
 
 require 'gitomator/service/git/service'
@@ -32,7 +32,7 @@ module ClassroomAutomator
       # @param conf_file [String] - Path to a YAML configuration file.
       #
       def self.from_file(conf_file)
-        return from_hash(ClassroomAutomator::Config::Util.conf_file_to_hash(conf_file))
+        return from_hash(ClassroomAutomator::Util.load_config(conf_file))
       end
 
       #
