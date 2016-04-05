@@ -2,6 +2,7 @@
 
 require "bundler/setup"
 require "classroom_automator"
+require "classroom_automator/script_util"
 
 
 module ClassroomAutomator
@@ -36,13 +37,15 @@ module ClassroomAutomator
   end
 end
 
+opts = ClassroomAutomator::ScriptUtil::DefaultOptionParser.new(
+  "Usage: #{File.basename($0)}"
+).parse(ARGV)
 
-opts = ClassroomAutomator::Script::OptParser.new("Usage: #{File.basename($0)}").parse(ARGV)
 
 if opts[:context]
-  require 'classroom_automator/workflow/context'
+  require 'classroom_automator/context'
   ClassroomAutomator::Console.context =
-    ClassroomAutomator::Workflow::Context.from_file(
+    ClassroomAutomator::Context.from_file(
       opts[:context]
   )
   include ClassroomAutomator::Console
