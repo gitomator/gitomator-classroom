@@ -2,7 +2,7 @@
 
 require 'bundler/setup'
 require 'classroom_automator/script_util'
-require 'classroom_automator/workflow/task/create_handout_repos'
+require 'classroom_automator/task/create_handout_repos'
 
 include ClassroomAutomator
 
@@ -12,6 +12,6 @@ abort usage_message if ARGV.length != 1
 
 ScriptUtil::run_task(
   ScriptUtil::task_with_context_config_and_assignment_config(
-    Workflow::Task::CreateHandoutRepos, opts[:context], ARGV[0]
+    Task::CreateHandoutRepos, opts[:context], ARGV[0]
   )
 )

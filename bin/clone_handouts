@@ -2,7 +2,7 @@
 
 require 'bundler/setup'
 require 'classroom_automator/script_util'
-require 'classroom_automator/workflow/task/clone_handouts'
+require 'classroom_automator/task/clone_handouts'
 
 
 include ClassroomAutomator
@@ -13,6 +13,6 @@ abort usage_message if ARGV.length != 2
 
 ScriptUtil::run_task(
   ScriptUtil::task_with_context_config_assignment_config_and_local_dir(
-    Workflow::Task::CloneHandouts, opts[:context], ARGV[0], ARGV[1]
+    Task::CloneHandouts, opts[:context], ARGV[0], ARGV[1]
   )
 )
