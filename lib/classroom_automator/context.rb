@@ -1,5 +1,4 @@
 require 'classroom_automator'
-gem 'logger'; require 'logger'
 
 require 'gitomator/service/git/service'
 require 'gitomator/service/git/provider/shell'
@@ -57,6 +56,7 @@ module ClassroomAutomator
 
 
     def logger
+      gem 'logger'; require 'logger'
       @logger ||= _create_logger
     end
 
