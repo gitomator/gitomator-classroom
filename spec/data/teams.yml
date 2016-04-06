@@ -1,0 +1,22 @@
+# All students ...
+Students:
+  - joeyfreund-test
+  - joeyfreund-test2
+  - joeyfreund-test3
+  - joeyfreund-test4
+
+# TA's
+TA's:
+  - ta-username1
+  - ta-username2
+
+# Project teams ...
+Project-team-01:
+ - joeyfreund-test
+ - joeyfreund-test2
+ - {ta-username1: admin}
+
+Project-team-02:
+ - joeyfreund-test3
+ - joeyfreund-test4
+ - {ta-username2: admin}
