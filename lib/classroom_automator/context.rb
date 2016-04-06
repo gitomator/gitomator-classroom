@@ -82,6 +82,7 @@ module ClassroomAutomator
       c = conf['hosting']
 
       if c.nil?
+        require "gitomator/service/hosting/provider/local"
         return Gitomator::Service::Hosting::Service.new (
           Gitomator::Service::Hosting::Provider::Local.new(
             git, Dir.mktmpdir('classroom_automator_')
