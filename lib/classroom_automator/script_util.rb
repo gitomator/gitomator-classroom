@@ -2,6 +2,7 @@ require 'trollop'
 require 'classroom_automator/version'
 require 'classroom_automator/context'
 require 'classroom_automator/assignment'
+require 'classroom_automator/team'
 
 
 module ClassroomAutomator
@@ -47,6 +48,29 @@ module ClassroomAutomator
         abort "ERROR: #{e}.\n\n#{e.backtrace.join("\n\t")}"
       end
     end
+
+    #
+    # @return [ClassroomAutomator::Context]
+    #
+    def self.context_from_file(config_file)
+      ClassroomAutomator::Context.from_file(config_file)
+    end
+
+    #
+    # @return [ClassroomAutomator::Assignment]
+    #
+    def self.assignment_config_from_file(config_file)
+      ClassroomAutomator::Assignment.from_file(config_file)
+    end
+
+    #
+    # @return [Hash<String,ClassroomAutomator::Team>]
+    #
+    def self.teams_from_file(config_file)
+      ClassroomAutomator::Team.teams_from_file(config_file)
+    end
+
+
 
 
     def self.task_with_context_config_assignment_config_and_local_dir(
