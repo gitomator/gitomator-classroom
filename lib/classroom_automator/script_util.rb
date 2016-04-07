@@ -1,8 +1,5 @@
 require 'trollop'
 require 'classroom_automator/version'
-require 'classroom_automator/context'
-require 'classroom_automator/assignment'
-require 'classroom_automator/team'
 
 
 module ClassroomAutomator
@@ -53,6 +50,7 @@ module ClassroomAutomator
     # @return [ClassroomAutomator::Context]
     #
     def self.context_from_file(config_file)
+      require 'classroom_automator/context'
       ClassroomAutomator::Context.from_file(config_file)
     end
 
@@ -60,6 +58,7 @@ module ClassroomAutomator
     # @return [ClassroomAutomator::Assignment]
     #
     def self.assignment_config_from_file(config_file)
+      require 'classroom_automator/assignment'
       ClassroomAutomator::Assignment.from_file(config_file)
     end
 
@@ -67,31 +66,9 @@ module ClassroomAutomator
     # @return [Hash<String,ClassroomAutomator::Team>]
     #
     def self.teams_from_file(config_file)
+      require 'classroom_automator/team'
       ClassroomAutomator::Team.teams_from_file(config_file)
     end
-
-
-
-
-    def self.task_with_context_config_assignment_config_and_local_dir(
-      task_class, context_conf_file, assignment_conf_file, local_dir)
-
-      task_class.new(
-        ClassroomAutomator::Context.from_file(context_conf_file),
-        ClassroomAutomator::Assignment.from_file(assignment_conf_file),
-        local_dir
-      )
-    end
-
-    def self.task_with_context_config_and_assignment_config(
-      task_class, context_conf_file, assignment_conf_file)
-
-      task_class.new(
-        ClassroomAutomator::Context.from_file(context_conf_file),
-        ClassroomAutomator::Assignment.from_file(assignment_conf_file)
-      )
-    end
-
 
     #---------------------------------------------------------------------------
 
