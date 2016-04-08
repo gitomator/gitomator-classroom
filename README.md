@@ -1,13 +1,28 @@
 # Classroom Automator
 
-A set of automation tools for managing coding classes on platforms like GitHub.
+A set of automation tools for software engineering classes, built on top of Gitomator.
+
+ * Manage your software engineering classes using industry-standard tools & services,
+   such as Git, GitHub and Travis CI.
+ * Use [existing command-line utilities](bin/task) to run automation tasks.       
+   For example:
+   * Create repositories (empty or based on an existing repo) and teams.
+   * Manage access permissions - _Who_ gets _what_ permission to _which_ repo.
+   * Enable/disable CI
+   * Merge pull-requests (i.e. collect students' solutions)
+ * Configure tasks using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
+   * Easy to have a test run, before releasing code to students.
+   * Easy to re-run tasks with different data (which makes it easy to handle
+     late submissions, time extensions and other special cases)
+ * Extend the library with your own [custom tasks](lib/classroom_automator/task) and command-line utilities.
+ * Use the interactive console ([`bin/console`](bin/console)) to quickly perform automation tasks, without creating any command-line utilities or Ruby classes.
+
 
 ## Dependencies
 
  * [Ruby](https://www.ruby-lang.org/en/downloads/) (developed and tested with Ruby 2.2.2)
  * [Ruby Gems](https://rubygems.org/pages/download)
  * [Bundler](http://bundler.io/)
-
 
 ## Setup
 
