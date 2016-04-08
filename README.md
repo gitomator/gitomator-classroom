@@ -2,7 +2,7 @@
 
 A set of automation tools for software engineering classes, built on top of Gitomator.
 
- * Manage your classes using industry-standard tools & services such as Git, GitHub and Travis CI.
+ * Manage your classes using industry-standard tools and services (e.g. Git, GitHub and Travis CI).
  * Use [command-line utilities](bin/task) to run automation tasks.       
     * Create repositories (empty or based on an existing repo) and teams.
     * Manage access permissions - _Who_ gets _what_ permission to _which_ repo.
