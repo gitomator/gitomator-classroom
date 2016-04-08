@@ -2,18 +2,16 @@
 
 A set of automation tools for software engineering classes, built on top of Gitomator.
 
- * Manage your software engineering classes using industry-standard tools & services,
-   such as Git, GitHub and Travis CI.
- * Use [existing command-line utilities](bin/task) to run automation tasks.       
-   For example:
+ * Manage your classes using industry-standard tools & services such as Git, GitHub and Travis CI.
+ * Use [command-line utilities](bin/task) to run automation tasks.       
     * Create repositories (empty or based on an existing repo) and teams.
     * Manage access permissions - _Who_ gets _what_ permission to _which_ repo.
     * Enable/disable CI
     * Merge pull-requests (i.e. collect students' solutions)
- * Configure tasks using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
-    * Easy to have a test run, before releasing code to students.
-    * Easy to re-run tasks with different data (which makes it easy to handle
-     late submissions, time extensions and other special cases)
+ * Configure automation tasks using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
+    * Easy to re-run tasks with different data.
+    * Easy to test run, before releasing code to students.
+    * Easy to handle late submissions and other special cases.
  * Extend the library with your own [custom tasks](lib/classroom_automator/task) and command-line utilities.
  * Use the interactive console ([`bin/console`](bin/console)) to quickly perform automation tasks, without creating any command-line utilities or Ruby classes.
 
@@ -24,9 +22,7 @@ A set of automation tools for software engineering classes, built on top of Gito
  * [Ruby Gems](https://rubygems.org/pages/download)
  * [Bundler](http://bundler.io/)
 
-## Setup
-
-To get started, clone this repo to your local machine, and run `bin/setup`
+To get started, install the dependencies, clone this repo to your local machine, and run `bin/setup`
 (which will install all remaining dependencies).
 
  > **Important:** Some of the dependencies are currently being downloaded from
