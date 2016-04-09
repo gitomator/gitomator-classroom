@@ -8,7 +8,7 @@ A set of automation tools for software engineering classes, built on top of Gito
     * Manage access permissions - _Who_ gets _what_ permission to _which_ repo.
     * Enable/disable CI
     * Merge pull-requests (i.e. collect students' solutions)
- * Configure automation tasks using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
+ * Configure tasks using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
     * Easy to re-run tasks with different data.
     * Easy to test run, before releasing code to students.
     * Easy to handle late submissions and other special cases.
