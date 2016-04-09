@@ -19,11 +19,11 @@ module ClassroomAutomator
       super(config)
 
       register_service_factory :hosting do |hosting_config|
-        create_hosting_service(hosting_config)
+        create_hosting_service(hosting_config || {})
       end
 
       register_service_factory :ci do |ci_config|
-        create_ci_service(ci_config)
+        create_ci_service(ci_config || {})
       end
 
     end
@@ -31,15 +31,22 @@ module ClassroomAutomator
 
 
     def create_hosting_service(config)
-      if config.nil? || config['provider'].nil? || config['provider'] == 'local'
+      case config['provider']
+
+      when nil
         return create_default_hosting_service(config)
-      elsif config['provider'] == 'github'
+
+      when 'local'
+        return create_default_hosting_service(config)
+
+      when 'github'
         require 'gitomator/github/hosting_provider'
         return Gitomator::Service::Hosting::Service.new (
           Gitomator::GitHub::HostingProvider.with_access_token(
             config['access_token'], {org: config['organization']}
           )
         )
+        
       else
         raise "Invalid hosting service configuration - #{config}"
       end
@@ -47,11 +54,8 @@ module ClassroomAutomator
 
 
     def create_ci_service(config)
-      if config.nil?
-        raise "Cannot create CI service - Missing configuration."
-      end
-
       case config['provider']
+
       when 'travis_pro'
         require 'gitomator/travis/ci_provider'
         return Gitomator::Service::CI::Service.new(
@@ -59,6 +63,7 @@ module ClassroomAutomator
             config['access_token'], config['github_organization']
           )
         )
+
       when 'travis'
         require 'gitomator/travis/ci_provider'
         return Gitomator::Service::CI::Service.new(
