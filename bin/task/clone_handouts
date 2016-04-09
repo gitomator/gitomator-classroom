@@ -2,8 +2,7 @@
 
 require 'bundler/setup'
 require 'classroom_automator/script_util'
-require 'classroom_automator/task/clone_handouts'
-
+require 'gitomator/task/clone_repos'
 
 include ClassroomAutomator
 
@@ -15,4 +14,6 @@ context    = ScriptUtil::context_from_file(opts[:context])
 assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
 local_dir  = ARGV[1]
 
-ScriptUtil::run_task(Task::CloneHandouts.new(context, assignment, local_dir))
+ScriptUtil::run_task(
+  Gitomator::Task::CloneRepos.new(context, assignment.handouts.keys, local_dir)
+)
