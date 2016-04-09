@@ -22,8 +22,9 @@ module ClassroomAutomator
         usage   usage_message
 
         opt :context,
-              "Context (logger, hosting, git, ci) configuration file. ",
-              :default =>  ScriptUtil::default_context_file || "#{DEFAULT_CONTEXT_ENV_VAR_NAME} env variable, currently not set.",
+              "Context (logger, hosting, git, ci) configuration file (uses #{DEFAULT_CONTEXT_ENV_VAR_NAME} env variable, by default). " ,
+              :default => ScriptUtil::default_context_file,
+              #{}"(default: #{ScriptUtil::default_context_file || "#{DEFAULT_CONTEXT_ENV_VAR_NAME} env variable, currently not set"})",
               :type => :string
       end
 
