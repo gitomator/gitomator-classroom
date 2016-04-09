@@ -2,7 +2,7 @@
 
 require 'bundler/setup'
 require 'classroom_automator/script_util'
-require 'classroom_automator/task/setup_team'
+require 'gitomator/task/setup_team'
 
 include ClassroomAutomator
 
@@ -13,4 +13,8 @@ abort usage_message if ARGV.length != 1
 context = ScriptUtil::context_from_file(opts[:context])
 teams   = ScriptUtil::teams_from_file(ARGV[0])
 
-teams.each { |_,team| ScriptUtil::run_task(Task::SetupTeam.new(context, team)) }
+teams.each do |_,team|
+  ScriptUtil::run_task(
+    Gitomator::Task::SetupTeam.new(context, team.name, team.members)
+  )
+end
