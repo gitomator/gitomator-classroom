@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'classroom_automator/script_util'
+require 'gitomator/task/create_repos'
+require 'gitomator/task/enable_disable_ci'
+require 'gitomator/task/update_repo_access_permissions'
+
+include ClassroomAutomator
+
+usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONF"
+opts = ScriptUtil::DefaultOptionParser.new(usage_message).parse(ARGV)
+abort usage_message if ARGV.length != 1
+
+context    = ScriptUtil::context_from_file(opts[:context])
+assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
+
+# Pre-requisite: Handout-source exists, and is specified in the assignment config.
+
+tasks = []
+
+tasks.push Gitomator::Task::CreateRepos.new(
+  context,
+  assignment.handouts.keys,
+  { source_repo: assignment.source_repo }
+)
+
+if assignment.enable_ci
+  tasks.push Gitomator::Task::EnableCI.new(
+    context,
+    assignment.handouts.keys,
+    { sync: true }
+  )
+end
+
+assignment.handouts.each do |repo_name, students|
+  tasks.push Gitomator::Task::UpdateRepoAccessPermissions.new(
+      context, repo_name, students.map {|s| [s, :read]}.to_h, {})
+end
+
+
+
+ScriptUtil::run_tasks(tasks)
