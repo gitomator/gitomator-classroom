@@ -24,7 +24,6 @@ module ClassroomAutomator
         opt :context,
               "Context (logger, hosting, git, ci) configuration file (uses #{DEFAULT_CONTEXT_ENV_VAR_NAME} env variable, by default). " ,
               :default => ScriptUtil::default_context_file,
-              #{}"(default: #{ScriptUtil::default_context_file || "#{DEFAULT_CONTEXT_ENV_VAR_NAME} env variable, currently not set"})",
               :type => :string
       end
 
@@ -38,10 +37,23 @@ module ClassroomAutomator
 
     #---------------------------------------------------------------------------
 
-
+    #
+    # @param task [Gitomator::Task::*] An object with a run() method.
+    #
     def self.run_task(task)
       begin
         task.run
+      rescue => e
+        abort "ERROR: #{e}.\n\n#{e.backtrace.join("\n\t")}"
+      end
+    end
+
+    #
+    # @param tasks [Array<Gitomator::Task::*>]
+    #
+    def self.run_tasks(tasks)
+      begin
+        tasks.each { |task| task.run }
       rescue => e
         abort "ERROR: #{e}.\n\n#{e.backtrace.join("\n\t")}"
       end
