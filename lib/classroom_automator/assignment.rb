@@ -63,6 +63,10 @@ module ClassroomAutomator
       @handouts = parse_handouts_config(handouts)
     end
 
+    def method_missing(method_sym, *arguments, &block)
+      return nil
+    end
+
 
     def parse_handouts_config(handouts_conf)
       if( handouts_conf.nil?)
