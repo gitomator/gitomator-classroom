@@ -10,9 +10,14 @@ usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONF"
 opts = ScriptUtil::DefaultOptionParser.new(usage_message).parse(ARGV)
 abort usage_message if ARGV.length != 1
 
+context = ScriptUtil::context_from_file(opts[:context])
+assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
+task_opts = {}
+unless assignment.source_repo.nil?
+  task_opts[:source_repo] = assignment.source_repo
+end
+
+
 ScriptUtil::run_task(
-  Gitomator::Task::CreateRepos.new(
-    ScriptUtil::context_from_file(opts[:context]),
-    ScriptUtil::assignment_config_from_file(ARGV[0]).handouts.keys,
-    { :has_issues => false } )
+  Gitomator::Task::CreateRepos.new(context, assignment.handouts.keys, task_opts)
 )
