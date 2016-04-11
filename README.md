@@ -88,8 +88,6 @@ Project-team-2:
   - Charlie
   - Eva
   - { Frank: admin }
-
-# ...
 ```
 
 
