@@ -2,15 +2,17 @@
 
 A set of automation tools for instructors in software engineering classes.
 
- * Manage your classes using industry-standard tools and services like GitHub and Travis CI.
-    * Create teams
-    * Create repositories (empty or based on an existing repo)
+ * Manage your classes using industry-standard tools and services.
+    * Ex: Publish coding assignments as GitHub repositories, and let your students benefit from Travis CI.
+ * Run automation tasks using [command-line scripts](bin/task).
+    * Create teams and repositories (empty or based on an existing repo)
     * Manage access permissions (_who_ gets _which_ permission to _what_ repo)
-    * And more
- * Run automation tasks using [command-line scripts](bin/task).       
-    * Tasks are configured using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
-    * Easy to re-run tasks with different data (e.g. test before releasing code to students, handle late submissions, etc.)
- * Perform automation tasks from an interactive console ([`bin/console`](bin/console)), without creating any Ruby scripts or classes.
+    * Tasks are configured using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml), so it's easy to re-run the same task with different data.
+ * Perform automation-related operations from an interactive console ([`bin/console`](bin/console)).
+    * No need to create any Ruby scripts or classes.
+ * All service providers are pluggable.
+    * Swap between services (e.g. hosting or CI) by changing a configuration file.
+    * Ex: Use custom CI and store student repos on your own file server.
 
 
 ## Dependencies
