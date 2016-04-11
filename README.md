@@ -157,10 +157,21 @@ repos:
  > _Note:_ The same config file can be used for `create-repos`, `set-user-permissions` and `set-team-permission`.
 
 
+## What's next?
+
+You should probably go and read the docs.
+The only problem is ... there are no docs at the moment.
+More on that below, in the [Contributing](#Contributing) section.
+
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/gitomator/classroom_automator.
+Classroom Automator [and all other Gitomator libraries](https://github.com/gitomator) are all at a very early, pre-alpha stage.
+In other words, any help will be appreciated:
+
+ * Please give the tools a try, and provide us with some feedback.
+ * Bug reports and pull requests are welcome on GitHub at https://github.com/gitomator/classroom_automator.
+ * Spread the word and tell others about Gitomator.
 
 
 ## License
