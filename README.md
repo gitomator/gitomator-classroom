@@ -114,7 +114,7 @@ Type `bin/console --help` for more details.
 Start the console:
 
 ```sh
-classroom_automator $ bin/console --context spec/data/context.yml
+ $ bin/console --context spec/data/context.yml
 ```
 
 Search for repos whose name contains `test-repo`, and clone them to a local directory:
