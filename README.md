@@ -37,7 +37,14 @@ If you don't know YAML, don't worry. It's really simple.
 
 ### Setup Teams
 
-You can declare teams and team-memberships in a YAML file like this one:
+Usage:
+
+```sh
+ $ bin/task/setup_teams PATH-TO-CONFIG-FILE
+```
+
+Config files can be used to declare teams and team-memberships.
+The format is YAML, and they look like this:
 
 ```yaml
 
@@ -71,18 +78,17 @@ Project-team-2:
 # ...
 ```
 
-Then, run:
+When running `bin/task/setup_teams` with the configuration above, the following happens in our GitHub organization:
 
-```sh
- $ bin/task/setup_teams PATH-TO-CONFIG-FILE
-```
-
+ * A team called `Students` is created, if it doesn't already exist.
+ * The users (i.e. GitHub usernames) `Alice`, `Bob`, `Charlie`, `David` and `Eva` become members (i.e. with a default role of `member`) of the `Students` team.
+ * A team called `Teaching-Assistants` is created, if it doesn't already exist.
+ * `Frank` and `George` become `member`s of the `Teaching-Assistants` team.
+ * A team called `Project-team-1` is created, if it doesn't already exist.
+ * `Alice`, `David` and `Bob` become `member`s of the `Project-team-1`, and `George` becomes an `admin` (aka `maintainer`) of that team.
+ * A team called `Project-team-2` is created, if it doesn't already exist.
+ * `Charlie` and `Eva` become `member`s of the `Project-team-1`, and `Frank` becomes an `admin` (aka `maintainer`) of that team.
 This command will
-
- 1. Read the configuration file
- 2. Apply the changes to our GitHub organization:
-     - Create every team that doesn't already exist.
-     - Update all team memberships - Adding missing team members, and updating any changes in roles.
 
  > _Note:_ This command will not delete teams or remove team memberships.
 
