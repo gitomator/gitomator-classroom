@@ -50,7 +50,7 @@ hosting:
 
 #### Step 2 - Start the console
 
-`cd` your way to the root of this repo, and run:
+From the root of this repo, run:
 
 ```sh
  $ bin/console --context PATH-TO-YOUR-CONFIG-FILE-FROM-STEP-1
