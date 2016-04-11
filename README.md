@@ -125,7 +125,7 @@ Example config file:
 ```yaml
 
 # Specify an existing repo (in your GitHub organization) as the starter code
-source_repo: assignment-1-starter-code
+source_repo: assignment-starter-code
 
 repos:
   - assignment-handout-01
