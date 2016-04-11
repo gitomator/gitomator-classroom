@@ -16,11 +16,7 @@ A set of automation tools for instructors in software engineering classes.
     * For example, store student repos on your own file server, or use custom CI service.
 
 
-## Quick Start
-
-Before you can get started, you'll need to complete a few simple steps.
-
-#### Step 0 - Install dependencies
+## Dependencies
 
 First, install the following dependencies:
 
@@ -28,29 +24,64 @@ First, install the following dependencies:
  * [Ruby Gems](https://rubygems.org/pages/download)
  * [Bundler](http://bundler.io/)
 
-Then, clone this repo to your local machine and run `bin/setup` (which will install all remaining dependencies).
+Then, clone this repo to your local machine and run `bin/setup` (which will download and install all remaining dependencies).
 
- > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to make sure you have access to these repos.
+ > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to have access to these repos.
+
+
+## Quick Start
+
+Let's see how to use _Classroom Automator_ to manage the repos in your GitHub organization.
 
 
 #### Step 1 - Create a context configuration file
 
-_Classroom automator_ needs to know a few things, before it manage your infrastructure for you.      
-Here is a minimal configuration to get you started with GitHub.
+Create a YAML file, `context.yml`, that contains your GitHub information:
 
 ```yaml
 hosting:
   provider: github
-  access_token: YOUR-PERSONAL-GITHUB-ACCESS-TOKEN
+  username: YOUR-GITHUB-USERNAME
+  password: YOUR-GITHUB-PASSWORD
   organization: YOUR-GITHUB-ORGANIZATION
 ```
 
-#### Step 2 - Set it as the default configuration
+ > **Important:** Do not commit files with password information to version control.
 
-Set the `CLASSROOM_AUTOMATOR_CONTEXT` environment variable to point to your context configuration file.
+#### Step 2 - Start the console
 
+`cd` your way to the root of this repo, and run:
+
+```sh
+ $ bin/console --context PATH-TO-YOUR-CONFIG-FILE-FROM-STEP-1
+```
+
+At this point, you are running a Ruby REPL that has a few convenience methods and variables.       
+Let's start by searching for all repos in your GitHub organization:
+
+```sh
+2.2.2 :001 > hosting.search_repos('')
+```
+
+Or, cloning all repos in the organization to the `/tmp` folder on your local machine:
+
+```sh
+2.2.2 :002 > hosting.search_repos('').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
+```
+
+If your organization does not have any repos, you can create one:
+
+```sh
+2.2.2 :003 > hosting.create_repo('test-repo')
+```
+
+OK, let's stop here (you can type `exit` to exit the console).      
 
 ## Automation Tasks
+
+The console is an extremely convenient tool, but usually you want to run some pre-defined (and properly tested) automation task.
+
+Let's see some of the automation tasks that are currently available.
 
 
 #### Setup Teams
@@ -90,44 +121,50 @@ Project-team-2:
   - { Frank: admin }
 ```
 
+ > _Note:_ This command does not delete teams, and does not remove memberships.
 
- > _Note:_ This command will update team members' roles, but will not delete teams or remove memberships.
+#### Create Repos
 
+Create repos, based on a configuration file.
 
-## The Interactive Console
-
-The `bin/console` script loads the IRB (Ruby's interactive shell) with a few convenient functions/variables pre-loaded.
-
-To be more specific, you can provide `bin/console` with a context configuration file (via `--context`, or the `CLASSROOM_AUTOMATOR_CONTEXT` environment variable). When the console loads, it will initialize a context object, based on the specified configuration file, and will make the following functions/variables available:
-
- * `logger`
- * `git`
- * `hosting`
- * `ci`
- * `classroom_automator_context`
-
-Type `bin/console --help` for more details.
-
-
-#### Examples
-
-Start the console:
+Usage:
 
 ```sh
- $ bin/console --context spec/data/context.yml
+ $ bin/task/create_repos PATH-TO-CONFIG-FILE
 ```
 
-Search for repos whose name contains `test-repo`, and clone them to a local directory:
+Example config file:
 
-```
-2.2.2 :002 > hosting.search_repos('test-repo').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
+```yaml
+repos:
+  - test-repo-01
+  - test-repo-02
+  - test-repo-03
 ```
 
-Enable CI on all repos (in the organization) whose name contains `test-repo`:
 
+#### Setup Permissions
+
+Grant students access permission (read-only, by default) to repos.
+
+Usage:
+
+```sh
+ $ bin/task/setup_permissions PATH-TO-CONFIG-FILE
 ```
-2.2.2 :001 > hosting.search_repos('test-repo').each { |repo| ci.enable_ci repo.name }
+
+Example config file:
+
+```yaml
+repos:
+  - test-repo-01 : Alice
+  - test-repo-02 : Bob
+  - test-repo-03 : Charlie
 ```
+
+ > _Note:_ The config file will be accepted by both, the `create-repos` and `setup-permissions`, tasks.
+
+
 
 ## Contributing
 
