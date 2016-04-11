@@ -33,25 +33,20 @@ To get started, install the dependencies, clone this repo to your local machine,
 
 ## Quick Start
 
-The Classroom Automator library tries to take care of as many details as possible, 
-but you still need to provide it with some configuration information. 
-For example: Your GitHub organization name and access token, your Travis CI access token, etc.
+In order to manage your Git repos, the Classroom Automator library needs a few details. For example: Your GitHub organization and access credentials.
+
+The simplest way to get started is using the following two steps:
 
 
 #### Step 1 - Create a context configuration file
 
-Here is an example of a simple configuration that will allow you to get started with GitHub and Travis CI.
+Here is a minimal configuration to get you started with GitHub.
 
 ```yaml
 hosting:
   provider: github
   access_token: YOUR-PERSONAL-GITHUB-ACCESS-TOKEN
   organization: YOUR-GITHUB-ORGANIZATION
-
-ci:
-  provider: travis_pro
-  access_token: YOUR-TRAVIS-CI-TOKEN
-  github_organization: YOUR-GITHUB-ORGANIZATION
 ```
 
 #### Step 2 - Set it as the default configuration
@@ -59,7 +54,9 @@ ci:
 Set the `CLASSROOM_AUTOMATOR_CONTEXT` environment variable to point to your context configuration file.
 
 
-### Setup Teams
+## Setup Teams
+
+Create teams and team membership, based on a configuration file.
 
 Usage:
 
@@ -67,8 +64,7 @@ Usage:
  $ bin/task/setup_teams PATH-TO-CONFIG-FILE
 ```
 
-Config files can be used to declare teams and team-memberships.       
-The format is YAML, and they look like this:
+Example config file:
 
 ```yaml
 Students:
@@ -97,10 +93,8 @@ Project-team-2:
 # ...
 ```
 
-The `bin/task/setup_teams` will read the configuration file, create any missing team and team membership, and update existing members' roles.
 
- > _Note:_ This command will not delete teams or remove team memberships.
-
+ > _Note:_ This command will update team members' roles, but will not delete teams or remove memberships.
 
 
 ### Using `bin/console`
