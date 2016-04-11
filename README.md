@@ -1,11 +1,12 @@
 # Classroom Automator
 
-A set of automation tools for software engineering classes, built on top of Gitomator.
+A set of automation tools for software engineering classes, built on top of the Gitomator library.
 
  * Manage your classes using industry-standard tools and services (e.g. Git, GitHub and Travis CI).
- * Use [command-line utilities](bin/task) to run automation tasks.       
-    * Create repositories (empty or based on an existing repo) and teams.
-    * Manage access permissions - _Who_ gets _what_ permission to _which_ repo.
+ * Use [existing command-line scripts](bin/task) to run automation tasks.       
+    * Create teams.
+    * Create repositories (empty or based on an existing repo), and push updates to them.
+    * Manage access permissions - _Who_ gets _which_ permission to _what_ repo?
     * Enable/disable CI
     * Merge pull-requests (i.e. collect students' solutions)
  * Configure tasks using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
@@ -13,7 +14,7 @@ A set of automation tools for software engineering classes, built on top of Gito
     * Easy to test run, before releasing code to students.
     * Easy to handle late submissions and other special cases.
  * Extend the library with your own [custom tasks](lib/classroom_automator/task) and command-line utilities.
- * Use the interactive console ([`bin/console`](bin/console)) to quickly perform automation tasks, without creating any command-line utilities or Ruby classes.
+ * Use an interactive console ([`bin/console`](bin/console)) to quickly perform automation tasks, without creating any command-line utilities or Ruby classes.
 
 
 ## Dependencies
@@ -30,10 +31,33 @@ To get started, install the dependencies, clone this repo to your local machine,
  > to these repos.
 
 
-## Usage
+## Quick Start
 
-All tasks run based on [YAML](http://yaml.org/) configuration files.
-If you don't know YAML, don't worry. It's really simple.
+The Classroom Automator library tries to take care of as many details as possible, 
+but you still need to provide it with some configuration information. 
+For example: Your GitHub organization name and access token, your Travis CI access token, etc.
+
+
+#### Step 1 - Create a context configuration file
+
+Here is an example of a simple configuration that will allow you to get started with GitHub and Travis CI.
+
+```yaml
+hosting:
+  provider: github
+  access_token: YOUR-PERSONAL-GITHUB-ACCESS-TOKEN
+  organization: YOUR-GITHUB-ORGANIZATION
+
+ci:
+  provider: travis_pro
+  access_token: YOUR-TRAVIS-CI-TOKEN
+  github_organization: YOUR-GITHUB-ORGANIZATION
+```
+
+#### Step 2 - Set it as the default configuration
+
+Set the `CLASSROOM_AUTOMATOR_CONTEXT` environment variable to point to your context configuration file.
+
 
 ### Setup Teams
 
