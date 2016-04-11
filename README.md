@@ -3,41 +3,39 @@
 A set of automation tools for instructors in software engineering classes.
 
  * Manage your classes using industry-standard tools and services.
-    * Ex: Publish coding assignments as GitHub repositories, and let your students benefit from Travis CI.
+    * Publish coding assignments as GitHub repositories.
+    * Provide students with (almost) immediate feedback on their work, using Travis CI.
  * Run automation tasks using [command-line scripts](bin/task).
-    * Create teams and repositories (empty or based on an existing repo)
+    * Create teams
+    * Create repositories (empty or based on an existing repo)
     * Manage access permissions (_who_ gets _which_ permission to _what_ repo)
-    * Tasks are configured using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml), so it's easy to re-run the same task with different data.
- * Perform automation-related operations from an interactive console ([`bin/console`](bin/console)).
-    * No need to create any Ruby scripts or classes.
- * All service providers are pluggable.
-    * Swap between services (e.g. hosting or CI) by changing a configuration file.
-    * Ex: Use custom CI and store student repos on your own file server.
+    * and much more ...
+ * Perform quick automation-related tasks from an interactive console.          
+    * No need to write any Ruby scripts or classes.
+ * Swap between service providers by changing a configuration file.         
+    * For example, store student repos on your own file server, or use custom CI service.
 
 
-## Dependencies
+## Quick Start
+
+Before you can get started, you'll need to complete a few simple steps.
+
+#### Step 0 - Install dependencies
+
+First, install the following dependencies:
 
  * [Ruby](https://www.ruby-lang.org/en/downloads/) (developed and tested with Ruby 2.2.2)
  * [Ruby Gems](https://rubygems.org/pages/download)
  * [Bundler](http://bundler.io/)
 
-To get started, install the dependencies, clone this repo to your local machine, and run `bin/setup`
-(which will install all remaining dependencies).
+Then, clone this repo to your local machine and run `bin/setup` (which will install all remaining dependencies).
 
- > **Important:** Some of the dependencies are currently being downloaded from
- > private Git repos on BitBucket. You will need to make sure you have access
- > to these repos.
-
-
-## Quick Start
-
-In order to manage your Git repos, the Classroom Automator library needs a few details. For example: Your GitHub organization and access credentials.
-
-The simplest way to get started is using the following two steps:
+ > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to make sure you have access to these repos.
 
 
 #### Step 1 - Create a context configuration file
 
+_Classroom automator_ needs to know a few things, before it manage your infrastructure for you.      
 Here is a minimal configuration to get you started with GitHub.
 
 ```yaml
@@ -52,7 +50,10 @@ hosting:
 Set the `CLASSROOM_AUTOMATOR_CONTEXT` environment variable to point to your context configuration file.
 
 
-## Setup Teams
+## Automation Tasks
+
+
+#### Setup Teams
 
 Create teams and team membership, based on a configuration file.
 
@@ -95,7 +96,7 @@ Project-team-2:
  > _Note:_ This command will update team members' roles, but will not delete teams or remove memberships.
 
 
-### Using `bin/console`
+## The Interactive Console
 
 `bin/console` can load the IRB (Ruby's interactive shell) with some convenient functions pre-loaded.
 
