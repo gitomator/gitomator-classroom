@@ -47,17 +47,12 @@ Config files can be used to declare teams and team-memberships.
 The format is YAML, and they look like this:
 
 ```yaml
-
-# An example of a configuration file that specifies teams and their members.
-# Each team has a name, and a list of GitHub usernames.
-
 Students:
   - Alice
   - Bob
   - Charlie
   - David
   - Eva
-  # ...
 
 Teaching-Assistants:
   - Frank
@@ -68,7 +63,7 @@ Project-team-1:
  - Alice
  - David
  - Bob
- - { George: admin }  # We can specify a member's role.
+ - { George: admin }  # We can specify a role
 
 Project-team-2:
   - Charlie
