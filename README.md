@@ -96,19 +96,20 @@ Project-team-2:
 
 ## The Interactive Console
 
-`bin/console` can load the IRB (Ruby's interactive shell) with some convenient functions pre-loaded.
+The `bin/console` script loads the IRB (Ruby's interactive shell) with a few convenient functions/variables pre-loaded.
 
-Type `bin/console --help` for more details.
-
-If `bin/console` is supplied with a context configuration file (via `--context`, or the `CLASSROOM_AUTOMATOR_CONTEXT` environment variable), the following globals are available:
+To be more specific, you can provide `bin/console` with a context configuration file (via `--context`, or the `CLASSROOM_AUTOMATOR_CONTEXT` environment variable). When the console loads, it will initialize a context object, based on the specified configuration file, and will make the following functions/variables available:
 
  * `logger`
  * `git`
  * `hosting`
  * `ci`
+ * `classroom_automator_context`
+
+Type `bin/console --help` for more details.
 
 
-Example:
+#### Examples
 
 Start the console:
 
@@ -116,13 +117,13 @@ Start the console:
 classroom_automator $ bin/console --context spec/data/context.yml
 ```
 
-Search for repos whose name starts with `test-repo` and clone them to a local directory:
+Search for repos whose name contains `test-repo`, and clone them to a local directory:
 
 ```
 2.2.2 :002 > hosting.search_repos('test-repo').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
 ```
 
-Search for repos whose name starts with `test-repo` and enable CI on them:
+Enable CI on all repos (in the organization) whose name contains `test-repo`:
 
 ```
 2.2.2 :001 > hosting.search_repos('test-repo').each { |repo| ci.enable_ci repo.name }
