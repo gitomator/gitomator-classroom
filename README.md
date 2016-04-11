@@ -5,11 +5,11 @@ A set of automation tools for instructors in software engineering classes.
  * Manage your classes using industry-standard tools and services.
     * Publish coding assignments as GitHub repositories.
     * Provide students with (almost) immediate feedback on their work, using Travis CI.
- * Run automation tasks using [command-line scripts](bin/task).
+ * Run automation tasks from the command-line.
     * Create teams
     * Create repositories (empty or based on an existing repo)
     * Manage access permissions (_who_ gets _which_ permission to _what_ repo)
-    * and much more ...
+    * And much more ...
  * Perform quick automation-related tasks from an interactive console.          
     * No need to write any Ruby scripts or classes.
  * Swap between service providers by changing a configuration file.         
