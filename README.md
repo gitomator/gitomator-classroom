@@ -32,7 +32,60 @@ To get started, install the dependencies, clone this repo to your local machine,
 
 ## Usage
 
-TODO: Write this section ...
+All tasks run based on [YAML](http://yaml.org/) configuration files.
+If you don't know YAML, don't worry. It's really simple.
+
+### Setup Teams
+
+You can declare teams and team-memberships in a YAML file like this one:
+
+```yaml
+
+# An example of a configuration file that specifies teams and their members.
+# Each team has a name, and a list of GitHub usernames.
+
+Students:
+  - Alice
+  - Bob
+  - Charlie
+  - David
+  - Eva
+  # ...
+
+Teaching-Assistants:
+  - Frank
+  - George
+
+
+Project-team-1:
+ - Alice
+ - David
+ - Bob
+ - { George: admin }  # We can specify a member's role.
+
+Project-team-2:
+  - Charlie
+  - Eva
+  - { Frank: admin }
+
+# ...
+```
+
+Then, run:
+
+```sh
+ $ bin/task/setup_teams PATH-TO-CONFIG-FILE
+```
+
+This command will
+
+ 1. Read the configuration file
+ 2. Apply the changes to our GitHub organization:
+     - Create every team that doesn't already exist.
+     - Update all team memberships - Adding missing team members, and updating any changes in roles.
+
+ > _Note:_ This command will not delete teams or remove team memberships.
+
 
 
 ### Using `bin/console`
