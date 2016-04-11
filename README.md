@@ -1,20 +1,16 @@
 # Classroom Automator
 
-A set of automation tools for software engineering classes, built on top of the Gitomator library.
+A set of automation tools for instructors in software engineering classes.
 
- * Manage your classes using industry-standard tools and services (e.g. Git, GitHub and Travis CI).
- * Use [existing command-line scripts](bin/task) to run automation tasks.       
-    * Create teams.
-    * Create repositories (empty or based on an existing repo), and push updates to them.
-    * Manage access permissions - _Who_ gets _which_ permission to _what_ repo?
-    * Enable/disable CI
-    * Merge pull-requests (i.e. collect students' solutions)
- * Configure tasks using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
-    * Easy to re-run tasks with different data.
-    * Easy to test run, before releasing code to students.
-    * Easy to handle late submissions and other special cases.
- * Extend the library with your own [custom tasks](lib/classroom_automator/task) and command-line utilities.
- * Use an interactive console ([`bin/console`](bin/console)) to quickly perform automation tasks, without creating any command-line utilities or Ruby classes.
+ * Manage your classes using industry-standard tools and services like GitHub and Travis CI.
+    * Create teams
+    * Create repositories (empty or based on an existing repo)
+    * Manage access permissions (_who_ gets _which_ permission to _what_ repo)
+    * And more
+ * Run automation tasks using [command-line scripts](bin/task).       
+    * Tasks are configured using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
+    * Easy to re-run tasks with different data (e.g. test before releasing code to students, handle late submissions, etc.)
+ * Perform automation tasks from an interactive console ([`bin/console`](bin/console)), without creating any Ruby scripts or classes.
 
 
 ## Dependencies
