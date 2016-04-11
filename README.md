@@ -97,35 +97,20 @@ Usage:
 Example config file:
 
 ```yaml
-Students:
+Team-01:
   - Alice
   - Bob
   - Charlie
+
+Team-02:
   - David
   - Eva
-
-Teaching-Assistants:
   - Frank
-  - George
-
-
-Project-team-1:
- - Alice
- - David
- - Bob
- - { George: admin }  # We can specify a role
-
-Project-team-2:
-  - Charlie
-  - Eva
-  - { Frank: admin }
 ```
-
- > _Note:_ This command does not delete teams, and does not remove memberships.
 
 #### Create Repos
 
-Create repos, based on a configuration file.
+Create repos, optionally with some starter code.
 
 Usage:
 
@@ -136,33 +121,40 @@ Usage:
 Example config file:
 
 ```yaml
+
+# Specify an existing repo (in your GitHub organization) as the starter code
+source_repo: assignment-1-starter-code
+
 repos:
-  - test-repo-01
-  - test-repo-02
-  - test-repo-03
+  - assignment-handout-01
+  - assignment-handout-02
+  - assignment-handout-03
 ```
 
 
 #### Setup Permissions
 
-Grant students access permission (read-only, by default) to repos.
+Grant users/teams access to repos.
 
 Usage:
 
 ```sh
- $ bin/task/setup_permissions PATH-TO-CONFIG-FILE
+ $ bin/task/set_user_permissions PATH-TO-CONFIG-FILE
+ $ bin/task/set_team_permissions PATH-TO-CONFIG-FILE
 ```
 
 Example config file:
 
 ```yaml
+source_repo: assignment-1-starter-code
+
 repos:
-  - test-repo-01 : Alice
-  - test-repo-02 : Bob
-  - test-repo-03 : Charlie
+  - assignment-handout-01: Alice
+  - assignment-handout-02: Bob
+  - assignment-handout-03: Charlie
 ```
 
- > _Note:_ The config file will be accepted by both, the `create-repos` and `setup-permissions`, tasks.
+ > _Note:_ The same config file can be used for `create-repos`, `set-user-permissions` and `set-team-permission`.
 
 
 
