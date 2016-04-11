@@ -53,7 +53,7 @@ hosting:
 From the root of this repo, run:
 
 ```sh
- $ bin/console --context PATH-TO-YOUR-CONFIG-FILE-FROM-STEP-1
+ $ bin/console --context PATH-TO-YOUR-CONTEXT-YML
 ```
 
 At this point, you are running a Ruby REPL that has a few convenience methods and variables.       
