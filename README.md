@@ -59,20 +59,20 @@ hosting:
 At this point, you are running a Ruby REPL that has a few convenience methods and variables.       
 Let's start by searching for all repos in your GitHub organization:
 
-```sh
-2.2.2 :001 > hosting.search_repos('')
+```ruby
+hosting.search_repos('')
 ```
 
 Or, cloning all repos in the organization to the `/tmp` folder on your local machine:
 
-```sh
-2.2.2 :002 > hosting.search_repos('').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
+```ruby
+hosting.search_repos('').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
 ```
 
 If your organization does not have any repos, you can create one:
 
-```sh
-2.2.2 :003 > hosting.create_repo('test-repo')
+```ruby
+hosting.create_repo('test-repo')
 ```
 
 OK, let's stop here (you can type `exit` to exit the console).      
