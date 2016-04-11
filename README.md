@@ -43,7 +43,7 @@ Usage:
  $ bin/task/setup_teams PATH-TO-CONFIG-FILE
 ```
 
-Config files can be used to declare teams and team-memberships.
+Config files can be used to declare teams and team-memberships.       
 The format is YAML, and they look like this:
 
 ```yaml
@@ -73,17 +73,7 @@ Project-team-2:
 # ...
 ```
 
-When running `bin/task/setup_teams` with the configuration above, the following happens in our GitHub organization:
-
- * A team called `Students` is created, if it doesn't already exist.
- * The users (i.e. GitHub usernames) `Alice`, `Bob`, `Charlie`, `David` and `Eva` become members (i.e. with a default role of `member`) of the `Students` team.
- * A team called `Teaching-Assistants` is created, if it doesn't already exist.
- * `Frank` and `George` become `member`s of the `Teaching-Assistants` team.
- * A team called `Project-team-1` is created, if it doesn't already exist.
- * `Alice`, `David` and `Bob` become `member`s of the `Project-team-1`, and `George` becomes an `admin` (aka `maintainer`) of that team.
- * A team called `Project-team-2` is created, if it doesn't already exist.
- * `Charlie` and `Eva` become `member`s of the `Project-team-1`, and `Frank` becomes an `admin` (aka `maintainer`) of that team.
-This command will
+The `bin/task/setup_teams` will read the configuration file, create any missing team and team membership, and update existing members' roles.
 
  > _Note:_ This command will not delete teams or remove team memberships.
 
