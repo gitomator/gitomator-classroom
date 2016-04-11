@@ -34,7 +34,7 @@ Then, clone this repo to your local machine and run `bin/setup` (which will down
 Let's see how to use _Classroom Automator_ to manage the repos in your GitHub organization.
 
 
-#### Step 1 - Create a context configuration file
+#### Create a context configuration file
 
 Create a YAML file, `context.yml`, that contains your GitHub information:
 
@@ -48,7 +48,7 @@ hosting:
 
  > **Important:** Do not commit files with password information to version control.
 
-#### Step 2 - Start the console
+#### Start the console
 
 From the root of this repo, run:
 
@@ -77,6 +77,8 @@ hosting.create_repo('test-repo')
 
 OK, let's stop here (you can type `exit` to exit the console).      
 
+
+
 ## Automation Tasks
 
 The console is an extremely convenient tool, but usually you want to run some pre-defined (and properly tested) automation task.
@@ -94,7 +96,7 @@ Usage:
  $ bin/task/setup_teams PATH-TO-CONFIG-FILE
 ```
 
-Example config file:
+Example config file, with two teams and three members (specified by their GitHub usernames) each.
 
 ```yaml
 Team-01:
