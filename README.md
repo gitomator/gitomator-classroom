@@ -1,5 +1,4 @@
-
- > **IMPORTANT:** All Gitomator projects projects are currently in pre-alpha stage, which means that:        
+> **IMPORTANT:** All Gitomator projects projects are currently in pre-alpha stage, which means that:        
  > 
  >  * Some parts that are not yet implemented
  >  * API's may change significantly
@@ -55,7 +54,7 @@ _Classroom_ is
 
  * Extensible - You can create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
  * Pluggable - You can swap between service-providers by changing a configuration file.
- * Open-source and contributor-friendly - Join the conversation by opening issues and/or submitting pull-requests.
+ * Open-source and contributor-friendly. Join the conversation by opening issues and/or submitting pull-requests.
 
 
 ## Dependencies
@@ -76,9 +75,7 @@ Clone this repo and run `bin/setup` (which will download and install all remaini
 Let's see how to use _Classroom Automator_ to manage the repos in your GitHub organization.
 
 
-#### Create a context configuration file
-
-Create a YAML file, `context.yml`, that contains your GitHub information:
+Create a YAML file, `tmp/context.yml`, containing your GitHub information:
 
 ```yaml
 hosting:
@@ -88,18 +85,19 @@ hosting:
   organization: YOUR-GITHUB-ORGANIZATION
 ```
 
- > **Important:** Do not commit files with password information to version control.
+ > *Important:* You should never commit login credentials to version control.       
+ > Later, we will see how to load values from environment variables.
 
-#### Start the console
-
-From the root of this repo, run:
+Start the console:
 
 ```sh
- $ bin/console --context PATH-TO-YOUR-CONTEXT-YML
+ $ bin/console --context tmp/context.yml
 ```
 
-At this point, you are running a Ruby REPL that has a few convenience methods and variables.       
-Let's start by searching for all repos in your GitHub organization:
+That's it!            
+You can now manage your GitHub organization from the interactive console. For example:
+
+Search for all repos in your organization:
 
 ```ruby
 hosting.search_repos('')
@@ -111,7 +109,7 @@ Or, cloning all repos in the organization to the `/tmp` folder on your local mac
 hosting.search_repos('').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
 ```
 
-If your organization does not have any repos, you can create one:
+Or, create a test repo (called `test-repo`):
 
 ```ruby
 hosting.create_repo('test-repo')
@@ -123,9 +121,9 @@ OK, let's stop here (you can type `exit` to exit the console).
 
 ## Automation Tasks
 
-The console is an extremely convenient tool, but usually you want to run some pre-defined (and properly tested) automation task.
-
-Let's see some of the automation tasks that are currently available.
+The console is very useful for testing, developing workflows and/or running quick maintenance tasks.
+Most users, on the other hand, will prefer to automate their workflow using the command-line tools.
+Let's see a couple of examples ...
 
 
 #### Setup Teams
@@ -138,7 +136,7 @@ Usage:
  $ bin/task/setup_teams PATH-TO-CONFIG-FILE
 ```
 
-Example config file, with two teams and three members (specified by their GitHub usernames) each.
+Example config file: with two teams and three members (specified by their GitHub usernames) each.
 
 ```yaml
 Team-01:
@@ -151,6 +149,8 @@ Team-02:
   - Eva
   - Frank
 ```
+
+ > _Clarification:_ In the example above, `Alice`, `Bob`, `Charlie`, `David`, `Eva` and `Frank` are GitHub usernames of students/TA's in the class.
 
 #### Create Repos
 
