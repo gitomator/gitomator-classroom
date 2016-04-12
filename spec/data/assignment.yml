@@ -6,10 +6,10 @@
 name: fake_assignment
 deadline: 2016-04-03
 
-# The name of a repo that is the base for all handouts (i.e. the starter code)
+# The name of a repo that is the base for all repos (i.e. the starter code)
 source_repo: repo_name
 
-handouts:
+repos:
  # Map repo name to students who have access to that repo
  - new-test-repo-1457830224892: [joeyfreund-test, joeyfreund-test2]
  - new-test-repo-1457829471097: joeyfreund-test

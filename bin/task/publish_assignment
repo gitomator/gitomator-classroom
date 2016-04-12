@@ -22,18 +22,18 @@ abort "Assignment config missing source_repo" if assignment.source_repo.nil?
 tasks = []
 
 tasks.push Gitomator::Task::CreateRepos.new(context,
-  assignment.handouts.keys,
+  assignment.repos.keys,
   { source_repo: assignment.source_repo }
 )
 
 if opts[:enable_ci]
   tasks.push Gitomator::Task::EnableCI.new(context,
-    assignment.handouts.keys,
+    assignment.repos.keys,
     { sync: true }
   )
 end
 
-assignment.handouts.each do |repo_name, students|
+assignment.repos.each do |repo_name, students|
   tasks.push Gitomator::Task::UpdateRepoAccessPermissions.new(context,
       repo_name, students.map {|s| [s, :read]}.to_h, {})
 end

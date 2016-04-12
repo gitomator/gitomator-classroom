@@ -16,7 +16,7 @@ abort usage_message if ARGV.length != 1
 ScriptUtil::run_task(
   Gitomator::Task::EnableCI.new(
     ScriptUtil::context_from_file(opts[:context]),
-    ScriptUtil::assignment_config_from_file(ARGV[0]).handouts.keys,
+    ScriptUtil::assignment_config_from_file(ARGV[0]).repos.keys,
     { :sync => opts[:sync] }
   )
 )

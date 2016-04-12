@@ -47,7 +47,7 @@ module ClassroomAutomator
 
 
     # A hash mapping repo-name (String) to student usernames (String array).
-    attr_reader :handouts
+    attr_reader :repos
 
 
     def parse_config(config)
@@ -58,9 +58,9 @@ module ClassroomAutomator
         send setter, value
       end
 
-      # Transform the handouts configuration info (we support multiple formats)
+      # Transform the repos configuration info (we support multiple formats)
       # into a hash that maps repo-names to lists of students-usernames.
-      @handouts = parse_handouts_config(handouts)
+      @repos = parse_repos_config(repos)
     end
 
     def method_missing(method_sym, *arguments, &block)
@@ -68,15 +68,15 @@ module ClassroomAutomator
     end
 
 
-    def parse_handouts_config(handouts_conf)
-      if( handouts_conf.nil?)
+    def parse_repos_config(repos_conf)
+      if( repos_conf.nil?)
         return {}
       end
 
       result = {}
 
-      handouts_conf.each do |handout_conf|
-        repo, students = parse_handout_config(handout_conf)
+      repos_conf.each do |repo_config|
+        repo, students = parse_repo_config(repo_config)
         raise DuplicateRepoError.new(repo) if result.has_key? repo
         result[repo] = students
       end
@@ -87,21 +87,21 @@ module ClassroomAutomator
 
     #
     # Extract the repo-name and usernames from a single entry in the
-    # `handouts` section of the configuration.
+    # `repos` section of the configuration.
     #
-    # @param handout_conf [String or Hash]
+    # @param repo_config [String or Hash]
     #
     # @return [String, String array] Return the pair <repo-name, usernames>.
     #
-    def parse_handout_config(handout_conf)
-      if handout_conf.is_a? String
-        return handout_conf, []
-      elsif (handout_conf.is_a? Hash) and (handout_conf.length == 1)
-        usernames = handout_conf.values.first
+    def parse_repo_config(repo_config)
+      if repo_config.is_a? String
+        return repo_config, []
+      elsif (repo_config.is_a? Hash) and (repo_config.length == 1)
+        usernames = repo_config.values.first
         usernames = [ usernames.to_s ] unless usernames.is_a? Array
-        return handout_conf.keys.first.to_s, usernames.map {|u| u.to_s}
+        return repo_config.keys.first.to_s, usernames.map {|u| u.to_s}
       else
-        raise "Invalid handout config item: #{handout_conf}"
+        raise "Invalid repo config item: #{repo_config}"
       end
     end
 
