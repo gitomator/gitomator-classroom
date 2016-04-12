@@ -1,130 +1,179 @@
 # Classroom Automator
 
-A set of automation tools for software engineering classes, built on top of Gitomator.
+A set of automation tools for instructors in software engineering classes.
 
- * Manage your classes using industry-standard tools and services (e.g. Git, GitHub and Travis CI).
- * Use [command-line utilities](bin/task) to run automation tasks.       
-    * Create repositories (empty or based on an existing repo) and teams.
-    * Manage access permissions - _Who_ gets _what_ permission to _which_ repo.
-    * Enable/disable CI
-    * Merge pull-requests (i.e. collect students' solutions)
- * Configure tasks using [simple](spec/data/assignment.yml) [YAML](spec/data/teams.yml) [files](spec/data/context.yml).
-    * Easy to re-run tasks with different data.
-    * Easy to test run, before releasing code to students.
-    * Easy to handle late submissions and other special cases.
- * Extend the library with your own [custom tasks](lib/classroom_automator/task) and command-line utilities.
- * Use the interactive console ([`bin/console`](bin/console)) to quickly perform automation tasks, without creating any command-line utilities or Ruby classes.
+ * Manage your classes using industry-standard tools and services.
+    * Publish coding assignments as GitHub repositories.
+    * Provide students with (almost) immediate feedback on their work, using Travis CI.
+ * Run automation tasks from the command-line.
+    * Create teams
+    * Create repositories (empty or based on an existing repo)
+    * Manage access permissions (_who_ gets _which_ permission to _what_ repo)
+    * And much more ...
+ * Perform quick automation-related tasks from an interactive console.          
+    * No need to write any Ruby scripts or classes.
+ * Swap between service providers by changing a configuration file.         
+    * For example, store student repos on your own file server, or use custom CI service.
 
 
 ## Dependencies
+
+First, install the following dependencies:
 
  * [Ruby](https://www.ruby-lang.org/en/downloads/) (developed and tested with Ruby 2.2.2)
  * [Ruby Gems](https://rubygems.org/pages/download)
  * [Bundler](http://bundler.io/)
 
-To get started, install the dependencies, clone this repo to your local machine, and run `bin/setup`
-(which will install all remaining dependencies).
+Then, clone this repo to your local machine and run `bin/setup` (which will download and install all remaining dependencies).
 
- > **Important:** Some of the dependencies are currently being downloaded from
- > private Git repos on BitBucket. You will need to make sure you have access
- > to these repos.
+ > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to have access to these repos.
 
 
-## Usage
+## Quick Start
 
-All tasks run based on [YAML](http://yaml.org/) configuration files.
-If you don't know YAML, don't worry. It's really simple.
+Let's see how to use _Classroom Automator_ to manage the repos in your GitHub organization.
 
-### Setup Teams
 
-You can declare teams and team-memberships in a YAML file like this one:
+#### Create a context configuration file
+
+Create a YAML file, `context.yml`, that contains your GitHub information:
 
 ```yaml
-
-# An example of a configuration file that specifies teams and their members.
-# Each team has a name, and a list of GitHub usernames.
-
-Students:
-  - Alice
-  - Bob
-  - Charlie
-  - David
-  - Eva
-  # ...
-
-Teaching-Assistants:
-  - Frank
-  - George
-
-
-Project-team-1:
- - Alice
- - David
- - Bob
- - { George: admin }  # We can specify a member's role.
-
-Project-team-2:
-  - Charlie
-  - Eva
-  - { Frank: admin }
-
-# ...
+hosting:
+  provider: github
+  username: YOUR-GITHUB-USERNAME
+  password: YOUR-GITHUB-PASSWORD
+  organization: YOUR-GITHUB-ORGANIZATION
 ```
 
-Then, run:
+ > **Important:** Do not commit files with password information to version control.
+
+#### Start the console
+
+From the root of this repo, run:
+
+```sh
+ $ bin/console --context PATH-TO-YOUR-CONTEXT-YML
+```
+
+At this point, you are running a Ruby REPL that has a few convenience methods and variables.       
+Let's start by searching for all repos in your GitHub organization:
+
+```ruby
+hosting.search_repos('')
+```
+
+Or, cloning all repos in the organization to the `/tmp` folder on your local machine:
+
+```ruby
+hosting.search_repos('').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
+```
+
+If your organization does not have any repos, you can create one:
+
+```ruby
+hosting.create_repo('test-repo')
+```
+
+OK, let's stop here (you can type `exit` to exit the console).      
+
+
+
+## Automation Tasks
+
+The console is an extremely convenient tool, but usually you want to run some pre-defined (and properly tested) automation task.
+
+Let's see some of the automation tasks that are currently available.
+
+
+#### Setup Teams
+
+Create teams and team membership, based on a configuration file.
+
+Usage:
 
 ```sh
  $ bin/task/setup_teams PATH-TO-CONFIG-FILE
 ```
 
-This command will
+Example config file, with two teams and three members (specified by their GitHub usernames) each.
 
- 1. Read the configuration file
- 2. Apply the changes to our GitHub organization:
-     - Create every team that doesn't already exist.
-     - Update all team memberships - Adding missing team members, and updating any changes in roles.
+```yaml
+Team-01:
+  - Alice
+  - Bob
+  - Charlie
 
- > _Note:_ This command will not delete teams or remove team memberships.
+Team-02:
+  - David
+  - Eva
+  - Frank
+```
 
+#### Create Repos
 
+Create repos, optionally with some starter code.
 
-### Using `bin/console`
-
-`bin/console` can load the IRB (Ruby's interactive shell) with some convenient functions pre-loaded.
-
-Type `bin/console --help` for more details.
-
-If `bin/console` is supplied with a context configuration file (via `--context`, or the `CLASSROOM_AUTOMATOR_CONTEXT` environment variable), the following globals are available:
-
- * `logger`
- * `git`
- * `hosting`
- * `ci`
-
-
-Example:
-
-Start the console:
+Usage:
 
 ```sh
-classroom_automator $ bin/console --context spec/data/context.yml
+ $ bin/task/create_repos PATH-TO-CONFIG-FILE
 ```
 
-Search for repos whose name starts with `test-repo` and clone them to a local directory:
+Example config file:
 
-```
-2.2.2 :002 > hosting.search_repos('test-repo').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
+```yaml
+
+# Specify an existing repo (in your GitHub organization) as the starter code
+source_repo: assignment-starter-code
+
+repos:
+  - assignment-handout-01
+  - assignment-handout-02
+  - assignment-handout-03
 ```
 
-Search for repos whose name starts with `test-repo` and enable CI on them:
 
+#### Setup Permissions
+
+Grant users/teams access to repos.
+
+Usage:
+
+```sh
+ $ bin/task/set_user_permissions PATH-TO-CONFIG-FILE
+ $ bin/task/set_team_permissions PATH-TO-CONFIG-FILE
 ```
-2.2.2 :001 > hosting.search_repos('test-repo').each { |repo| ci.enable_ci repo.name }
+
+Example config file:
+
+```yaml
+source_repo: assignment-1-starter-code
+
+repos:
+  - assignment-handout-01: Alice
+  - assignment-handout-02: Bob
+  - assignment-handout-03: Charlie
 ```
+
+ > _Note:_ The same config file can be used for `create-repos`, `set-user-permissions` and `set-team-permission`.
+
+
+## What's next?
+
+You should probably go and read the docs.
+The only problem is ... there are no docs at the moment.
+More on that below, in the [Contributing](#Contributing) section.
+
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/gitomator/classroom_automator.
+Classroom Automator [and all other Gitomator libraries](https://github.com/gitomator) are all at a very early, pre-alpha stage.
+In other words, any help will be appreciated:
+
+ * Please give the tools a try, and provide us with some feedback.
+ * Bug reports and pull requests are welcome on GitHub at https://github.com/gitomator/classroom_automator.
+ * Spread the word and tell others about Gitomator.
 
 
 ## License
