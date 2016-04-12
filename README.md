@@ -72,9 +72,6 @@ Clone this repo and run `bin/setup` (which will download and install all remaini
 
 ## Quick Start
 
-Let's see how to use _Classroom Automator_ to manage the repos in your GitHub organization.
-
-
 Create a YAML file, `tmp/context.yml`, containing your GitHub information:
 
 ```yaml
@@ -88,13 +85,16 @@ hosting:
  > *Important:* You should never commit login credentials to version control.       
  > Later, we will see how to load values from environment variables.
 
-Start the console:
+Start the interactive console:
 
 ```sh
  $ bin/console --context tmp/context.yml
 ```
 
 That's it!            
+
+#### Using the console
+
 You can now manage your GitHub organization from the interactive console. For example:
 
 Search for all repos in your organization:
@@ -103,13 +103,13 @@ Search for all repos in your organization:
 hosting.search_repos('')
 ```
 
-Or, cloning all repos in the organization to the `/tmp` folder on your local machine:
+Or, clone all repos from your GitHub organization to the `/tmp` folder on your local machine:
 
 ```ruby
 hosting.search_repos('').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
 ```
 
-Or, create a test repo (called `test-repo`):
+Or, create a test repo (called `test-repo`) in your GitHub organization:
 
 ```ruby
 hosting.create_repo('test-repo')
