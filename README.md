@@ -136,7 +136,7 @@ Usage:
  $ bin/task/setup_teams PATH-TO-CONFIG-FILE
 ```
 
-Example config file: with two teams and three members (specified by their GitHub usernames) each.
+Example config file:
 
 ```yaml
 Team-01:
@@ -166,7 +166,7 @@ Example config file:
 
 ```yaml
 
-# Specify an existing repo (in your GitHub organization) as the starter code
+# Specify the name of an existing repo (in your GitHub organization) as the starter code
 source_repo: assignment-starter-code
 
 repos:
@@ -178,27 +178,24 @@ repos:
 
 #### Setup Permissions
 
-Grant users/teams access to repos.
+Grant access permissions to repos.
 
 Usage:
 
 ```sh
- $ bin/task/set_user_permissions PATH-TO-CONFIG-FILE
- $ bin/task/set_team_permissions PATH-TO-CONFIG-FILE
+ $ bin/task/set-access-permissions PATH-TO-CONFIG-FILE
 ```
 
 Example config file:
 
 ```yaml
-source_repo: assignment-1-starter-code
-
 repos:
   - assignment-handout-01: Alice
   - assignment-handout-02: Bob
   - assignment-handout-03: Charlie
 ```
 
- > _Note:_ The same config file can be used for `create-repos`, `set-user-permissions` and `set-team-permission`.
+ > _Note:_ The same config file can be used for `create-repos`, `set-access-permissions`.
 
 
 ## What's next?
