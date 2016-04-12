@@ -18,13 +18,13 @@ A set of automation tools for instructors in software engineering classes.
 
 ## Dependencies
 
-First, install the following dependencies:
+Once the the following dependencies are installed:
 
  * [Ruby](https://www.ruby-lang.org/en/downloads/) (developed and tested with Ruby 2.2.2)
  * [Ruby Gems](https://rubygems.org/pages/download)
  * [Bundler](http://bundler.io/)
 
-Then, clone this repo to your local machine and run `bin/setup` (which will download and install all remaining dependencies).
+Clone this repo and run `bin/setup` (which will download and install all remaining dependencies).
 
  > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to have access to these repos.
 
