@@ -1,19 +1,40 @@
-# Classroom Automator
+# Gitomator - Classroom
 
-A set of automation tools for instructors in software engineering classes.
+_Classroom_ is a set of automation tools for instructors in software engineering courses.           
 
- * Manage your classes using industry-standard tools and services.
-    * Publish coding assignments as GitHub repositories.
-    * Provide students with (almost) immediate feedback on their work, using Travis CI.
- * Run automation tasks from the command-line.
-    * Create teams
-    * Create repositories (empty or based on an existing repo)
-    * Manage access permissions (_who_ gets _which_ permission to _what_ repo)
-    * And much more ...
- * Perform quick automation-related tasks from an interactive console.          
-    * No need to write any Ruby scripts or classes.
- * Swap between service providers by changing a configuration file.         
-    * For example, store student repos on your own file server, or use custom CI service.
+#### Who should use it?
+
+If you
+
+ * Teach a software engineering course,
+ * Where you distribute code to students in the form of Git repos,
+ * And you feel like you could benefit from automating your workflow.
+
+Then you should give _Classroom_ a try.
+
+#### What does it do?
+
+_Classroom_ makes it easy to automate your workflow.       
+
+ * Publish coding assignments as GitHub repositories
+ * Provide students with (almost) immediate feedback on their work, using Travis CI.
+ * Manage teams and access permissions to repos in your GitHub organization.
+ * And much more
+
+There are three ways to use _Classroom_:
+
+ * From an interactive console - Develop workflows and run quick maintenance tasks. No coding required.
+ * Using the command-line tools
+ * By extending _Classroom_ with your own command-line tools, using basic Ruby programming.
+
+
+#### What else?
+
+_Classroom_ is
+
+ * Extensible - Create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
+ * Pluggable - Swap between providers by changing a configuration file.
+ * Open-source - We're happy to accept pull-requests.
 
 
 ## Dependencies
