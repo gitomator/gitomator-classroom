@@ -165,8 +165,6 @@ Usage:
 Example config file:
 
 ```yaml
-
-# Specify the name of an existing repo (in your GitHub organization) as the starter code
 source_repo: assignment-starter-code
 
 repos:
