@@ -21,6 +21,15 @@ If you
 
 Then, _Classroom_ can help you automate your workflow.
 
+
+_Classroom_ is
+
+ * Extensible - You can create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
+ * Pluggable - You can swap between service-providers by changing a configuration file.
+ * Open-source and contributor-friendly. 
+
+So, please join the conversation by opening issues and/or submitting pull-requests.
+
 #### What does it do?
 
 _Classroom_ can automate many common tasks, for example:
@@ -45,15 +54,6 @@ _Classroom_ can be used in different ways:
  * Or, by extending the libraries with your own custom workflow and command-line tools (requires basic Ruby programming).
 
 
-#### Anything else?
-
-_Classroom_ is
-
- * Extensible - You can create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
- * Pluggable - You can swap between service-providers by changing a configuration file.
- * Open-source and contributor-friendly. Join the conversation by opening issues and/or submitting pull-requests.
-
-
 ---- 
 
 ## Dependencies
@@ -68,6 +68,7 @@ Clone this repo and run `bin/setup` (which will download and install all remaini
 
  > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to have access to these repos.
 
+---- 
 
 ## Quick Start
 
