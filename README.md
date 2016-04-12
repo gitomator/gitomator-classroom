@@ -13,15 +13,13 @@
 
 _Classroom_ is a set of automation tools for instructors in software engineering courses.           
 
-#### Who should use it?
-
 If you
 
  * Teach a software engineering course,
  * Where you _distribute code_ to students in the form of _Git repos_,
  * And use (or, would like to use) services such _GitHub_ and _Travis CI_.
 
-_Classroom_ can help you automate your workflow.
+Then, _Classroom_ can help you automate your workflow.
 
 #### What does it do?
 
@@ -29,23 +27,22 @@ _Classroom_ can automate many common tasks, for example:
 
  * Creating repos and teams in your GitHub organization.
  * Managing access permissions to repos in your GitHub organization.
- * Cloning repos and pushing updates.
+ * Cloning repos locally, committing and pushing updates.
  * Enabling/disabling CI.
  * And more
 
-It includes command-line tools that implement a full workflow for you to:
+And includes command-line tools that implement a complete workflow:
 
- * Publish coding assignments as GitHub repositories
- * And provide students with immediate feedback on their work, by enabling Travis CI.
+ * Publishing coding assignments as GitHub repositories
+ * Providing students with immediate feedback on their work, by enabling Travis CI.
+ * Collecting assignments, by merging pull-requests.
+ * Cloning, auto-marking and pushing results back to the students' repos.
 
-
-#### How do I use it?
-
-There are three ways to use _Classroom_:
+_Classroom_ can be used in different ways:
 
  * Using the command-line tools
  * From an interactive console - Great for developing workflows and running quick maintenance tasks. 
- * Extending _Classroom_ with custom command-line tools, using basic Ruby programming.
+ * Or, by extending the libraries with your own custom workflow and command-line tools (requires basic Ruby programming).
 
 
 #### Anything else?
@@ -56,6 +53,8 @@ _Classroom_ is
  * Pluggable - You can swap between service-providers by changing a configuration file.
  * Open-source and contributor-friendly. Join the conversation by opening issues and/or submitting pull-requests.
 
+
+---- 
 
 ## Dependencies
 
