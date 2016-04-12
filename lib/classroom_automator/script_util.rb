@@ -5,7 +5,7 @@ require 'classroom_automator/version'
 module ClassroomAutomator
   module ScriptUtil
 
-    DEFAULT_CONTEXT_ENV_VAR_NAME = 'CLASSROOM_AUTOMATOR_CONTEXT'
+    DEFAULT_CONTEXT_ENV_VAR_NAME = 'GITOMATOR_CLASSROOM_CONTEXT'
 
     def self.default_context_file
       ENV[DEFAULT_CONTEXT_ENV_VAR_NAME]
@@ -15,16 +15,20 @@ module ClassroomAutomator
 
     class DefaultOptionParser < Trollop::Parser
 
-      def initialize(usage_message)
+      def initialize(help_text)
         super()
-        banner "Classroom Automator #{ClassroomAutomator::VERSION}.\n\nOptions:"
-        version "#{ClassroomAutomator::VERSION}"
-        usage   usage_message
+        banner "#{help_text}\nOptions:"
+        version "Gitomator Classroom #{ClassroomAutomator::VERSION} (c) 2016 Joey Freund"
 
-        opt :context,
-              "Context (logger, hosting, git, ci) configuration file (uses #{DEFAULT_CONTEXT_ENV_VAR_NAME} env variable, by default). " ,
-              :default => ScriptUtil::default_context_file,
-              :type => :string
+        context_description = "YAML configuration for various service providers (e.g. GitHub hosting, or Travis CI)."
+        unless ENV[DEFAULT_CONTEXT_ENV_VAR_NAME]
+          context_description += "\nYou can set a default configuration file by setting the #{DEFAULT_CONTEXT_ENV_VAR_NAME} environment variable."
+        end
+
+        opt :context, context_description ,
+              :type => :string,
+              :default => ScriptUtil::default_context_file
+              
       end
 
       def parse(args)
