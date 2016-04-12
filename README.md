@@ -1,3 +1,15 @@
+
+ > **IMPORTANT:** All Gitomator projects projects are currently in pre-alpha stage, which means that:        
+ > 
+ >  * Some parts that are not yet implemented
+ >  * API's may change significantly
+ >  * There are not a lot of tests
+ >
+ > If that scares you, no problem, come back in a couple of weeks. We'll be in alpha stage soon.      
+ > If you want to contribute to Gitomator (as a developer and/or user), Great! Please keep on reading.
+ > 
+
+
 # Gitomator - Classroom
 
 _Classroom_ is a set of automation tools for instructors in software engineering courses.           
@@ -7,34 +19,43 @@ _Classroom_ is a set of automation tools for instructors in software engineering
 If you
 
  * Teach a software engineering course,
- * Where you distribute code to students in the form of Git repos,
- * And you feel like you could benefit from automating your workflow.
+ * Where you _distribute code_ to students in the form of _Git repos_,
+ * And use (or, would like to use) services such _GitHub_ and _Travis CI_.
 
-Then you should give _Classroom_ a try.
+_Classroom_ can help you automate your workflow.
 
 #### What does it do?
 
-_Classroom_ makes it easy to automate your workflow.       
+_Classroom_ can automate many common tasks, for example:
+
+ * Creating repos and teams in your GitHub organization.
+ * Managing access permissions to repos in your GitHub organization.
+ * Cloning repos and pushing updates.
+ * Enabling/disabling CI.
+ * And more
+
+It includes command-line tools that implement a full workflow for you to:
 
  * Publish coding assignments as GitHub repositories
- * Provide students with (almost) immediate feedback on their work, using Travis CI.
- * Manage teams and access permissions to repos in your GitHub organization.
- * And much more
+ * And provide students with immediate feedback on their work, by enabling Travis CI.
+
+
+#### How do I use it?
 
 There are three ways to use _Classroom_:
 
- * From an interactive console - Develop workflows and run quick maintenance tasks. No coding required.
  * Using the command-line tools
- * By extending _Classroom_ with your own command-line tools, using basic Ruby programming.
+ * From an interactive console - Great for developing workflows and running quick maintenance tasks. 
+ * Extending _Classroom_ with custom command-line tools, using basic Ruby programming.
 
 
-#### What else?
+#### Anything else?
 
 _Classroom_ is
 
- * Extensible - Create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
- * Pluggable - Swap between providers by changing a configuration file.
- * Open-source - We're happy to accept pull-requests.
+ * Extensible - You can create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
+ * Pluggable - You can swap between service-providers by changing a configuration file.
+ * Open-source and contributor-friendly - Join the conversation by opening issues and/or submitting pull-requests.
 
 
 ## Dependencies
