@@ -31,11 +31,13 @@ opts = parser.parse(ARGV)
 parser.die :type, "Type must be one of 'user', 'team' or 'mixed'" unless ['user','team','mixed'].include? opts[:permission_type]
 abort usage_message if ARGV.length != 1
 
+
 #-------------------------------------------------------------------------------
 # Parse configuration files
 
 context = ScriptUtil::context_from_file(opts[:context])
 assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
+
 
 #-------------------------------------------------------------------------------
 # Actual script ...
