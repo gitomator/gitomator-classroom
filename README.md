@@ -46,21 +46,23 @@ please join the conversation, open issues and/or submit pull-requests.
 
 ----
 
-## Dependencies
+## Quick Start
 
-Once the the following dependencies are installed:
+
+### Install Dependencies
+
+_Classroom_ has the following dependencies:
 
  * [Ruby](https://www.ruby-lang.org/en/downloads/) (developed and tested with Ruby 2.2.2)
  * [Ruby Gems](https://rubygems.org/pages/download)
  * [Bundler](http://bundler.io/)
 
-Clone this repo and run `bin/setup` (which will download and install all remaining dependencies).
+Once they are installed, clone this repo and run `bin/setup` (which will download and install all remaining dependencies).
 
  > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to have access to these repos.
 
-----
 
-## _Classroom_ in 60 seconds
+### Setup GitHub Credentials
 
 Create a YAML file, `tmp/context.yml`, containing your GitHub information:
 
@@ -74,15 +76,13 @@ hosting:
 
  > *Important:* You should never commit login credentials to version control.       
 
-Start the interactive console:
 
+### Run The Interactive Console
+
+Run the command
 ```sh
  $ bin/console --context tmp/context.yml
 ```
-
-That's it!            
-
-#### Using the console
 
 You can now manage your GitHub organization from the interactive console. For example:
 
