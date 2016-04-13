@@ -1,12 +1,12 @@
-> **IMPORTANT:** All Gitomator projects projects are currently in pre-alpha stage, which means that:        
- > 
+> **IMPORTANT:** All Gitomator projects are currently in pre-alpha stage, which means that:        
+ >
  >  * Some parts that are not yet implemented
  >  * API's may change significantly
  >  * There are not a lot of tests
  >
  > If that scares you, no problem, come back in a couple of weeks. We'll be in alpha stage soon.      
  > If you want to contribute to Gitomator (as a developer and/or user), Great! Please keep on reading.
- > 
+ >
 
 
 # Gitomator - Classroom
@@ -26,7 +26,7 @@ _Classroom_ is
 
  * Extensible - You can create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
  * Pluggable - You can swap between service-providers by changing a configuration file.
- * Open-source and contributor-friendly. 
+ * Open-source and contributor-friendly.
 
 So, please join the conversation by opening issues and/or submitting pull-requests.
 
@@ -50,11 +50,11 @@ And includes command-line tools that implement a complete workflow:
 _Classroom_ can be used in different ways:
 
  * Using the command-line tools
- * From an interactive console - Great for developing workflows and running quick maintenance tasks. 
+ * From an interactive console - Great for developing workflows and running quick maintenance tasks.
  * Or, by extending the libraries with your own custom workflow and command-line tools (requires basic Ruby programming).
 
 
----- 
+----
 
 ## Dependencies
 
@@ -68,7 +68,7 @@ Clone this repo and run `bin/setup` (which will download and install all remaini
 
  > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to have access to these repos.
 
----- 
+----
 
 ## Quick Start
 
