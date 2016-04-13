@@ -4,9 +4,6 @@
  >  * API's may change significantly
  >  * There are not a lot of tests
  >
- > If that scares you, no problem, come back in a couple of weeks. We'll be in alpha stage soon.      
- > If you want to contribute to Gitomator (as a developer and/or user), Great! Please keep on reading.
- >
 
 
 # Gitomator - Classroom
