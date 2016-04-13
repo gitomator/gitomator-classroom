@@ -19,6 +19,8 @@ assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
 
 abort "Assignment config missing source_repo" if assignment.source_repo.nil?
 
+# TODO: Validate config (all usernames should be members of the Students team)
+
 tasks = []
 
 tasks.push Gitomator::Task::CreateRepos.new(context,
