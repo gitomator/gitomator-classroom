@@ -13,45 +13,36 @@
 
 _Classroom_ is a set of automation tools for instructors in software engineering courses.           
 
-If you
-
- * Teach a software engineering course,
- * Where you _distribute code_ to students in the form of _Git repos_,
- * And use (or, would like to use) services such _GitHub_ and _Travis CI_.
-
-Then, _Classroom_ can help you automate your workflow.
-
-
-_Classroom_ is
-
- * Extensible - You can create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
- * Pluggable - You can swap between service-providers by changing a configuration file.
- * Open-source and contributor-friendly.
-
-So, please join the conversation by opening issues and/or submitting pull-requests.
-
-#### What does it do?
-
-_Classroom_ can automate many common tasks, for example:
+It can automate tasks such as:
 
  * Creating repos and teams in your GitHub organization.
  * Managing access permissions to repos in your GitHub organization.
  * Cloning repos locally, committing and pushing updates.
  * Enabling/disabling CI.
- * And more
 
-And includes command-line tools that implement a complete workflow:
+And it includes command-line tools that implement a complete workflow:
 
  * Publishing coding assignments as GitHub repositories
  * Providing students with immediate feedback on their work, by enabling Travis CI.
  * Collecting assignments, by merging pull-requests.
  * Cloning, auto-marking and pushing results back to the students' repos.
 
-_Classroom_ can be used in different ways:
 
- * Using the command-line tools
- * From an interactive console - Great for developing workflows and running quick maintenance tasks.
- * Or, by extending the libraries with your own custom workflow and command-line tools (requires basic Ruby programming).
+So, if you
+
+ * Teach a software engineering course,
+ * Where you _distribute code_ to students in the form of _Git repos_,
+ * And use (or, would like to use) services such _GitHub_ and _Travis CI_.
+
+You might want to give _Classroom_ a try.
+
+One more thing ... _Classroom_ is
+
+ * Extensible - You can create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
+ * Pluggable - You can swap between service-providers by changing a configuration file.
+ * Open-source and contributor-friendly.
+
+please join the conversation by opening issues and/or submitting pull-requests.
 
 
 ----
