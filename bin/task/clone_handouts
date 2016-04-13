@@ -15,5 +15,5 @@ assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
 local_dir  = ARGV[1]
 
 ScriptUtil::run_task(
-  Gitomator::Task::CloneRepos.new(context, assignment.repos.keys, local_dir)
+  Gitomator::Task::CloneRepos.new(context, assignment.repos, local_dir)
 )
