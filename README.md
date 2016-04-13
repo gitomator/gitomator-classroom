@@ -124,15 +124,16 @@ The console is very useful for testing, developing workflows and/or running quic
 Most users, on the other hand, will prefer to automate their workflow using the command-line tools.
 Let's see a couple of examples ...
 
+ > _Tip:_ All of the command-line tools accept a `--help` flag.
 
-#### Setup Teams
+#### Update Teams
 
-Create teams and team membership, based on a configuration file.
+Create/update teams and team membership, based on a configuration file.
 
 Usage:
 
 ```sh
- $ bin/task/setup_teams PATH-TO-CONFIG-FILE
+ $ bin/task/update-teams PATH-TO-CONFIG-FILE
 ```
 
 Example config file:
@@ -158,7 +159,7 @@ Create repos, optionally with some starter code.
 Usage:
 
 ```sh
- $ bin/task/create_repos PATH-TO-CONFIG-FILE
+ $ bin/task/create-repos PATH-TO-CONFIG-FILE
 ```
 
 Example config file:
@@ -173,14 +174,14 @@ repos:
 ```
 
 
-#### Setup Permissions
+#### Update Access Permissions
 
 Grant access permissions to repos.
 
 Usage:
 
 ```sh
- $ bin/task/set-access-permissions PATH-TO-CONFIG-FILE
+ $ bin/task/update-access-permissions PATH-TO-CONFIG-FILE
 ```
 
 Example config file:
