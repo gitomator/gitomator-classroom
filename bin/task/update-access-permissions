@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'classroom_automator/script_util'
+require 'gitomator/classroom/script_util'
 require 'gitomator/task/update_repo_access_permissions'
 
 
-include ClassroomAutomator
+include Gitomator::Classroom
 
 #-------------------------------------------------------------------------------
 # Command-line functionality ...

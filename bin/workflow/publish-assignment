@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'classroom_automator/script_util'
+require 'gitomator/classroom/script_util'
 require 'gitomator/task/create_repos'
 require 'gitomator/task/enable_disable_ci'
 require 'gitomator/task/update_repo_access_permissions'
 
-include ClassroomAutomator
+include Gitomator::Classroom
 
 usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONF"
 parser = ScriptUtil::DefaultOptionParser.new(usage_message)

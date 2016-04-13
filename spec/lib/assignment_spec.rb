@@ -1,7 +1,7 @@
-require 'classroom_automator/assignment'
+require 'gitomator/classroom/assignment'
 require 'securerandom'
 
-describe ClassroomAutomator::Assignment do
+describe Gitomator::Classroom::Assignment do
 
   it "should create an attr_reader for each configuration attribute" do
     # Create a hash with arbitrary configuration data
@@ -11,7 +11,7 @@ describe ClassroomAutomator::Assignment do
       'a' + SecureRandom.hex => Time.now
     }
 
-    assignment = ClassroomAutomator::Assignment.from_hash(config)
+    assignment = Gitomator::Classroom::Assignment.from_hash(config)
 
     config.each do |attr_name, attr_value|
       expect(assignment.send(attr_name)).to eq(attr_value)
@@ -25,7 +25,7 @@ describe ClassroomAutomator::Assignment do
 
     it "No access-permissions" do
       repos = ['repo#1', 'repo#2', 'repo#3']
-      assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
+      assignment = Gitomator::Classroom::Assignment.from_hash({'repos' => repos })
 
       repos.each do |repo|
         expect(assignment.repos).to eq(repos)
@@ -39,7 +39,7 @@ describe ClassroomAutomator::Assignment do
         {'repo#2' => 'name#2'},
         {'repo#3' => 'name#3'}
       ]
-      assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
+      assignment = Gitomator::Classroom::Assignment.from_hash({'repos' => repos })
 
       repos.each do |repo2name|
         repo = repo2name.keys.first
@@ -55,7 +55,7 @@ describe ClassroomAutomator::Assignment do
         {'repo#2' => {'name#2' => 'read'  } },
         {'repo#3' => {'name#3' => 'read', 'name#4' => 'admin'}}
       ]
-      assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
+      assignment = Gitomator::Classroom::Assignment.from_hash({'repos' => repos })
 
       repos.each do |repo2permissions|
         repo = repo2permissions.keys.first
@@ -71,7 +71,7 @@ describe ClassroomAutomator::Assignment do
         {'repo#2' => ['name#3']},
         {'repo#3' => ['name#4', 'name#5', 'name#6']}
       ]
-      assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
+      assignment = Gitomator::Classroom::Assignment.from_hash({'repos' => repos })
 
       repos.each do |repo2names|
         repo  = repo2names.keys.first
@@ -86,7 +86,7 @@ describe ClassroomAutomator::Assignment do
         {'repo#1' => [ {'name#1' => 'read'}, { 'name#2' => 'write'} ] },
         {'repo#2' => [ {'name#3' => 'admin'}, { 'name#4' => 'read'} ] }
       ]
-      assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
+      assignment = Gitomator::Classroom::Assignment.from_hash({'repos' => repos })
 
       repos.each do |repo2permissions|
         repo  = repo2permissions.keys.first
@@ -105,8 +105,8 @@ describe ClassroomAutomator::Assignment do
       ]
 
       expect do
-        ClassroomAutomator::Assignment.from_hash({'repos' => repos })
-      end.to raise_error(ClassroomAutomator::DuplicateRepoError)
+        Gitomator::Classroom::Assignment.from_hash({'repos' => repos })
+      end.to raise_error(Gitomator::Classroom::DuplicateRepoError)
     end
 
   end

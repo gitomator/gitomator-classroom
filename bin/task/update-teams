@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'classroom_automator/script_util'
+require 'gitomator/classroom/script_util'
 require 'gitomator/task/setup_team'
 
-include ClassroomAutomator
+include Gitomator::Classroom
 
 usage_message  = "Usage: #{File.basename($0)} TEAMS-CONF"
 opts = ScriptUtil::DefaultOptionParser.new(usage_message).parse(ARGV)

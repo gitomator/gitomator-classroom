@@ -1,54 +1,56 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
-require "classroom_automator"
-require "classroom_automator/script_util"
+require "gitomator/classroom"
+require "gitomator/classroom/script_util"
 
 
-module ClassroomAutomator
-  module Console
+module Gitomator
+  module Classroom
+    module Console
 
-    @@context
-
-    def self.context=(context)
-      @@context=context
-    end
-
-    def classroom_automator_context
       @@context
-    end
 
-    def logger
-      @@context.logger
-    end
+      def self.context=(context)
+        @@context=context
+      end
 
-    def git
-      @@context.git
-    end
+      def gitomator_context
+        @@context
+      end
 
-    def hosting
-      @@context.hosting
-    end
+      def logger
+        @@context.logger
+      end
 
-    def ci
-      @@context.ci
-    end
+      def git
+        @@context.git
+      end
 
+      def hosting
+        @@context.hosting
+      end
+
+      def ci
+        @@context.ci
+      end
+
+    end
   end
 end
 
-opts = ClassroomAutomator::ScriptUtil::DefaultOptionParser.new(
+opts = Gitomator::Classroom::ScriptUtil::DefaultOptionParser.new(
   "Usage: #{File.basename($0)}"
 ).parse(ARGV)
 
 
 if opts[:context]
-  require 'classroom_automator/context'
-  ClassroomAutomator::Console.context =
-    ClassroomAutomator::Context.from_file(
+  require 'gitomator/classroom/context'
+  Gitomator::Classroom::Console.context =
+    Gitomator::Classroom::Context.from_file(
       opts[:context]
   )
-  include ClassroomAutomator::Console
+  include Gitomator::Classroom::Console
 end
 
 

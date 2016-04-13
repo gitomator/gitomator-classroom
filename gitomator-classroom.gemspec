@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'classroom_automator/version'
+require 'gitomator/classroom/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "classroom_automator"
-  spec.version       = ClassroomAutomator::VERSION
+  spec.name          = "gitomator-classroom"
+  spec.version       = Gitomator::Classroom::VERSION
   spec.authors       = ["Joey Freund"]
   spec.email         = ["joeyfreund@gmail.com"]
 

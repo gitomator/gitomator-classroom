@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'classroom_automator/script_util'
+require 'gitomator/classroom/script_util'
 require 'gitomator/task/create_repos'
 
-include ClassroomAutomator
+include Gitomator::Classroom
 
 usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONFIG"
 banner = <<-EOS
