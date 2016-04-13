@@ -1,6 +1,6 @@
 > **IMPORTANT:** All Gitomator projects are currently in pre-alpha stage, which means that:        
  >
- >  * Some parts that are not yet implemented
+ >  * Some parts are not implemented
  >  * API's may change significantly
  >  * There are not a lot of tests
  >
