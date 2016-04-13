@@ -36,13 +36,15 @@ So, if you
 
 You might want to give _Classroom_ a try.
 
-One more thing ... _Classroom_ is
+----
+
+One more thing ... _Classroom_ is built by software educators, for software educators. It is
 
  * Extensible - You can create additional services (e.g. `cloud`) and providers (e.g. `aws`, `azure`).
  * Pluggable - You can swap between service-providers by changing a configuration file.
  * Open-source and contributor-friendly.
 
-please join the conversation by opening issues and/or submitting pull-requests.
+please join the conversation, open issues and/or submit pull-requests.
 
 
 ----
