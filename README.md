@@ -70,7 +70,7 @@ Clone this repo and run `bin/setup` (which will download and install all remaini
 
 ----
 
-## Quick Start
+## _Classroom_ in 60 seconds
 
 Create a YAML file, `tmp/context.yml`, containing your GitHub information:
 
@@ -83,7 +83,6 @@ hosting:
 ```
 
  > *Important:* You should never commit login credentials to version control.       
- > Later, we will see how to load values from environment variables.
 
 Start the interactive console:
 
