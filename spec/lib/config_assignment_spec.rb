@@ -21,35 +21,51 @@ describe ClassroomAutomator::Assignment do
 
 
 
-  describe 'repos configuration' do
+  describe 'parsing repos and access-permission configuration' do
 
-    it "should handle repo-name only" do
+    it "No access-permissions" do
       repos = ['repo#1', 'repo#2', 'repo#3']
       assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
 
       repos.each do |repo|
-        expect(assignment.repos[repo]).to eq([])
+        expect(assignment.repos).to eq(repos)
       end
     end
 
 
-    it "should should handle { repo-name => username }" do
+    it "Access-permission is a String" do
       repos = [
-        {'repo#1' => 'username#1'},
-        {'repo#2' => 'username#2'},
-        {'repo#3' => 'username#3'}
+        {'repo#1' => 'name#1'},
+        {'repo#2' => 'name#2'},
+        {'repo#3' => 'name#3'}
       ]
       assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
 
-      repos.each do |repo2student|
-        repo     = repo2student.keys.first
-        students = repo2student.values
-        expect(assignment.repos[repo]).to eq(students)
+      repos.each do |repo2name|
+        repo = repo2name.keys.first
+        name = repo2name[repo]
+        expect(assignment.permissions(repo)).to eq({ name => :read })
       end
     end
 
 
-    it "should should handle { repo-name => [username1, ...] }" do
+    it "Access-permission is a Hash" do
+      repos = [
+        {'repo#1' => {'name#1' => 'write' } },
+        {'repo#2' => {'name#2' => 'read'  } },
+        {'repo#3' => {'name#3' => 'read', 'name#4' => 'admin'}}
+      ]
+      assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
+
+      repos.each do |repo2permissions|
+        repo = repo2permissions.keys.first
+        expected_permissions = repo2permissions[repo].map {|k,v| [k,v.to_sym] } .to_h
+        expect(assignment.permissions(repo)).to eq(expected_permissions)
+      end
+    end
+
+
+    it "Access-permission is an Array of Strings" do
       repos = [
         {'repo#1' => ['username#1', 'username#2']},
         {'repo#2' => ['username#3']},
@@ -57,26 +73,13 @@ describe ClassroomAutomator::Assignment do
       ]
       assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
 
-      repos.each do |repo2students|
-        repo     = repo2students.keys.first
-        students = repo2students[repo]
-        expect(assignment.repos[repo]).to eq(students)
+      repos.each do |repo2names|
+        repo  = repo2names.keys.first
+        names = repo2names[repo]
+        expect(assignment.permissions(repo)).to eq(names.map {|name| [name, :read] } .to_h)
       end
     end
 
-
-    it "should should handle mixed formats" do
-      repos = [
-        'repo#1',
-        { 'repo#2' => 'username#2' },
-        { 'repo#3' => ['username#3', 'username#4', 'username#5'] }
-      ]
-
-      assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
-      expect(assignment.repos['repo#1']).to eq([])
-      expect(assignment.repos['repo#2']).to eq(['username#2'])
-      expect(assignment.repos['repo#3']).to eq(['username#3', 'username#4', 'username#5'])
-    end
 
 
     it "should fail on duplicate repo names" do

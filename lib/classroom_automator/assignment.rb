@@ -83,12 +83,14 @@ module ClassroomAutomator
       repos_config.each do |repo_config|
         # Repo-name only, no access-permissions specified
         if repo_config.is_a? String
+          raise DuplicateRepoError.new "Duplicate repo, #{repo_config}" if repo2permissions.has_key? repo_config
           repo2permissions[repo_config] = {}
 
         # Repo-name to access-permissions configuration
         elsif (repo_config.is_a? Hash) and (repo_config.length == 1)
           repo_name   = repo_config.keys.first.to_s
           permissions = parse_permissions(repo_config[repo_name])
+          raise DuplicateRepoError.new "Duplicate repo, #{repo_name}" if repo2permissions.has_key? repo_name
           repo2permissions[repo_name] = permissions
 
         # Otherwise, invalid
