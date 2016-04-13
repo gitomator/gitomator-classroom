@@ -26,12 +26,6 @@ parser.opt :permission_type,
   "(in which case the script will first look for team with the specified name).",
   :default => 'user'
 
-parser.opt :verify_team_membership,
-  "Specify a name of a team, and the script will only grant permissions to " +
-  "users who are members of the specified team.\n" +
-  "Ex: Grant access only to members of our 'Students' team.",
-  :type => String
-
 opts = parser.parse(ARGV)
 
 parser.die :type, "Type must be one of 'user', 'team' or 'mixed'" unless ['user','team','mixed'].include? opts[:permission_type]
@@ -46,19 +40,9 @@ assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
 #-------------------------------------------------------------------------------
 # Actual script ...
 
-
-if opts[:verify_team_membership]
-  team = context.hosting.read_team(opts[:verify_team_membership])
-  if team.nil?
-    abort "Cannot verify team membership - Team '#{opts[:verify_team_membership]}' does not exist."
-  end
-end
-
-
 tasks = []
 
 assignment.repos.each do |repo|
-
   user2permission = {}
   team2permission = {}
 
