@@ -79,36 +79,33 @@ hosting:
 
 ### Run The Interactive Console
 
-Run the command
+The command
 ```sh
  $ bin/console --context tmp/context.yml
 ```
 
-You can now manage your GitHub organization from the interactive console. For example:
+Will start the interactive console, where you can manage your GitHub organization. Let's see a few examples:
 
-Search for all repos in your organization:
-
+ * Search for all repos in your organization:
 ```ruby
-hosting.search_repos('')
+      hosting.search_repos('')
 ```
 
-Or, clone all repos from your GitHub organization to the `/tmp` folder on your local machine:
-
+ * Clone all repos from your GitHub organization to the `/tmp` folder on your local machine:
 ```ruby
-hosting.search_repos('').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
+      hosting.search_repos('').each { |repo| git.clone(repo.url, "/tmp/#{repo.name}") }
 ```
 
-Or, create a test repo (called `test-repo`) in your GitHub organization:
-
+ * Create a test repo (called `test-repo`) in your GitHub organization:
 ```ruby
-hosting.create_repo('test-repo')
+      hosting.create_repo('test-repo')
 ```
 
 OK, let's stop here (you can type `exit` to exit the console).      
 
 
 
-## Automation Tasks
+## Command-line Tools
 
 The console is very useful for testing, developing workflows and/or running quick maintenance tasks.
 Most users, on the other hand, will prefer to automate their workflow using the command-line tools.
