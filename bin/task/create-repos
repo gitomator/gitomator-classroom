@@ -38,5 +38,5 @@ if opts[:update_existing]
 end
 
 ScriptUtil::run_task(
-  Gitomator::Task::CreateRepos.new(context, assignment.repos.keys, task_opts)
+  Gitomator::Task::CreateRepos.new(context, assignment.repos, task_opts)
 )
