@@ -196,7 +196,7 @@ Classroom Automator [and all other Gitomator libraries](https://github.com/gitom
 In other words, any help will be appreciated:
 
  * Please give the tools a try, and provide us with some feedback.
- * Bug reports and pull requests are welcome on GitHub at https://github.com/gitomator/classroom_automator.
+ * Bug reports and pull requests are welcome on GitHub at https://github.com/gitomator/gitomator-classroom.
  * Spread the word and tell others about Gitomator.
 
 
