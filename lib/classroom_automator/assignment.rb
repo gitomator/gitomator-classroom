@@ -45,7 +45,7 @@ module ClassroomAutomator
     #
     def initialize(config, repos_key='repos')
       @default_access_permission= (config['default_access_permission'] || :read).to_sym
-      @repo2permissions = parse_repo2permissions(config[repos_key])
+      @repo2permissions = parse_repo2permissions(config[repos_key] || [])
 
       # Create an attr_accessor for keys in the config file
       config .reject {|k,_| self.respond_to? k} .each do |key, value|
