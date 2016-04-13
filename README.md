@@ -199,8 +199,8 @@ repos:
 ## What's next?
 
 You should probably go and read the docs.
-The only problem is ... there are no docs at the moment.
-More on that below, in the [Contributing](#Contributing) section.
+The problem is ... there are no docs at the moment. 
+Which is yet another reason why you should read the next section.
 
 
 ## Contributing
