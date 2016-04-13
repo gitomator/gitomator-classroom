@@ -21,7 +21,7 @@ describe ClassroomAutomator::Assignment do
 
 
 
-  describe 'parsing repos and access-permission configuration' do
+  describe 'Parsing repos' do
 
     it "No access-permissions" do
       repos = ['repo#1', 'repo#2', 'repo#3']
@@ -67,9 +67,9 @@ describe ClassroomAutomator::Assignment do
 
     it "Access-permission is an Array of Strings" do
       repos = [
-        {'repo#1' => ['username#1', 'username#2']},
-        {'repo#2' => ['username#3']},
-        {'repo#3' => ['username#4', 'username#5', 'username#6']}
+        {'repo#1' => ['name#1', 'name#2']},
+        {'repo#2' => ['name#3']},
+        {'repo#3' => ['name#4', 'name#5', 'name#6']}
       ]
       assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
 
@@ -77,6 +77,22 @@ describe ClassroomAutomator::Assignment do
         repo  = repo2names.keys.first
         names = repo2names[repo]
         expect(assignment.permissions(repo)).to eq(names.map {|name| [name, :read] } .to_h)
+      end
+    end
+
+
+    it "Access-permission is an Array of Hashes" do
+      repos = [
+        {'repo#1' => [ {'name#1' => 'read'}, { 'name#2' => 'write'} ] },
+        {'repo#2' => [ {'name#3' => 'admin'}, { 'name#4' => 'read'} ] }
+      ]
+      assignment = ClassroomAutomator::Assignment.from_hash({'repos' => repos })
+
+      repos.each do |repo2permissions|
+        repo  = repo2permissions.keys.first
+        expect(assignment.permissions(repo)).to eq(
+          repo2permissions[repo].reduce(:merge).map {|k,v| [k,v.to_sym]} .to_h
+        )
       end
     end
 
