@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'classroom_automator/script_util'
+require 'gitomator/task/update_repo_access_permissions'
+
+
+include ClassroomAutomator
+
+#-------------------------------------------------------------------------------
+# Command-line functionality ...
+
+usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONFIG"
+banner = <<-EOS
+Command-line tool to update access permissions (who gets what access-permission to which repos).
+
+  #{usage_message}
+
+EOS
+
+parser = ScriptUtil::DefaultOptionParser.new(banner)
+
+parser.opt :permission_type,
+  "One of 'user', 'team' or 'mixed'.\nIndicates whether the names in the " +
+  "configuration files are usernames, team names, or a mix of both " +
+  "(in which case the script will first look for team with the specified name).",
+  :default => 'user'
+
+parser.opt :verify_team_membership,
+  "Specify a name of a team, and the script will only grant permissions to " +
+  "users who are members of the specified team.\n" +
+  "Ex: Grant access only to members of our 'Students' team.",
+  :type => String
+
+opts = parser.parse(ARGV)
+
+parser.die :type, "Type must be one of 'user', 'team' or 'mixed'" unless ['user','team','mixed'].include? opts[:permission_type]
+abort usage_message if ARGV.length != 1
+
+#-------------------------------------------------------------------------------
+# Parse configuration files
+
+context = ScriptUtil::context_from_file(opts[:context])
+assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
+
+#-------------------------------------------------------------------------------
+# Actual script ...
+
+
+if opts[:verify_team_membership]
+  team = context.hosting.read_team(opts[:verify_team_membership])
+  if team.nil?
+    abort "Cannot verify team membership - Team '#{opts[:verify_team_membership]}' does not exist."
+  end
+end
+
+
+tasks = []
+
+assignment.repos.each do |repo|
+
+  user2permission = {}
+  team2permission = {}
+
+  # The names in the assignment config might be usernames, team names, or a mix of both.
+  case opts[:permission_type]
+  when 'user'
+    user2permission = assignment.permissions(repo)
+  when 'team'
+    team2permission = assignment.permissions(repo)
+  when 'mixed'
+    assignment.permissions(repo).each do |name, permission|
+      if context.hosting.read_team(name)
+        team2permission[name] = permission
+      else
+        user2permission[name] = permission
+      end
+    end
+  end
+
+  tasks.push Gitomator::Task::UpdateRepoAccessPermissions.new(
+                              context, repo, user2permission, team2permission)
+end
+
+ScriptUtil::run_tasks(tasks)
