@@ -37,7 +37,6 @@ module Gitomator
         when 'local'
           return create_default_hosting_service(config)
         when 'github'
-          # return create_github_hosting_service(config)
           require 'gitomator/github/hosting_provider'
           return Gitomator::Service::Hosting::Service.new (
             Gitomator::GitHub::HostingProvider.from_config(config))
