@@ -32,23 +32,44 @@ module Gitomator
 
       def create_hosting_service(config)
         case config['provider']
-
         when nil
           return create_default_hosting_service(config)
-
         when 'local'
           return create_default_hosting_service(config)
-
         when 'github'
-          require 'gitomator/github/hosting_provider'
+          return create_github_hosting_service(config)
+        else
+          raise "Invalid hosting provider in service configuration - #{config}"
+        end
+      end
+
+
+      def create_github_hosting_service(config)
+        require 'gitomator/github/hosting_provider'
+
+        if config['access_token']
           return Gitomator::Service::Hosting::Service.new (
             Gitomator::GitHub::HostingProvider.with_access_token(
               config['access_token'], {org: config['organization']}
             )
           )
 
+        elsif config['username'] && config['password']
+          return Gitomator::Service::Hosting::Service.new (
+            Gitomator::GitHub::HostingProvider.with_username_and_password(
+              config['username'], config['password'], {org: config['organization']}
+            )
+          )
+
+        elsif config['client_id'] && config['client_secret']
+          return Gitomator::Service::Hosting::Service.new (
+            Gitomator::GitHub::HostingProvider.with_client_id_and_secret(
+              config['client_id'], config['client_secret'], {org: config['organization']}
+            )
+          )
+
         else
-          raise "Invalid hosting service configuration - #{config}"
+          raise "Invalid GitHub hosting configuration - #{config}"
         end
       end
 
