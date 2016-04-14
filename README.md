@@ -186,7 +186,7 @@ repos:
 ## What's next?
 
 You should probably go and read the docs.
-The problem is ... there are no docs at the moment. 
+The problem is ... there [isn't much documentation](docs) at the moment. 
 Which is yet another reason why you should read the next section.
 
 
