@@ -1,11 +1,7 @@
 require 'gitomator/classroom'
 
 require 'gitomator/context'
-require 'gitomator/service/git/service'
-require 'gitomator/service/git/provider/shell'
-
 require 'gitomator/service/hosting/service'
-
 require 'gitomator/service/ci/service'
 
 
@@ -47,24 +43,10 @@ module Gitomator
 
 
       def create_ci_service(config)
-        case config['provider']
-
-        when 'travis_pro'
+        if ['travis', 'travis_pro'].include? config['provider']
           require 'gitomator/travis/ci_provider'
           return Gitomator::Service::CI::Service.new(
-            Gitomator::Travis::CIProvider.with_travis_pro_access_token(
-              config['access_token'], config['github_organization']
-            )
-          )
-
-        when 'travis'
-          require 'gitomator/travis/ci_provider'
-          return Gitomator::Service::CI::Service.new(
-            Gitomator::Travis::CIProvider.with_travis_access_token(
-              config['access_token'], config['github_organization']
-            )
-          )
-
+            Gitomator::Travis::CIProvider.from_config(config))
         else
           raise "Cannot create CI service - Invalid configuration, #{config}."
         end
