@@ -13,11 +13,20 @@ hosting:
 #   output: <%= File.expand_path('~/tmp/log/out.log') %>
 #   level: INFO
 
+
 ci:
   provider: travis
   access_token: <%= ENV['TRAVIS_TEST_ACCESS_TOKEN'] %>
-  github_organization: <%= ENV['GITHUB_TEST_ORG'] %>
+  github_access_token: <%= ENV['GITHUB_TEST_ACCESS_TOKEN'] %>
 
+# You can configure Travis CI to authenticate using your GitHub token:
+# ci:
+#   provider: travis
+#   github_organization: <%= ENV['GITHUB_TEST_ORG'] %>
+#   github_access_token: <%= ENV['GITHUB_TEST_ACCESS_TOKEN'] %>
+
+# The travis_pro provider is used for private repos
+# Pro vs. non-pro is basically travis-ci.com vs. travis-ci.org
 # ci:
 #   provider: travis_pro
 #   access_token: <%= ENV['TRAVIS_ACCESS_TOKEN'] %>
