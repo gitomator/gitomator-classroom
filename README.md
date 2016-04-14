@@ -59,7 +59,7 @@ _Classroom_ has the following dependencies:
 
 Once they are installed, clone this repo and run `bin/setup` (which will download and install all remaining dependencies).
 
- > **Important:** Some dependencies are currently being pulled from [private Git repos](https://bitbucket.org/joey_freund/classroom_automator/src/a1e339070955d44dcb2d3eefe5890e15f5f83860/Gemfile?fileviewer=file-view-default). You will need to have access to these repos.
+ > **Important:** Some dependencies are currently being pulled from [private Git repos](Gemfile). You will need to have access to these repos.
 
 
 ### Setup GitHub Credentials
