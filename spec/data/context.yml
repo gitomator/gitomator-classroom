@@ -8,6 +8,11 @@ hosting:
   access_token: <%= ENV['GITHUB_TEST_ACCESS_TOKEN'] %>
   organization: <%= ENV['GITHUB_TEST_ORG'] %>
 
+tagging:
+  provider: github
+  access_token: <%= ENV['GITHUB_TEST_ACCESS_TOKEN'] %>
+  organization: <%= ENV['GITHUB_TEST_ORG'] %>
+
 
 # logger:
 #   output: <%= File.expand_path('~/tmp/log/out.log') %>
