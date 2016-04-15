@@ -35,6 +35,10 @@ module Gitomator
         @@context.ci
       end
 
+      def tagging
+        @@context.tagging
+      end
+
     end
   end
 end
