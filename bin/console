@@ -19,29 +19,11 @@ module Gitomator
         @@context
       end
 
-      def logger
-        @@context.logger
-      end
-
-      def git
-        @@context.git
-      end
-
-      def hosting
-        @@context.hosting
-      end
-
-      def ci
-        @@context.ci
-      end
-
-      def tagging
-        @@context.tagging
-      end
-
     end
   end
 end
+
+
 
 opts = Gitomator::Classroom::ScriptUtil::DefaultOptionParser.new(
   "Usage: #{File.basename($0)}"
@@ -50,11 +32,50 @@ opts = Gitomator::Classroom::ScriptUtil::DefaultOptionParser.new(
 
 if opts[:context]
   require 'gitomator/classroom/context'
-  Gitomator::Classroom::Console.context =
-    Gitomator::Classroom::Context.from_file(
-      opts[:context]
-  )
-  include Gitomator::Classroom::Console
+  Gitomator::Classroom::Console.context = Gitomator::Classroom::Context.from_file(opts[:context])
+end
+include Gitomator::Classroom::Console
+
+
+
+def logger
+  if gitomator_context && gitomator_context.respond_to?(:logger)
+    gitomator_context.logger
+  else
+    nil
+  end
+end
+
+def git
+  if gitomator_context && gitomator_context.respond_to?(:git)
+    gitomator_context.git
+  else
+    nil
+  end
+end
+
+def hosting
+  if gitomator_context && gitomator_context.respond_to?(:hosting)
+    gitomator_context.hosting
+  else
+    nil
+  end
+end
+
+def ci
+  if gitomator_context && gitomator_context.respond_to?(:ci)
+    gitomator_context.ci
+  else
+    nil
+  end
+end
+
+def tagging
+  if gitomator_context && gitomator_context.respond_to?(:tagging)
+    gitomator_context.tagging
+  else
+    nil
+  end
 end
 
 
