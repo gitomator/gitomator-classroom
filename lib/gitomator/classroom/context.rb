@@ -30,11 +30,6 @@ module Gitomator
       end
 
 
-      def tagging
-        @tagging ||= create_service(:tagging)
-      end
-
-
 
       def create_hosting_service(config)
         case config['provider']
