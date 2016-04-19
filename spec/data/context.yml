@@ -21,8 +21,8 @@ tagging:
 
 ci:
   provider: travis
+  github_organization: <%= ENV['GITHUB_TEST_ORG'] %>
   access_token: <%= ENV['TRAVIS_TEST_ACCESS_TOKEN'] %>
-  github_access_token: <%= ENV['GITHUB_TEST_ACCESS_TOKEN'] %>
 
 # You can configure Travis CI to authenticate using your GitHub token:
 # ci:
