@@ -1,6 +1,6 @@
-## Assignment
+## Assignment Configuration
 
-The [`Assignment`](lib/gitomator/classroom/assignment.rb) is essentially a parsed
+An [`Assignment`](/lib/gitomator/classroom/assignment.rb) is essentially a parsed
 configuration file, with a few convenience methods:
 
  * `repos()` - Returns an array of all repo names.
@@ -9,23 +9,19 @@ configuration file, with a few convenience methods:
 Until there are proper docs, here are a few examples of valid configuration files.
 
 
-#### Minimal configuration
+### Minimal configuration
 
-Just a bunch of repos. `a1-repo-001` is the name of
-the first repo, `a1-repo-002` is the second, `a1-repo-003` the third, and so on.
-
-You can use this configuration and the `create-repos` task to create a bunch of empty repos.
+You can run `bin/task/create-repos` with the following configuration to create a bunch of empty repos (named `repo-001`, `repo-002` and so on):
 
 ```yaml
 repos:
-  - a1-repo-001
-  - a1-repo-002
-  - a1-repo-003
-  - a1-repo-004
-  # ...
+  - repo-001
+  - repo-002
+  - repo-003
+  - repo-004
 ```
 
-#### Minimal configuration + `source_repo`
+### Minimal configuration + `source_repo`
 
 Allows you to `create-repos` with "starter code".        
 The `master` branch of the specified `source_repo` will be pushed to each repo that is created.
@@ -35,56 +31,52 @@ The `master` branch of the specified `source_repo` will be pushed to each repo t
  > (assuming there are no Git conflicts).
 
 ```yaml
-source_repo: assignment-01-starter-code
+source_repo: repo-with-starter-code
 repos:
-  - a1-repo-001
-  - a1-repo-002
-  - a1-repo-003
-  - a1-repo-004
-  # ...
+  - repo-001
+  - repo-002
+  - repo-003
+  - repo-004
 ```
 
 
-#### Specify access permissions
+### Specify access permissions
 
 You can who (e.g. GitHub usernames) gets access (read-only, by default) to
 each repo.
 
-You can use this configuration file with the `update-access-permissions` script.
+You can use this configuration file with the `bin/task/update-access-permissions` script.
 
 ```yaml
 repos:
-  - a1-repo-001: Alice
-  - a1-repo-002: Bob
-  - a1-repo-003: Charlie
-  - a1-repo-004: Dave
+  - repo-001: Alice
+  - repo-002: Bob
+  - repo-003: Charlie
+  - repo-004: Dave
   # ...
 ```
 
-You can specify multiple users per repo (e.g. for group assignments):
+You can also specify multiple users per repo (e.g. group assignments):
 
 ```yaml
 repos:
-  - project-01: [Alice, Bob]
-  - project-02: [Charlie, Dave, Eva]
-  - project-03: [Frank, George]
-  # ...
+  - repo-001: [Alice, Bob]
+  - repo-002: [Charlie, Dave, Eva]
+  - repo-003: [Frank, George]
 ```
 
 Or, mix the two formats:
 
 ```yaml
 repos:
-  - project-01: [Alice, Bob]
-  - project-02: Charlie
-  - project-03: [Dave, Eva]
-  # ...
+  - repo-001: [Alice, Bob]
+  - repo-002: Charlie
+  - repo-003: [Dave, Eva]
 ```
 
-#### Specify access permissions, part 2
+### Specify access permissions, part 2
 
-If you want to grant users permissions other than the default one (read-only),
-you can specify the permission in the config file:
+Specify permissions other than default one (read-only):
 
 ```yaml
 repos:
@@ -92,7 +84,6 @@ repos:
   - repo-002: { Bob: write }
   - repo-003: { Charlie: admin }
   - repo-004: Dave
-  # ...
 ```
 
 As you might expect, you can specify multiple users per repo:
@@ -101,7 +92,6 @@ As you might expect, you can specify multiple users per repo:
 repos:
   - repo-001: { Alice: read , Bob: write }
   - repo-002: { Charlie: admin, Dave: write }
-  # ...
 ```
 
 Which can also be specified as:
@@ -114,13 +104,12 @@ repos:
   - repo-002:
      - Charlie: admin
      - Dave: write
-  # ...
 ```
 
 
-#### Specify default access permission
+### Set default access permission
 
-You specify a `default_access_permission` in the config file. For example:
+You can specify the `default_access_permission` in the config file:
 
 ```yaml
 default_access_permission: write
@@ -132,7 +121,7 @@ repos:
   # ...
 ```
 
-#### Setting access permissions for teams
+### Setting access permissions for teams
 
 The names in the configuration file can refer to user and/or teams.
 
