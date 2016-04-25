@@ -11,6 +11,7 @@ module Gitomator
     end
 
 
+
     class Assignment
 
 
@@ -45,6 +46,7 @@ module Gitomator
       # @param config [Hash] Configuration data (e.g. parsed from a YAML file)
       #
       def initialize(config, repos_key='repos')
+        @config = config
         @default_access_permission= (config['default_access_permission'] || :read).to_sym
         @repo2permissions = parse_repo2permissions(config[repos_key] || [])
 
@@ -55,6 +57,13 @@ module Gitomator
           send setter, value
         end
       end
+
+
+
+      def method_missing(method_sym, *arguments, &block)
+        return nil
+      end
+
 
 
       #
@@ -134,110 +143,6 @@ module Gitomator
       end
 
 
-
-      # def parse_config(config, repos_key='repos')
-      #   default_access_permission = config['default_access_permission'] || :read
-      #   repos = parse_repos(config[repos_key])
-      #
-      #
-      #   # Create an attr_accessor for each configuration attribute (excepts for `repos`)...
-      #   config.each do |key, value|
-      #     setter = "#{key}="
-      #     self.class.send(:attr_accessor, key) if !respond_to?(setter)
-      #     send setter, value
-      #   end
-      #
-      #   # Transform the repos configuration info (we support multiple formats)
-      #   # into a hash that maps repo-names to lists of students-usernames.
-      #   @repos = parse_repos_config(config[repos_key] || [])
-      # end
-
-      def method_missing(method_sym, *arguments, &block)
-        return nil
-      end
-
-
-      def parse_repos_config(repos_conf)
-        if( repos_conf.nil?)
-          return {}
-        end
-
-        # Helper methods ...
-
-        def repo_name(repo_config)
-          if repo_config.is_a? String
-            return repo_config
-          elsif (repo_config.is_a? Hash) and (repo_config.length == 1)
-            return repo_config.keys.first.to_s
-          else
-            raise "Invalid repo config item: #{repo_config}"
-          end
-        end
-
-        def user2permission(repo_config)
-          if repo_config.is_a? String
-            return {}
-          elsif (repo_config.is_a? Hash) and (repo_config.length == 1)
-            return repo_config.keys.first.to_s
-          else
-            raise "Invalid repo config item: #{repo_config}"
-          end
-        end
-
-        def team2permission(repo_config)
-          if repo_config.is_a? String
-            return repo_config
-          elsif (repo_config.is_a? Hash) and (repo_config.length == 1)
-            return repo_config.keys.first.to_s
-          else
-            raise "Invalid repo config item: #{repo_config}"
-          end
-        end
-
-
-
-        repos_conf.each do |repo_config|
-          repo, students = parse_repo_config(repo_config)
-          raise DuplicateRepoError.new(repo) if result.has_key? repo
-          result[repo] = students
-        end
-
-
-        # result = {}
-        #
-        # repos_conf.each do |repo_config|
-        #   repo, students = parse_repo_config(repo_config)
-        #   raise DuplicateRepoError.new(repo) if result.has_key? repo
-        #   result[repo] = students
-        # end
-        #
-        # return result
-      end
-
-
-      #
-      # Extract the repo-name and usernames from a single entry in the
-      # `repos` section of the configuration.
-      #
-      # @param repo_config [String or Hash]
-      #
-      # @return [String, String array] Return the pair <repo-name, usernames>.
-      #
-      def parse_repo_config(repo_config)
-        if repo_config.is_a? String
-          return repo_config, []
-        elsif (repo_config.is_a? Hash) and (repo_config.length == 1)
-          usernames = repo_config.values.first
-          usernames = [ usernames.to_s ] unless usernames.is_a? Array
-          return repo_config.keys.first.to_s, usernames.map {|u| u.to_s}
-        else
-          raise "Invalid repo config item: #{repo_config}"
-        end
-      end
-
-
     end
-
-
   end
 end
