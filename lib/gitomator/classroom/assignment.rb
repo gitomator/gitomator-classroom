@@ -51,7 +51,7 @@ module Gitomator
         @repo2permissions = parse_repo2permissions(config[repos_key] || [])
 
         # Create an attr_accessor for keys in the config file
-        config .reject {|k,_| self.respond_to? k} .each do |key, value|
+        config.reject {|k,_| k.to_s == repos_key} .each do |key, value|
           setter = "#{key}="
           self.class.send(:attr_accessor, key) if !respond_to?(setter)
           send setter, value

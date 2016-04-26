@@ -19,28 +19,12 @@ describe Gitomator::Classroom::Assignment do
   end
 
 
-  it "should NOT override existing attr_readers from the config" do
-
-    # A subclass of Gitomator::Classroom::Assignment that implements a `foo` attr_reader
-    class FooAssignment < Gitomator::Classroom::Assignment
-      def foo
-        return 42
-      end
-
-      def attr(key)
-        return @config[key]
-      end
-    end
-
-    # Config specifying a value for `foo`
+  it "should NOT override 'repos' with attr_accessors" do
     config = {
-      'foo' => 0
+      'repos' => 42
     }
-
-    assignment = FooAssignment.from_hash(config)
-    expect(assignment.foo).to eq(42)
-    expect(assignment.attr('foo')).to eq(0)
-
+    assignment = Gitomator::Classroom::Assignment.from_hash(config)
+    expect(assignment.repos).to eq([])
   end
 
 
