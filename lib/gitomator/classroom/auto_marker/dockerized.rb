@@ -6,96 +6,82 @@ require 'fileutils'
 module Gitomator
   module Classroom
     module AutoMarker
+
+      #
+      # A docker-based auto marker.
+      #
+      # Essentially, this auto-marker loads the following pieces of information
+      # from a configuration file:
+      #  0. Docker image
+      #  1. Resources (i.e. files and folders, used as "inputs" to the automarker)
+      #  2. Results (i.e. folder, where the automarker can save its results)
+      #  3. Auto-marker Script
+      #
+      # This task takes care of mounting the resources and results as container
+      # volumes, and running the script.
+      #
       class Dockerized < Gitomator::Classroom::AutoMarker::Base
 
-        attr_reader :work_dir, :docker_image
+        attr_reader :docker_image
 
         #
         # @param context [Gitomator::Context]
         # @param auto_marker_config [Gitomator::Classroom::Config::AutoMarker]
-        # @param work_dir [String] Path to an existing directory
         #
-        def initialize(context, auto_marker_config, work_dir)
+        def initialize(context, auto_marker_config)
           super(context, auto_marker_config)
-          raise "No such dir, #{work_dir}" unless Dir.exist? work_dir
-          @work_dir = work_dir
 
           raise "Config missing 'docker_image'" if config.docker_image.nil?
           @docker_image = config.docker_image
 
-          raise "Config missing 'run_script'" if config.run_script.nil?
-          raise "No such file, #{config.run_script}." unless File.file?(config.run_script)
-          
+          @automarker_script = config.automarker_script || 'run'
+
+          raise "Config missing 'results_dir'" if config.results_dir.nil?
+          @results_dir = config.results_dir
+          raise "No such dir, #{@results_dir}" unless Dir.exist? @results_dir
+
           before_auto_marking do
             logger.debug "TODO: Fetch auto-marker's docker image"
-            Gitomator::Task::CloneRepos.new(context, config.repos, work_dir).run()
           end
         end
 
 
-        def resources_dir(repo)
-          return File.join(work_dir, 'resources', repo)
-        end
-
         def results_dir(repo)
-          return File.join(work_dir, 'results', repo)
+          File.join(@results_dir, repo)
         end
 
 
         def auto_mark(repo)
-          create_resources_dir(repo)
-          create_results_dir(repo)
-
-          cmd = docker_run_command(repo, 'run.sh')
+          cmd = docker_run_command(repo)
           logger.info(cmd)
 
-          out = File.open(File.join(results_dir(repo), 'stdout.txt'), 'w')
-          err = File.open(File.join(results_dir(repo), 'stderr.txt'), 'w')
-          system({}, cmd, {:out => out, :err => err})
-          [out, err].each {|f| f.close }
-        end
-
-
-        #
-        # @return [String] The path to the resources directory
-        #
-        def create_resources_dir(repo)
-          resources = resources_dir(repo)
-
-          # Create a fresh new resources dir ...
-          FileUtils.remove_dir(resources) if Dir.exist? resources
-          FileUtils.mkdir_p(resources)
-
-          # Copy the `solution`
-          FileUtils.cp_r(File.join(work_dir, repo), File.join(resources, 'solution'))
-
-          # Copy `run.sh`
-          run_script = File.join(resources, 'run.sh')
-          FileUtils.cp(config.run_script, run_script)
-          File.chmod(0777, run_script)
-
-          # Copy additional resources
-          (config.resources || {}).each do |name, path_on_host|
-            FileUtils.cp_r(path_on_host, File.join(resources, name))
+          File.open(File.join(results_dir(repo), 'out.txt'), 'w') do |out|
+            File.open(File.join(results_dir(repo), 'err.txt'), 'w') do |err|
+              res = system({}, cmd, {:out => out, :err => err})
+              logger.debug "Shell command returned #{res}"
+            end
           end
         end
 
 
-        def create_results_dir(repo)
-          results = results_dir(repo)
-          FileUtils.mkdir_p(results) unless Dir.exist? results
-        end
-
-
-
-        def docker_run_command(repo, run_script)
+        def docker_run_command(repo)
           cmd  = "docker run --rm -it "
-          cmd += "-v #{File.absolute_path(resources_dir(repo))}:/root/resources:ro "
+
           cmd += "-v #{File.absolute_path(results_dir(repo))}:/root/results:rw "
-          cmd += "-e \"GITOMATOR_RESOURCES=/root/resources\" "
           cmd += "-e \"GITOMATOR_RESULTS=/root/results\" "
+
+          if config.resources
+            # Mount all specified resources
+            config.resources.each do |name, path|
+              path = File.absolute_path(path.gsub('$REPO$', repo))
+              cmd += "-v #{path}:/root/resources/#{name}:ro "
+            end
+            # And set the GITOMATOR_RESOURCES environment variable
+            cmd += "-e \"GITOMATOR_RESOURCES=/root/resources\" "
+          end
+
           cmd += "#{docker_image} "
-          cmd += "/bin/sh /root/resources/#{run_script}"
+          cmd += "/bin/sh /root/resources/#{@automarker_script}"
 
           return cmd
         end

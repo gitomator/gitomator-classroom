@@ -1,16 +1,16 @@
 name: warmup-assignment
 
-# docker_image: alpine
 docker_image:  joeyfreund/automarker-intro-fall-2015
+results_dir:   /Users/joey/tmp/gitomator/results/
 
-# run_script: /Users/joey/tmp/gitomator/run.sh
-run_script: /Users/joey/Desktop/repos/gitomator/gitomator-classroom/tmp/run.sh
-
-# Resources needed by an auto-marker running in a docker container
+# Resources that will be mounted (on the container) as read-only volumes
 resources:
-  # The `solution` and `run.sh` resources are loaded by default.
-  # Specify additional resources here:
+  solution:   /Users/joey/tmp/gitomator/$REPO$
   automarker: /Users/joey/tmp/gitomator/automarker
+  run:        tmp/run.sh
+
+# The name of the resource we can use to start the auto-marker (default: run)
+automarker_script: run
 
 repos:
  - solution1

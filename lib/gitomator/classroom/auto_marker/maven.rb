@@ -2,12 +2,18 @@ require 'gitomator/classroom/auto_marker/dockerized'
 require 'fileutils'
 require 'nokogiri'
 
+#
+# NOTE: With the recent changes, this class became obsolete.
+#       I am keeping it here for references (surefire XML reports parsing)
+#
+
 
 module Gitomator
   module Classroom
     module AutoMarker
       class Maven < Gitomator::Classroom::AutoMarker::Dockerized
 
+        attr_reader :work_dir
 
         #
         # @param context [Gitomator::Context]
@@ -15,7 +21,14 @@ module Gitomator
         # @param work_dir [String] Path to an existing directory
         #
         def initialize(context, auto_marker_config, work_dir)
-          super(context, auto_marker_config, work_dir)
+          raise "No such dir, #{work_dir}" unless Dir.exist? work_dir
+          @work_dir = work_dir
+
+          super(context, auto_marker_config)
+
+          before_auto_marking do
+            Gitomator::Task::CloneRepos.new(context, config.repos, work_dir).run()
+          end
 
           # TODO: This is here an an example ...
           after_auto_marking do |repo2mark, repo2error|
