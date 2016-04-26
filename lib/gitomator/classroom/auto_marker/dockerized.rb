@@ -8,7 +8,7 @@ module Gitomator
     module AutoMarker
       class Dockerized < Gitomator::Classroom::AutoMarker::Base
 
-        attr_reader :work_dir
+        attr_reader :work_dir, :docker_image
 
         #
         # @param context [Gitomator::Context]
@@ -20,7 +20,14 @@ module Gitomator
           raise "No such dir, #{work_dir}" unless Dir.exist? work_dir
           @work_dir = work_dir
 
+          raise "Config missing 'docker_image'" if config.docker_image.nil?
+          @docker_image = config.docker_image
+
+          raise "Config missing 'run_script'" if config.run_script.nil?
+          raise "No such file, #{config.run_script}." unless File.file?(config.run_script)
+          
           before_auto_marking do
+            logger.debug "TODO: Fetch auto-marker's docker image"
             Gitomator::Task::CloneRepos.new(context, config.repos, work_dir).run()
           end
         end
@@ -39,11 +46,6 @@ module Gitomator
           create_resources_dir(repo)
           create_results_dir(repo)
 
-          # Create the run script (i.e. Auto-marker)
-          run_script = File.join(resources_dir(repo), 'run.sh')
-          File.open(run_script, 'w') { |f| write_run_script(f, repo) }
-          File.chmod(0777, run_script)
-
           cmd = docker_run_command(repo, 'run.sh')
           logger.info(cmd)
 
@@ -54,32 +56,34 @@ module Gitomator
         end
 
 
-
-
-
-
         #
         # @return [String] The path to the resources directory
         #
         def create_resources_dir(repo)
           resources = resources_dir(repo)
-          # Create a fresh new resources dir
+
+          # Create a fresh new resources dir ...
           FileUtils.remove_dir(resources) if Dir.exist? resources
           FileUtils.mkdir_p(resources)
-          # Copy the repo into the resources dir
-          FileUtils.cp_r(File.join(work_dir, repo), File.join(resources, repo))
+
+          # Copy the `solution`
+          FileUtils.cp_r(File.join(work_dir, repo), File.join(resources, 'solution'))
+
+          # Copy `run.sh`
+          run_script = File.join(resources, 'run.sh')
+          FileUtils.cp(config.run_script, run_script)
+          File.chmod(0777, run_script)
+
+          # Copy additional resources
+          (config.resources || {}).each do |name, path_on_host|
+            FileUtils.cp_r(path_on_host, File.join(resources, name))
+          end
         end
 
 
         def create_results_dir(repo)
           results = results_dir(repo)
           FileUtils.mkdir_p(results) unless Dir.exist? results
-        end
-
-
-        def write_run_script(file, repo)
-          file << "echo \"Hello from Gitomator Classroom\"\n"
-          file << "echo \"Auto-marking #{repo}\"\n"
         end
 
 
@@ -94,11 +98,6 @@ module Gitomator
           cmd += "/bin/sh /root/resources/#{run_script}"
 
           return cmd
-        end
-
-
-        def docker_image
-          return 'alpine'
         end
 
 
