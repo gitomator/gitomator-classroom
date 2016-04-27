@@ -24,6 +24,14 @@ module Gitomator
         end
       end
 
+    end
+
+
+    module Exception
+
+      class InvalidConfig < StandardError
+        # Pass ...
+      end
 
     end
 
