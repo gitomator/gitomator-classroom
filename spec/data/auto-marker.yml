@@ -3,10 +3,10 @@
 # Example configuration file
 # ==============================================================================
 
-# The name of the assignment (optional)
+# The name of the assignment
 name: warmup-assignment
 
-# The names of the repos (containing student's code) to be auto-marked
+# The repos (containing student's code) to be auto-marked
 repos:
  - solution1
  - solution2
