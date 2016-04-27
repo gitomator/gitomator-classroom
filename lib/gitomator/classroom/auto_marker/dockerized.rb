@@ -22,8 +22,6 @@ module Gitomator
       #
       class Dockerized < Gitomator::Classroom::AutoMarker::Base
 
-        attr_reader :docker_image
-
         #
         # @param context [Gitomator::Context]
         # @param auto_marker_config [Gitomator::Classroom::Config::AutoMarker]
@@ -31,34 +29,25 @@ module Gitomator
         def initialize(context, auto_marker_config)
           super(context, auto_marker_config)
 
-          raise "Config missing 'docker_image'" if config.docker_image.nil?
-          @docker_image = config.docker_image
-
-          @automarker_script = config.automarker_script || 'run'
-
-          raise "Config missing 'results_dir'" if config.results_dir.nil?
-          @results_dir = config.results_dir
-          raise "No such dir, #{@results_dir}" unless Dir.exist? @results_dir
-
           before_auto_marking do
-            logger.debug "TODO: Fetch auto-marker's docker image"
+            cmd = "docker pull #{config.docker_image}"
+            logger.info "#{cmd}\nNote: Downloading may take a while."
+            system({}, cmd, {})
           end
         end
 
 
         def results_dir(repo)
-          File.join(@results_dir, repo)
+          File.join(config.results_dir, repo)
         end
 
 
         def auto_mark(repo)
           cmd = docker_run_command(repo)
           logger.info(cmd)
-
           File.open(File.join(results_dir(repo), 'out.txt'), 'w') do |out|
             File.open(File.join(results_dir(repo), 'err.txt'), 'w') do |err|
-              res = system({}, cmd, {:out => out, :err => err})
-              logger.debug "Shell command returned #{res}"
+              system({}, cmd, {:out => out, :err => err})
             end
           end
         end
@@ -67,21 +56,25 @@ module Gitomator
         def docker_run_command(repo)
           cmd  = "docker run --rm -it "
 
-          cmd += "-v #{File.absolute_path(results_dir(repo))}:/root/results:rw "
+          # Mount the auto-marker script
+          path = File.absolute_path(config.automarker_script)
+          cmd += "-v #{path}:/root/run "
+
+          # Mount the results directory (and set environment variable)
+          path = File.absolute_path(results_dir(repo))
+          cmd += "-v #{path}:/root/results:rw "
           cmd += "-e \"GITOMATOR_RESULTS=/root/results\" "
 
-          if config.resources
-            # Mount all specified resources
-            config.resources.each do |name, path|
-              path = File.absolute_path(path.gsub('$REPO$', repo))
-              cmd += "-v #{path}:/root/resources/#{name}:ro "
-            end
-            # And set the GITOMATOR_RESOURCES environment variable
-            cmd += "-e \"GITOMATOR_RESOURCES=/root/resources\" "
+          # Mount the (read-only) resources directory (and set environment variable)
+          config.resources.each do |name, path|
+            path = File.absolute_path(path.gsub('$REPO$', repo))
+            cmd += "-v #{path}:/root/resources/#{name}:ro "
           end
+          cmd += "-e \"GITOMATOR_RESOURCES=/root/resources\" "
 
-          cmd += "#{docker_image} "
-          cmd += "/bin/sh /root/resources/#{@automarker_script}"
+          # Specify the docker image, and the command to run
+          cmd += "#{config.docker_image} "
+          cmd += "/bin/sh /root/run"
 
           return cmd
         end
