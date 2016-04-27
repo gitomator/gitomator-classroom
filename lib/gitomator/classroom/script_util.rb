@@ -76,16 +76,16 @@ module Gitomator
       # @return [Gitomator::Classroom::Assignment]
       #
       def self.assignment_config_from_file(config_file)
-        require 'gitomator/classroom/assignment'
-        Gitomator::Classroom::Assignment.from_file(config_file)
+        require 'gitomator/classroom/config/assignment'
+        Gitomator::Classroom::Config::Assignment.from_file(config_file)
       end
 
       #
       # @return [Hash<String,Gitomator::Classroom::Team>]
       #
       def self.teams_from_file(config_file)
-        require 'gitomator/classroom/team'
-        Gitomator::Classroom::Team.teams_from_file(config_file)
+        require 'gitomator/classroom/config/team'
+        Gitomator::Classroom::Config::Team.from_file(config_file)
       end
 
       #---------------------------------------------------------------------------
