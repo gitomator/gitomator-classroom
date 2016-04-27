@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'gitomator/classroom/script_util'
+require 'gitomator/classroom/auto_marker/dockerized'
+
+include Gitomator::Classroom
+
+usage_message  = "Usage: #{File.basename($0)} AUTO_MARKER-CONF "
+opts = ScriptUtil::DefaultOptionParser.new(usage_message).parse(ARGV)
+abort usage_message if ARGV.length != 1
+
+context     = ScriptUtil::context_from_file(opts[:context])
+auto_marker = ScriptUtil::auto_marker_config_from_file(ARGV[0])
+
+ScriptUtil::run_task(
+  Gitomator::Classroom::AutoMarker::Dockerized.new(context, auto_marker)
+)

@@ -73,7 +73,7 @@ module Gitomator
       end
 
       #
-      # @return [Gitomator::Classroom::Assignment]
+      # @return [Gitomator::Classroom::Config::Assignment]
       #
       def self.assignment_config_from_file(config_file)
         require 'gitomator/classroom/config/assignment'
@@ -81,7 +81,15 @@ module Gitomator
       end
 
       #
-      # @return [Hash<String,Gitomator::Classroom::Team>]
+      # @return [Gitomator::Classroom::Config::AutoMarker]
+      #
+      def self.auto_marker_config_from_file(config_file)
+        require 'gitomator/classroom/config/auto_marker'
+        Gitomator::Classroom::Config::AutoMarker.from_file(config_file)
+      end
+
+      #
+      # @return [Hash<String,Gitomator::Classroom::Config::Team>]
       #
       def self.teams_from_file(config_file)
         require 'gitomator/classroom/config/team'
