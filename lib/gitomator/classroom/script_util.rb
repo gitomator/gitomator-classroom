@@ -9,7 +9,7 @@ module Gitomator
       DEFAULT_CONTEXT_ENV_VAR_NAME = 'GITOMATOR_CLASSROOM_CONTEXT'
 
       def self.default_context_file
-        ENV[DEFAULT_CONTEXT_ENV_VAR_NAME]
+        return ENV[DEFAULT_CONTEXT_ENV_VAR_NAME] || File.expand_path('~/.gitomator')
       end
 
       #---------------------------------------------------------------------------
@@ -23,7 +23,7 @@ module Gitomator
 
           context_description = "YAML configuration for various service providers (e.g. GitHub hosting, or Travis CI)."
           unless ENV[DEFAULT_CONTEXT_ENV_VAR_NAME]
-            context_description += "\nYou can set a default configuration file by setting the #{DEFAULT_CONTEXT_ENV_VAR_NAME} environment variable."
+            context_description += "\nYou can override the default configuration file by setting the #{DEFAULT_CONTEXT_ENV_VAR_NAME} environment variable."
           end
 
           opt :context, context_description ,

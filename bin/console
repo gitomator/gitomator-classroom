@@ -10,13 +10,20 @@ module Gitomator
     module Console
 
       @@context
+      @@context_file
 
-      def self.context=(context)
-        @@context=context
+      def self.load_context(context_file)
+        require 'gitomator/classroom/context'
+        @@context = Gitomator::Classroom::Context.from_file(context_file)
+        @@context_file = context_file
       end
 
       def gitomator_context
         @@context
+      end
+
+      def gitomator_context_file
+        @@context_file
       end
 
     end
@@ -30,51 +37,58 @@ opts = Gitomator::Classroom::ScriptUtil::DefaultOptionParser.new(
 ).parse(ARGV)
 
 
-if opts[:context]
-  require 'gitomator/classroom/context'
-  Gitomator::Classroom::Console.context = Gitomator::Classroom::Context.from_file(opts[:context])
-end
-include Gitomator::Classroom::Console
+context_file = opts[:context]
 
-
-
-def logger
-  if gitomator_context && gitomator_context.respond_to?(:logger)
-    gitomator_context.logger
+# Let's set the context, and load all the helper methods ...
+unless context_file.nil?
+  unless File.exist? context_file
+    puts "Cannot load Gitomator context. No such file, #{context_file}"
   else
-    nil
-  end
-end
+    Gitomator::Classroom::Console.load_context(context_file)
 
-def git
-  if gitomator_context && gitomator_context.respond_to?(:git)
-    gitomator_context.git
-  else
-    nil
-  end
-end
 
-def hosting
-  if gitomator_context && gitomator_context.respond_to?(:hosting)
-    gitomator_context.hosting
-  else
-    nil
-  end
-end
+    include Gitomator::Classroom::Console
 
-def ci
-  if gitomator_context && gitomator_context.respond_to?(:ci)
-    gitomator_context.ci
-  else
-    nil
-  end
-end
+    def logger
+      if gitomator_context && gitomator_context.respond_to?(:logger)
+        gitomator_context.logger
+      else
+        nil
+      end
+    end
 
-def tagging
-  if gitomator_context && gitomator_context.respond_to?(:tagging)
-    gitomator_context.tagging
-  else
-    nil
+    def git
+      if gitomator_context && gitomator_context.respond_to?(:git)
+        gitomator_context.git
+      else
+        nil
+      end
+    end
+
+    def hosting
+      if gitomator_context && gitomator_context.respond_to?(:hosting)
+        gitomator_context.hosting
+      else
+        nil
+      end
+    end
+
+    def ci
+      if gitomator_context && gitomator_context.respond_to?(:ci)
+        gitomator_context.ci
+      else
+        nil
+      end
+    end
+
+    def tagging
+      if gitomator_context && gitomator_context.respond_to?(:tagging)
+        gitomator_context.tagging
+      else
+        nil
+      end
+    end
+
   end
 end
 
