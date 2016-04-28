@@ -9,14 +9,13 @@ module Gitomator
   module Classroom
     module Console
 
-      @@context
-      @@context_file
-
       def self.load_context(context_file)
         require 'gitomator/classroom/context'
         @@context = Gitomator::Classroom::Context.from_file(context_file)
         @@context_file = context_file
+        return @@context
       end
+
 
       def gitomator_context
         @@context
@@ -39,59 +38,24 @@ opts = Gitomator::Classroom::ScriptUtil::DefaultOptionParser.new(
 
 context_file = opts[:context]
 
-# Let's set the context, and load all the helper methods ...
-unless context_file.nil?
-  unless File.exist? context_file
-    puts "Cannot load Gitomator context. No such file, #{context_file}"
-  else
-    Gitomator::Classroom::Console.load_context(context_file)
+if File.exist? context_file.to_s
+  # Create a context
+  context = Gitomator::Classroom::Console.load_context(context_file)
 
-
-    include Gitomator::Classroom::Console
-
-    def logger
-      if gitomator_context && gitomator_context.respond_to?(:logger)
-        gitomator_context.logger
-      else
-        nil
-      end
+  # Define some convenience console methods ...
+  [:git, :hosting, :ci, :tagging].each do |m|
+    if context.respond_to? m
+      define_method(m) { context.send(m) }
+    else
+      define_method(m) { nil }
     end
-
-    def git
-      if gitomator_context && gitomator_context.respond_to?(:git)
-        gitomator_context.git
-      else
-        nil
-      end
-    end
-
-    def hosting
-      if gitomator_context && gitomator_context.respond_to?(:hosting)
-        gitomator_context.hosting
-      else
-        nil
-      end
-    end
-
-    def ci
-      if gitomator_context && gitomator_context.respond_to?(:ci)
-        gitomator_context.ci
-      else
-        nil
-      end
-    end
-
-    def tagging
-      if gitomator_context && gitomator_context.respond_to?(:tagging)
-        gitomator_context.tagging
-      else
-        nil
-      end
-    end
-
   end
+
+elsif ! context_file.nil?
+  puts "Cannot load Gitomator context. No such file, #{context_file}"
 end
 
 
+include Gitomator::Classroom::Console
 require "irb"
 IRB.start
