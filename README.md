@@ -33,7 +33,7 @@ So, if you
  * Where you _distribute code_ to students in the form of _Git repos_,
  * And use (or, would like to use) services such _GitHub_ and _Travis CI_.
 
-You might want to give _Classroom_ a try.
+You might want to checkout our [quick start guide](https://gitomator.github.io/docs/quick-start/).
 
 ----
 
@@ -188,7 +188,7 @@ repos:
 ## What's next?
 
 You should probably go and read the docs.
-The problem is ... there [isn't much documentation](docs) at the moment. 
+The problem is ... there [isn't much documentation](docs) at the moment.
 Which is yet another reason why you should read the next section.
 
 
