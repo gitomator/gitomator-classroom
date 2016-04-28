@@ -8,7 +8,7 @@ module Gitomator
       class Assignment < Gitomator::Classroom::Config::Base
 
 
-        property :name, { :required => true }
+        property :name
         property :deadline
         property :source_repo
         property :create_opts
