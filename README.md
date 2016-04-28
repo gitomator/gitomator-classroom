@@ -8,6 +8,8 @@
 
 # Gitomator - Classroom
 
+[![Build Status](https://travis-ci.org/gitomator/gitomator-classroom.svg?branch=master)](https://travis-ci.org/gitomator/gitomator-classroom)
+
 _Classroom_ is a set of automation tools for instructors in software engineering courses.           
 
 It can automate tasks such as:
