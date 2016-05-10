@@ -26,7 +26,7 @@ repos:
  # Repo with read-access granted to multiple users/teams
  - test-repo-03: [joeyfreund-test, joeyfreund-test2]
  # Repo with write-access granted to a single user/team
- - test-repo-04: { joeyfreund-test: write }
+ - "test-repo-04:foo": { joeyfreund-test: write }
  # Repo with write-access granted to multiple users/teams
  - test-repo-05:
     joeyfreund-test: write
