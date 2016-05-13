@@ -2,7 +2,7 @@
 
 require 'bundler/setup'
 require 'gitomator/classroom/script_util'
-require 'gitomator/task/create_repos'
+require 'gitomator/task/make_repos'
 
 include Gitomator::Classroom
 
@@ -38,5 +38,5 @@ if opts[:update_existing]
 end
 
 ScriptUtil::run_task(
-  Gitomator::Task::CreateRepos.new(context, assignment.repos, task_opts)
+  Gitomator::Task::MakeRepos.new(context, assignment.repos, task_opts)
 )

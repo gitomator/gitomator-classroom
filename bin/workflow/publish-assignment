@@ -2,7 +2,7 @@
 
 require 'bundler/setup'
 require 'gitomator/classroom/script_util'
-require 'gitomator/task/create_repos'
+require 'gitomator/task/make_repos'
 require 'gitomator/task/enable_disable_ci'
 require 'gitomator/task/update_repo_access_permissions'
 
@@ -23,7 +23,7 @@ abort "Assignment config missing source_repo" if assignment.source_repo.nil?
 
 tasks = []
 
-tasks.push Gitomator::Task::CreateRepos.new(context,
+tasks.push Gitomator::Task::MakeRepos.new(context,
   assignment.repos,
   { source_repo: assignment.source_repo, update_existing: true }
 )

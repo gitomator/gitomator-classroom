@@ -2,7 +2,7 @@
 
 require 'bundler/setup'
 require 'gitomator/classroom/script_util'
-require 'gitomator/task/create_repos'
+require 'gitomator/task/make_repos'
 
 include Gitomator::Classroom
 
@@ -39,5 +39,5 @@ unless ARGV[1].nil?
 end
 
 ScriptUtil::run_task(
-  Gitomator::Task::CreateRepos.new(context, [ARGV[0]], task_opts)
+  Gitomator::Task::MakeRepos.new(context, [ARGV[0]], task_opts)
 )
