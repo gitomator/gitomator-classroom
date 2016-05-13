@@ -25,10 +25,10 @@ describe Assignment do
       expect(assignment.source_repo).to eq 'da-source'
     end
 
-    it "sets the 'create_opts' property" do
+    it "sets the 'repo_properties' property" do
       opts = { 'has_issues' => true, 'private' => false }
-      assignment = Assignment.from_hash({ 'create_opts' => opts })
-      expect(assignment.create_opts).to eq opts
+      assignment = Assignment.from_hash({ 'repo_properties' => opts })
+      expect(assignment.repo_properties).to eq opts
     end
 
     it "has :read as the default access permission" do

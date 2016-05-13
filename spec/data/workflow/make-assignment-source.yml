@@ -1,0 +1,12 @@
+#
+# The sandbox repo is where you develop your assignment.
+#
+sandbox_repo: warmup-assignment-sandbox
+sandbox_solution_branch: master
+sandbox_handout_branch:  handout
+
+#
+# The handout-source will contain a history-less version of the
+# assignment handout (i.e. starter code that is given to the students).
+#
+handout_source: warmup-assignment-source

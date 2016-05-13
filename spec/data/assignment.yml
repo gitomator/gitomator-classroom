@@ -9,13 +9,15 @@ deadline: 2016-04-03
 # The name of a repo that is the base for all repos (i.e. the starter code)
 source_repo: test-repo
 
-# Create Options
-create_opts:
+# Various properties of a hosted repo
+repo_properties:
   description: "The first assignment of the term, just a warm-up."
+  homepage: "http://gitomator.github.io"
   # private: true
   has_issues: true
   has_wiki: false
   has_downloads: false
+  default_branch: master
 
 # default_access_permission: write
 repos:

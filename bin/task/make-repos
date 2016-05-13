@@ -30,8 +30,8 @@ task_opts = {}
 if assignment.source_repo
   task_opts[:source_repo] = assignment.source_repo
 end
-if assignment.create_opts
-  task_opts[:create_opts] = assignment.create_opts.map {|k,v| [k.to_sym,v]} .to_h
+if assignment.repo_properties
+  task_opts[:repo_properties] = assignment.repo_properties.map {|k,v| [k.to_sym,v]} .to_h
 end
 if opts[:update_existing]
   task_opts[:update_existing] = true

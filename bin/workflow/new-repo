@@ -9,28 +9,29 @@ include Gitomator::Classroom
 usage_message  = "Usage: #{File.basename($0)} REPO-NAME [SOURCE]"
 parser = ScriptUtil::DefaultOptionParser.new(usage_message)
 parser.opt :update_existing, "If the repo exists, update it by pushing all recent commits from the source repo."
-parser.opt :description, "The description of the newly created repo", :type => String
-parser.opt :private, "The created repo will be private"
-parser.opt :issues, "The created repo will have issues enabled"
-parser.opt :wiki, "The created repo will have wiki enabled"
-parser.opt :downloads, "The created repo will have downloads enabled"
+parser.opt :description, "Short description of the repo", :type => String
+parser.opt :homepage, "URL of the homepage of the repo", :type => String
+parser.opt :private, "Make the repo private"
+parser.opt :issues, "Enable issues"
+parser.opt :wiki, "Enable wiki"
+parser.opt :downloads, "Enable downloads"
 opts = parser.parse(ARGV)
 abort usage_message if (ARGV.length < 1 || ARGV.length > 2)
 
 context    = ScriptUtil::context_from_file(opts[:context])
 
-create_opts = {}
-[:description, :private].each do |key|
+repo_properties = {}
+[:description, :homepage, :private].each do |key|
   if opts[key]
-    create_opts[key] = opts[key]
+    repo_properties[key] = opts[key]
   end
 end
 [:issues, :wiki, :downloads].each do |key|
-  create_opts["has_#{key}".to_sym] = opts[key]
+  repo_properties["has_#{key}".to_sym] = opts[key]
 end
 
 task_opts = {
-  :create_opts => create_opts
+  :repo_properties => repo_properties
 }
 unless ARGV[1].nil?
   task_opts[:source_repo] = ARGV[1]

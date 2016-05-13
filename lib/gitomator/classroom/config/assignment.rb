@@ -11,7 +11,7 @@ module Gitomator
         property :name
         property :deadline
         property :source_repo
-        property :create_opts
+        property :repo_properties
         property :default_access_permission, { :default => :read }
 
         #
