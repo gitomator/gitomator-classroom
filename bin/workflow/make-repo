@@ -6,7 +6,7 @@ require 'gitomator/task/make_repos'
 
 include Gitomator::Classroom
 
-usage_message  = "Usage: #{File.basename($0)} REPO-NAME [SOURCE]"
+usage_message  = "Usage: #{File.basename($0)} REPO-NAME [SOURCE-REPO]"
 parser = ScriptUtil::DefaultOptionParser.new(usage_message)
 parser.opt :update_existing, "If the repo exists, update it by pushing all recent commits from the source repo."
 parser.opt :description, "Short description of the repo", :type => String
@@ -15,16 +15,15 @@ parser.opt :private, "Make the repo private"
 parser.opt :issues, "Enable issues"
 parser.opt :wiki, "Enable wiki"
 parser.opt :downloads, "Enable downloads"
+parser.opt :default_branch, "The repo's default branch", :default => 'master'
 opts = parser.parse(ARGV)
 abort usage_message if (ARGV.length < 1 || ARGV.length > 2)
 
+
 context    = ScriptUtil::context_from_file(opts[:context])
 
-repo_properties = {}
-[:description, :homepage, :private].each do |key|
-  if opts[key]
-    repo_properties[key] = opts[key]
-  end
+repo_properties = opts.select do |k,_|
+  [:description, :homepage, :private, :default_branch].include? k
 end
 [:issues, :wiki, :downloads].each do |key|
   repo_properties["has_#{key}".to_sym] = opts[key]
