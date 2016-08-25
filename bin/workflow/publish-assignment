@@ -23,10 +23,15 @@ abort "Assignment config missing source_repo" if assignment.source_repo.nil?
 
 tasks = []
 
-tasks.push Gitomator::Task::MakeRepos.new(context,
-  assignment.repos,
-  { source_repo: assignment.source_repo, update_existing: true }
-)
+
+task_opts = {
+  source_repo: assignment.source_repo,
+  update_existing: true
+}
+if assignment.repo_properties
+  task_opts[:repo_properties] = assignment.repo_properties.map {|k,v| [k.to_sym,v]} .to_h
+end
+tasks.push Gitomator::Task::MakeRepos.new(context, assignment.repos, task_opts)
 
 if opts[:enable_ci]
   tasks.push Gitomator::Task::EnableCI.new(context,
