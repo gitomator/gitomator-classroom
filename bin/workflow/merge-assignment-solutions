@@ -10,6 +10,7 @@ include Gitomator::Classroom
 
 usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONF"
 parser = ScriptUtil::DefaultOptionParser.new(usage_message)
+parser.opt :wait, "Seconds to wait after each merge (throttling)", :default => 0
 opts = parser.parse(ARGV)
 abort usage_message if ARGV.length != 1
 
@@ -25,9 +26,10 @@ class MergeSolutionsTask < Gitomator::BaseTask
   # @param context - A context
   # @param repos [Array<String>] The handout repos
   #
-  def initialize(context, repos)
+  def initialize(context, repos, opts = {})
     super(context)
-    @repos     = repos
+    @repos = repos
+    @opts  = opts
   end
 
 
@@ -62,6 +64,12 @@ class MergeSolutionsTask < Gitomator::BaseTask
     logger.info "About to merge pull-request #{pr.id} for repo #{repo_name} ..."
     hosting.merge_pull_request(repo_name, pr.id, 'Merging solution')
     tagging.add_tags(repo_name, pr.id, 'solution')
+
+    if @opts[:wait]
+      logger.debug "About to sleep for #{@opts[:wait]} second(s) ..."
+      sleep(@opts[:wait])
+    end
+
   end
 
 
@@ -84,4 +92,6 @@ class MergeSolutionsTask < Gitomator::BaseTask
 end
 
 
-ScriptUtil::run_task(MergeSolutionsTask.new(context, assignment.repos))
+ScriptUtil::run_task(MergeSolutionsTask.new(
+  context, assignment.repos, { :wait => opts[:wait] }
+))
