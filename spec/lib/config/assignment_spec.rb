@@ -72,6 +72,18 @@ describe Assignment do
         end.to raise_error(Gitomator::Classroom::Exception::InvalidConfig)
       end
 
+      it "fails if there are duplicate repo names with user permissions" do
+        config = {
+          'name' => 'warmup-assignment',
+          'repos' => [
+            { 'r1' => 'u1' },
+            { 'r1' => 'u2' }
+          ]
+        }
+        expect do
+          Assignment.from_hash(config)
+        end.to raise_error(Gitomator::Classroom::Exception::InvalidConfig)
+      end
 
       it "returns an empty hash, when permissions are not specified at all" do
         config = {

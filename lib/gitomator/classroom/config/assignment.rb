@@ -68,7 +68,12 @@ module Gitomator
               raise Gitomator::Classroom::Exception::InvalidConfig.new("Duplicate property, #{repo_config}")
             end
 
-            # 3. If no error, store the information
+            # 3. Check for duplicate repos
+            if repo2permissions.has_key? repo_name
+              raise Gitomator::Classroom::Exception::InvalidConfig.new("Duplicate repo, #{repo_name}")
+            end
+
+            # 4. If no error, store the information
             repo2permissions[repo_name] = permissions
           end
 
