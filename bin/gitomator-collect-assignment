@@ -4,6 +4,7 @@ require 'bundler/setup'
 require 'gitomator/util/script_util'
 require 'gitomator/context'
 require 'gitomator/task/config/repos_config'
+require 'gitomator/task/enable_disable_ci'
 require 'gitomator/classroom/task/merge_solutions'
 
 
@@ -11,6 +12,9 @@ require 'gitomator/classroom/task/merge_solutions'
 usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONFIG"
 parser = Gitomator::ScriptUtil::DefaultOptionParser.new(usage_message)
 
+parser.opt :disable_ci,
+    "Disable CI before merging (e.g. to avoid unnecessary builds)",
+    :default => true
 parser.opt :throttle,
     "Seconds to wait after each merge",
     :default => 1
@@ -27,9 +31,16 @@ context     = Gitomator::Context.from_file(opts[:context])
 config_hash = Gitomator::Util.load_config(ARGV[0])
 assignment  = Gitomator::Task::Config::ReposConfig.new(config_hash)
 
+tasks = []
 
-Gitomator::ScriptUtil::run_task(
-  Gitomator::Classroom::Task::MergeSolutions.new(context,
-    assignment.repos, opts[:solution_label], { :throttle => opts[:throttle] }
+if opts[:disable_ci]
+  tasks << Gitomator::Task::DisableCI.new(context,
+    assignment.repos, { :sync => false }
   )
+end
+
+tasks << Gitomator::Classroom::Task::MergeSolutions.new(context,
+  assignment.repos, opts[:solution_label], { :throttle => opts[:throttle] }
 )
+
+Gitomator::ScriptUtil::run_tasks(tasks)
