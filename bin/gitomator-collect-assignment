@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'gitomator/util/script_util'
+require 'gitomator/context'
+require 'gitomator/task/config/repos_config'
+require 'gitomator/classroom/task/merge_solutions'
+
+
+
+usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONFIG"
+parser = Gitomator::ScriptUtil::DefaultOptionParser.new(usage_message)
+
+parser.opt :throttle,
+    "Seconds to wait after each merge",
+    :default => 1
+parser.opt :solution_label,
+    "Merged pull-requests will be labeled with this label",
+    :default => 'solution'
+
+opts = parser.parse(ARGV)
+abort usage_message if ARGV.length != 1
+
+
+context     = Gitomator::Context.from_file(opts[:context])
+
+config_hash = Gitomator::Util.load_config(ARGV[0])
+assignment  = Gitomator::Task::Config::ReposConfig.new(config_hash)
+
+
+Gitomator::ScriptUtil::run_task(
+  Gitomator::Classroom::Task::MergeSolutions.new(context,
+    assignment.repos, opts[:solution_label], { :throttle => opts[:throttle] }
+  )
+)
