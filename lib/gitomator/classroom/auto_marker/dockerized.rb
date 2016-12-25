@@ -31,7 +31,7 @@ module Gitomator
 
           before_auto_marking do
             cmd = "docker pull #{config.docker_image}"
-            logger.info "#{cmd}\nNote: Downloading may take a while."
+            logger.info "#{cmd}\n\n ** Note: Pulling an image may take a while **\n\n"
             system({}, cmd, {})
           end
         end
