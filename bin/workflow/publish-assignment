@@ -1,41 +1,57 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'gitomator/classroom/script_util'
+require 'gitomator/util/script_util'
+require 'gitomator/context'
+require 'gitomator/task/config/repos_config'
 require 'gitomator/task/make_repos'
 require 'gitomator/task/enable_disable_ci'
 require 'gitomator/task/update_repo_access_permissions'
 
-include Gitomator::Classroom
 
 usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONF"
-parser = ScriptUtil::DefaultOptionParser.new(usage_message)
-parser.opt :enable_ci, "Enable CI on the repo, after creating/updating them."
+parser = Gitomator::ScriptUtil::DefaultOptionParser.new(usage_message)
+parser.opt :update_existing_repos,
+    "Push updates from the source repo to existing repos",
+    :default => true
+parser.opt :enable_ci,
+    "Enable CI on the repo, after creating/updating them.",
+    :default => true
+parser.opt :sync_ci,
+    "Synchronize the CI service (with the hosting), before enabling CI",
+    :default => true
+
 opts = parser.parse(ARGV)
 abort usage_message if ARGV.length != 1
 
-context    = ScriptUtil::context_from_file(opts[:context])
-assignment = ScriptUtil::assignment_config_from_file(ARGV[0])
+context     = Gitomator::Context.from_file(opts[:context])
 
-abort "Assignment config missing source_repo" if assignment.source_repo.nil?
+config_hash = Gitomator::Util.load_config(ARGV[0])
+assignment  = Gitomator::Task::Config::ReposConfig.new(config_hash)
+
+
+abort "Assignment config missing source_repo" unless assignment.source_repo
 
 # TODO: Validate config (all usernames should be members of the Students team)
 
+# By default, assignments are created as private repos
+repo_properties = { private: true }
+repo_properties.merge!(
+  (assignment.repo_properties || {}).map {|k,v| [k.to_sym, v] } .to_h
+)
+
+
 tasks = []
 
-
-task_opts = {
-  source_repo: assignment.source_repo,
-  update_existing: true
-}
-if assignment.repo_properties
-  task_opts[:repo_properties] = assignment.repo_properties.map {|k,v| [k.to_sym,v]} .to_h
-end
-tasks.push Gitomator::Task::MakeRepos.new(context, assignment.repos, task_opts)
+tasks.push Gitomator::Task::MakeRepos.new(context, assignment.repos, {
+  source_repo:     assignment.source_repo,
+  update_existing: opts[:update_existing_repos],
+  repo_properties: repo_properties
+})
 
 if opts[:enable_ci]
   tasks.push Gitomator::Task::EnableCI.new(context,
-    assignment.repos, { sync: true }
+    assignment.repos, { sync: opts[:sync_ci] }
   )
 end
 
@@ -44,4 +60,4 @@ assignment.repos.each do |repo|
       repo, assignment.permissions(repo), {})
 end
 
-ScriptUtil::run_tasks(tasks)
+Gitomator::ScriptUtil::run_tasks(tasks)
