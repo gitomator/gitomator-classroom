@@ -13,7 +13,7 @@ module Gitomator
 
           #
           # @param context [Gitomator::Context]
-          # @param auto_marker_config [Gitomator::Classroom::Config::AutoMarker] Parsed configuration object (TODO: Implement it as a subclass of Gitomator::Classroom::Assignment)
+          # @param auto_marker_config [Gitomator::Classroom::Config::AutoMarker]
           # @param local_dir [String] A local directory where the repos will be (or have been) cloned.
           #
           def initialize(context, auto_marker_config, local_dir)
