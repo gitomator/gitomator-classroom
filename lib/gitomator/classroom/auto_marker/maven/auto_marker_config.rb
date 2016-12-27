@@ -1,4 +1,4 @@
-require 'gitomator/classroom/config/auto_marker'
+require 'gitomator/classroom/auto_marker/config'
 
 
 module Gitomator
@@ -7,7 +7,7 @@ module Gitomator
       module Maven
 
 
-        class AutoMarkerConfig < Gitomator::Classroom::Config::AutoMarker
+        class AutoMarkerConfig < Gitomator::Classroom::AutoMarker::Config
 
           attr_accessor :auto_marker_source_repo
 

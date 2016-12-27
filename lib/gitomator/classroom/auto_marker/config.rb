@@ -3,15 +3,15 @@ require 'gitomator/task/config/repos_config'
 
 module Gitomator
   module Classroom
-    module Config
-      class AutoMarker < Gitomator::Task::Config::ReposConfig
+    module AutoMarker
+      class Config < Gitomator::Task::Config::ReposConfig
 
 
         attr_accessor :docker_image
         attr_accessor :automarker_script
         attr_accessor :resources
         attr_accessor :env
-        
+
 
         #
         # @param config_obj [Hash] Configuration data (commonly loaded from a YAML file)
