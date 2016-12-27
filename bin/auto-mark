@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'gitomator/util/script_util'
+require 'gitomator/context'
+require 'gitomator/classroom/config/auto_marker'
+require 'gitomator/classroom/auto_marker/dockerized'
+
+
+usage_message  = "Usage: #{File.basename($0)} AUTO-MARKER-CONFIG LOCAL-DIR "
+opts = Gitomator::ScriptUtil::DefaultOptionParser.new(usage_message).parse(ARGV)
+abort usage_message if ARGV.length != 2
+
+context     = Gitomator::Context.from_file(opts[:context])
+
+config_hash = Gitomator::Util.load_config(ARGV[0])
+auto_marker = Gitomator::Classroom::Config::AutoMarker.new(config_hash)
+auto_marker.validate()
+local_dir   = ARGV[1]
+
+Gitomator::ScriptUtil::run_task(
+  Gitomator::Classroom::AutoMarker::Dockerized.new(context, auto_marker, local_dir)
+)
