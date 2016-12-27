@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'gitomator/util/script_util'
+require 'gitomator/context'
+require 'gitomator/task/config/repos_config'
+require 'gitomator/task/base_repos_task'
+
+
+
+class AddCommitAndPushAllFiles < Gitomator::Task::BaseReposTask
+
+  def initialize(context, repos, local_dir, branch)
+    super(context, repos, local_dir)
+    @branch = branch || 'auto-marker'
+  end
+
+  def repo_dir(repo)
+    return File.join(local_dir, repo)
+  end
+
+  def process_repo(repo, index)
+    git.command(repo_dir(repo), "checkout -B #{@branch}")
+    git.add(repo_dir(repo), '--all')
+    git.commit(repo_dir(repo), 'Adding automarker files')
+    git.command(repo_dir(repo), "push origin #{@branch}")
+  end
+
+end
+
+
+
+
+usage_message  = "Usage: #{File.basename($0)} ASSIGNMENT-CONF LOCAL-DIR"
+parser = Gitomator::ScriptUtil::DefaultOptionParser.new(usage_message)
+parser.opt :branch,
+    "The results will be pushed to a branch with this name",
+    :default => 'auto-marker'
+
+opts = parser.parse(ARGV)
+abort usage_message if ARGV.length != 2
+
+context     = Gitomator::Context.from_file(opts[:context])
+
+config_hash = Gitomator::Util.load_config(ARGV[0])
+assignment  = Gitomator::Task::Config::ReposConfig.new(config_hash)
+
+local_dir   = ARGV[1]
+
+Gitomator::ScriptUtil::run_task(
+  AddCommitAndPushAllFiles.new(context, assignment.repos, local_dir, opts[:branch])
+)
