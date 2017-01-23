@@ -91,6 +91,6 @@ end
 
 
 Gitomator::ScriptUtil::run_tasks([
-  # Maven::AutoMarker.new(context, auto_marker, local_dir),
+  Maven::AutoMarker.new(context, auto_marker, local_dir),
   A1ResultsCollector.new(context, auto_marker, local_dir)
 ])
