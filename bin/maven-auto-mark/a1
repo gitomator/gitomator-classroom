@@ -1,0 +1,96 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'gitomator/util/script_util'
+require 'gitomator/context'
+require 'gitomator/classroom/auto_marker/maven/auto_marker_config'
+require 'gitomator/classroom/auto_marker/maven/auto_marker'
+require 'gitomator/classroom/auto_marker/maven/results_collector'
+
+
+include Gitomator::Classroom::AutoMarker
+
+usage_message  = "Usage: #{File.basename($0)} AUTO-MARKER-CONFIG LOCAL-DIR "
+opts = Gitomator::ScriptUtil::DefaultOptionParser.new(usage_message).parse(ARGV)
+abort usage_message if ARGV.length != 2
+
+context     = Gitomator::Context.from_file(opts[:context])
+
+config_obj = Gitomator::Util.load_config(ARGV[0])
+auto_marker = Maven::AutoMarkerConfig.new(config_obj)
+auto_marker.validate()
+local_dir   = ARGV[1]
+
+
+# ==============================================================================
+
+#
+# A custom result collector used for processing A1.
+# Goes over the local repos, process the JUnit XML reports,
+# write a nice markdown repo with the mark, and print a CSV
+# output of all marks.
+#
+class A1ResultsCollector < Maven::ResultsCollector
+
+
+  def initialize(context, auto_marker_config, local_dir)
+    super(context, auto_marker_config, local_dir)
+
+    # Process all marks together ...
+    after_processing_all_repos do |repo2mark, repo2error|
+      logger.info "Writing CSV output to stdout ..."
+      puts "utor,mark"
+      repo2mark.each {|r,m| puts "#{r[3..r.length]},#{m}"}
+    end
+  end
+
+
+  # @return int The mark out of 100
+  def process_repo(repo, index)
+    # results is a hash, mapping XML filename to failre and error counts (array of two ints)
+    results = super(repo, index)
+    total_failing_tests = results.map {|_, counts| counts.reduce(:+)}.reduce(:+)
+    mark = mark_out_of_100(total_failing_tests)
+
+    path = File.join(local_dir, repo, 'mark.md')
+    logger.info "Create Markdown report, #{path}, for #{repo} based on #{results} ..."
+    File.write(path, markdown_report(total_failing_tests))
+
+    return mark
+  end
+
+
+  # @return String
+  def markdown_report(total_failing_tests)
+    s =  "## A1, auto-marker results\n\n"
+    if total_failing_tests > 0
+      s << "Your code failed/errored on #{total_failing_tests} test method(s).      \n"
+    end
+    s << "Your mark is **#{mark_out_of_100(total_failing_tests)} out of 100**.\n\n"
+    s << " > For more details, see the JUnit reports in the [`surefire-reports`](/surefire-reports) directory.\n"
+
+    return s
+  end
+
+
+  def mark_out_of_100(total_failing_tests)
+    if total_failing_tests == 0
+      return 100
+    elsif total_failing_tests < 4
+      return 50
+    else
+      return 0
+    end
+  end
+
+end
+
+
+
+# ==============================================================================
+
+
+Gitomator::ScriptUtil::run_tasks([
+  Maven::AutoMarker.new(context, auto_marker, local_dir),
+  A1ResultsCollector.new(context, auto_marker, local_dir)
+])
