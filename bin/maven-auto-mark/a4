@@ -1,0 +1,173 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'gitomator/util/script_util'
+require 'gitomator/context'
+require 'gitomator/classroom/auto_marker/maven/auto_marker_config'
+require 'gitomator/classroom/auto_marker/maven/auto_marker'
+require 'gitomator/classroom/auto_marker/maven/results_collector'
+
+
+include Gitomator::Classroom::AutoMarker
+
+usage_message  = "Usage: #{File.basename($0)} AUTO-MARKER-CONFIG LOCAL-DIR "
+opts = Gitomator::ScriptUtil::DefaultOptionParser.new(usage_message).parse(ARGV)
+abort usage_message if ARGV.length != 2
+
+context     = Gitomator::Context.from_file(opts[:context])
+
+config_obj = Gitomator::Util.load_config(ARGV[0])
+auto_marker = Maven::AutoMarkerConfig.new(config_obj)
+auto_marker.validate()
+local_dir   = ARGV[1]
+
+
+# ==============================================================================
+
+#
+# A custom result collector used for processing A1.
+# Goes over the local repos, process the JUnit XML reports,
+# write a nice markdown repo with the mark, and print a CSV
+# output of all marks.
+#
+class A4ResultsCollector < Maven::ResultsCollector
+
+
+  def initialize(context, auto_marker_config, local_dir)
+    super(context, auto_marker_config, local_dir)
+
+    # Process all marks together ...
+    after_processing_all_repos do |repo2mark, repo2error|
+      logger.info "Writing CSV output to stdout ..."
+
+      puts "UTorID,Step 1 (40), Step 2 (30), Step 3.1 (15), Step 3.2 (15), Total (out of 100)\n"
+      repo2mark.each do |r, m|
+        puts "#{r[3 .. r.length]},#{m['step-1']},#{m['step-2']},#{m['step-3.1']},#{m['step-3.2']},#{m.values.reduce(:+)}"
+      end
+
+    end
+  end
+
+
+  # @return int The mark out of 100
+  def process_repo(repo, index)
+    # results is a hash, mapping XML filename to failre and error counts (array of two ints)
+    results = super(repo, index)
+    mark = get_mark_for_repo(results)
+
+    path = File.join(local_dir, repo, 'mark.md')
+    logger.info "Create Markdown report, #{path}, for #{repo} based on #{results} ..."
+    File.write(path, markdown_report(mark))
+
+    return mark
+  end
+
+
+  # @return String
+  def markdown_report(mark)
+    return <<-MARKDOWN
+
+## A4
+
+Your mark is **#{mark.values.reduce(:+)} out of 100**.
+
+ * `step1`, #{mark['step-1']} out of 40
+ * `step2`, #{mark['step-2']} out of 30
+ * `Step3`
+   * `PathPlannerTest`, #{mark['step-3.1']} out of 15
+   * `PathPlannerAdvancedTest`, #{mark['step-3.2']} out of 15
+
+
+For more details, see the JUnit reports in the
+[`surefire-reports`](/surefire-reports) directory.
+
+MARKDOWN
+
+  end
+
+
+  def get_mark_for_repo(xml_filename2failure_and_error_counts)
+    f2c = xml_filename2failure_and_error_counts
+
+    if f2c.nil?
+      return {
+        'step-1' => 0, 'step-2' => 0, 'step-3.1' => 0, 'step-3.2' => 0
+      }
+    end
+
+    # Step1 is out of 40
+    mark_step1 = 0
+    if count_failures_and_error(f2c, xml_filenames_step1) == 0
+      mark_step1 = 40
+    end
+
+    # Step2 is out of 30
+    x = count_failures_and_error(f2c, xml_filenames_step2)
+    mark_step2 = [30 - (10 * x), 0].max
+
+    # Step3.1 is out of 15
+    mark_step3_1 = 0
+    if count_failures_and_error(f2c, xml_filenames_step3_1) == 0
+      mark_step3_1 = 15
+    end
+
+    # Step3.2 is out of 15
+    mark_step3_2 = 0
+    if count_failures_and_error(f2c, xml_filenames_step3_2) == 0
+      mark_step3_2 = 15
+    end
+
+    return {
+      'step-1' => mark_step1,
+      'step-2' => mark_step2,
+      'step-3.1' => mark_step3_1,
+      'step-3.2' => mark_step3_2
+    }
+
+  end
+
+
+  def count_failures_and_error(filename2counts, include_filenames)
+    return filename2counts
+      .select {|filename,_| include_filenames.include? filename }
+      .map {|filename,counts| counts.reduce(:+)}
+      .reduce(:+)
+  end
+
+
+  def xml_filenames_step1()
+    return [
+      'TEST-edu.toronto.csc301.SetupTest.xml',
+      'TEST-edu.toronto.csc301.step1.GridRobotTest.xml',
+      'TEST-edu.toronto.csc301.step1.WarehouseTest.xml'
+    ]
+  end
+
+  def xml_filenames_step2()
+    return [
+      'TEST-edu.toronto.csc301.step2.GridRobotTest.xml',
+      'TEST-edu.toronto.csc301.step2.WarehouseTest.xml'
+    ]
+  end
+
+  def xml_filenames_step3_1()
+    return [ 'TEST-edu.toronto.csc301.step3.PathPlannerTest.xml' ]
+  end
+
+  def xml_filenames_step3_2()
+    return [ 'TEST-edu.toronto.csc301.step3.PathPlannerAdvancedTest.xml' ]
+  end
+
+
+
+end
+
+
+
+# ==============================================================================
+
+
+Gitomator::ScriptUtil::run_tasks([
+  # Maven::AutoMarker.new(context, auto_marker, local_dir),
+  A4ResultsCollector.new(context, auto_marker, local_dir)
+])
